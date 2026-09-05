@@ -155,7 +155,7 @@ func _process(delta: float) -> void:
 		return
 	var total: int = _text_label.get_total_character_count()
 	if _shown < total:
-		_shown += CHARS_PER_SEC * delta
+		_shown += CHARS_PER_SEC * GameManager.text_speed * delta
 		_text_label.visible_characters = int(_shown)
 		_tick_sfx_cd -= delta
 		if _tick_sfx_cd <= 0.0:

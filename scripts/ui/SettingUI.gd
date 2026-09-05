@@ -4,6 +4,8 @@ extends Control
 var _music_slider: HSlider
 var _sfx_slider: HSlider
 var _ambient_slider: HSlider
+var _text_slider: HSlider
+var _cam_slider: HSlider
 var _lang_btn: OptionButton
 var _mute_check: CheckBox
 var _title: Label
@@ -37,11 +39,15 @@ func _build() -> void:
 	_music_slider = _add_slider(root, "🎵 Musik")
 	_sfx_slider = _add_slider(root, "🔔 Efek Suara")
 	_ambient_slider = _add_slider(root, "🌊 Suasana")
+	_text_slider = _add_slider(root, "💬 Kecepatan Teks", 50.0, 200.0)
+	_cam_slider = _add_slider(root, "🎥 Sensitivitas Kamera", 30.0, 200.0)
 	_music_slider.value_changed.connect(func(v: float) -> void: AudioManager.set_music_volume(v / 100.0))
 	_sfx_slider.value_changed.connect(func(v: float) -> void:
 		AudioManager.set_sfx_volume(v / 100.0)
 		SignalBus.sfx_requested.emit("sfx_dialogue_click"))
 	_ambient_slider.value_changed.connect(func(v: float) -> void: AudioManager.set_ambient_volume(v / 100.0))
+	_text_slider.value_changed.connect(func(v: float) -> void: GameManager.text_speed = v / 100.0)
+	_cam_slider.value_changed.connect(func(v: float) -> void: GameManager.cam_sensitivity = v / 100.0)
 	# Bahasa.
 	var lang_row := HBoxContainer.new()
 	root.add_child(lang_row)
@@ -81,7 +87,7 @@ func _build() -> void:
 	root.add_child(_help_label)
 
 
-func _add_slider(parent: VBoxContainer, label_text: String) -> HSlider:
+func _add_slider(parent: VBoxContainer, label_text: String, minv: float = 0.0, maxv: float = 100.0) -> HSlider:
 	var row := HBoxContainer.new()
 	parent.add_child(row)
 	var l := Label.new()
@@ -90,8 +96,8 @@ func _add_slider(parent: VBoxContainer, label_text: String) -> HSlider:
 	ThemeFactory.style_label(l, 16, ThemeFactory.CREAM)
 	row.add_child(l)
 	var s := HSlider.new()
-	s.min_value = 0
-	s.max_value = 100
+	s.min_value = minv
+	s.max_value = maxv
 	s.step = 1
 	s.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(s)
@@ -115,6 +121,8 @@ func refresh() -> void:
 	_music_slider.set_value_no_signal(am.music_volume * 100.0)
 	_sfx_slider.set_value_no_signal(am.sfx_volume * 100.0)
 	_ambient_slider.set_value_no_signal(am.ambient_volume * 100.0)
+	_text_slider.set_value_no_signal(gm.text_speed * 100.0)
+	_cam_slider.set_value_no_signal(gm.cam_sensitivity * 100.0)
 	_mute_check.set_pressed_no_signal(am.muted)
 	_lang_btn.select(1 if dm.language == "en" else 0)
 	var in_game: bool = gm.state in ["pause", "settings"] and gm.state != "main_menu" and get_tree().current_scene and get_tree().current_scene.get("in_game") == true

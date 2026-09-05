@@ -12,6 +12,7 @@ var _detail_body: RichTextLabel
 var _selected_label: Label
 var _result_label: Label
 var _solved_list: VBoxContainer
+var _guide_list: VBoxContainer
 var _progress_label: Label
 var _hint_label: Label
 var _hint_btn: Button
@@ -127,6 +128,13 @@ func _build() -> void:
 	_result_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	ThemeFactory.style_label(_result_label, 14, ThemeFactory.PASTEL_YELLOW)
 	right.add_child(_result_label)
+	var gh := Label.new()
+	gh.text = "🧩 Teka-teki"
+	ThemeFactory.style_label(gh, 16, ThemeFactory.PASTEL_BLUE, true)
+	right.add_child(gh)
+	_guide_list = VBoxContainer.new()
+	_guide_list.add_theme_constant_override("separation", 2)
+	right.add_child(_guide_list)
 	var sh := Label.new()
 	sh.text = "Kesimpulan Terpecahkan"
 	ThemeFactory.style_label(sh, 16, ThemeFactory.GOOD, true)
@@ -173,6 +181,34 @@ func refresh() -> void:
 	_hint_btn.text = dm.tr_key("invest_hint").format({"n": im.hints_left})
 	_hint_btn.disabled = im.hints_left <= 0
 	_update_selected_label(dm)
+	# Panduan teka-teki (siluet + progres + hint bertahap).
+	for c in _guide_list.get_children():
+		c.queue_free()
+	for ded_id in dm.deductions.keys():
+		if ded_id in im.deductions_solved:
+			continue
+		var ded: Dictionary = dm.deductions[ded_id]
+		var req: Array = ded.get("required_clues", [])
+		var found_n: int = 0
+		for rc in req:
+			if str(rc) in im.clues_found:
+				found_n += 1
+		var locked: bool = false
+		for pre in ded.get("requires_deductions", []):
+			if not (str(pre) in im.deductions_solved):
+				locked = true
+		var gl := Label.new()
+		gl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		if locked:
+			gl.text = "🔒 ??? — pecahkan kesimpulan sebelumnya dulu."
+			ThemeFactory.style_label(gl, 13, Color(0.6, 0.6, 0.65))
+		elif found_n == 0:
+			gl.text = "❔ Teka-teki (%d petunjuk) — petunjuknya belum ditemukan." % req.size()
+			ThemeFactory.style_label(gl, 13, Color(0.75, 0.75, 0.8))
+		else:
+			gl.text = "❔ %d/%d petunjuk — %s" % [found_n, req.size(), str(ded.get("hint", ""))]
+			ThemeFactory.style_label(gl, 13, ThemeFactory.PASTEL_BLUE)
+		_guide_list.add_child(gl)
 	# Kesimpulan.
 	for c in _solved_list.get_children():
 		c.queue_free()

@@ -6,6 +6,7 @@ var _notes_list: VBoxContainer
 var _chars_list: VBoxContainer
 var _timeline_list: VBoxContainer
 var _tabs: TabContainer
+var _stats_label: Label
 
 
 func _ready() -> void:
@@ -39,6 +40,9 @@ func _build() -> void:
 	ThemeFactory.style_button(close_btn, 16)
 	close_btn.pressed.connect(func() -> void: GameManager.change_state("gameplay"))
 	header.add_child(close_btn)
+	_stats_label = Label.new()
+	ThemeFactory.style_label(_stats_label, 14, ThemeFactory.PASTEL_BLUE)
+	root.add_child(_stats_label)
 	_tabs = TabContainer.new()
 	_tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	root.add_child(_tabs)
@@ -61,6 +65,7 @@ func _make_tab(tab_name: String) -> VBoxContainer:
 
 
 func refresh() -> void:
+	_update_stats()
 	_refresh_notes()
 	_refresh_characters()
 	_refresh_timeline()
@@ -161,6 +166,15 @@ func _empty_label(text: String) -> Label:
 	l.text = text
 	ThemeFactory.style_label(l, 15, Color(0.75, 0.75, 0.8))
 	return l
+
+
+func _update_stats() -> void:
+	var im := InvestigationManager
+	var sm := SaveManager
+	var prog: Dictionary = im.clue_progress()
+	_stats_label.text = "⏱ %s    🔍 %d/%d    🧩 %d/4    💡 %d" % [
+		MathUtils.format_playtime(sm.playtime), prog["found"], prog["total"],
+		(im.deductions_solved as Array).size(), im.hints_left]
 
 
 func _on_visibility_refresh() -> void:

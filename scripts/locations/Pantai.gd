@@ -86,9 +86,14 @@ void fragment() {
 	# Api unggun kecil (dekorasi).
 	pf.cyl(self, 0.3, 0.25, Vector3(1.0, 0.12, -1.0), pf.mat(Color(0.3, 0.3, 0.3), 0.9), false, 10)
 	pf.sphere(self, 0.18, Vector3(1.0, 0.35, -1.0), pf.mat(Color(1.0, 0.55, 0.15), 0.5, Color(1.0, 0.55, 0.15), 2.5))
-	var fire := OmniLight3D.new()
+	var fire := FlickerLight.new()
+	fire.flicker_amount = 0.3
+	fire.flicker_speed = 9.0
 	fire.position = Vector3(1.0, 0.6, -1.0)
 	fire.light_color = Color(1.0, 0.6, 0.25)
 	fire.light_energy = 1.0
 	fire.omni_range = 8.0
 	add_child(fire)
+	# Kunang-kunang senja di antara palem.
+	pf.make_dust_motes(self, Vector3(-6.0, 1.0, 3.0), Vector3(3.0, 0.8, 2.0), Color(0.75, 1.0, 0.4, 0.6))
+	pf.make_dust_motes(self, Vector3(3.0, 1.0, 6.0), Vector3(3.0, 0.8, 2.0), Color(0.75, 1.0, 0.4, 0.6))

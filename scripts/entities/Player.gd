@@ -103,8 +103,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	var gm := GameManager
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and gm.is_gameplay_input_active():
 		var mm := event as InputEventMouseMotion
-		cam_yaw -= mm.relative.x * mouse_sensitivity
-		cam_pitch = clampf(cam_pitch - mm.relative.y * mouse_sensitivity, -1.1, 0.45)
+		var sens: float = mouse_sensitivity * GameManager.cam_sensitivity
+		cam_yaw -= mm.relative.x * sens
+		cam_pitch = clampf(cam_pitch - mm.relative.y * sens, -1.1, 0.45)
 
 
 func _physics_process(delta: float) -> void:

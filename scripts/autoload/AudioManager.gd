@@ -276,6 +276,8 @@ func _synth_ambient(track_id: String) -> AudioStreamWAV:
 		_:
 			wind_base = 0.05
 	var last: float = 0.0
+	var horn_at: Array = [2.0, 5.5] if track_id == "ambient_stasiun" else []
+	var gull_at: Array = [1.5, 4.0, 6.6] if track_id == "ambient_pantai" else []
 	for i in n:
 		var t: float = float(i) / MIX_RATE
 		var noise: float = rng.randf() * 2.0 - 1.0
@@ -287,6 +289,18 @@ func _synth_ambient(track_id: String) -> AudioStreamWAV:
 			var gate: float = sin(TAU * chirp_rate * t) * sin(TAU * 0.37 * t + 2.0)
 			if gate > 0.93:
 				v += sin(TAU * (1800.0 + 400.0 * sin(TAU * 9.0 * t)) * t) * 0.02
+		# Klakson kereta jauh (stasiun): akor disonan lembut.
+		for h in horn_at:
+			var lh: float = t - float(h)
+			if lh >= 0.0 and lh < 1.6:
+				var env_h: float = sin(minf(1.0, lh / 1.6) * PI)
+				v += (sin(TAU * 311.0 * t) + sin(TAU * 370.0 * t) + sin(TAU * 466.0 * t)) * 0.03 * env_h
+		# Tangis camar (pantai): sweep menurun pendek.
+		for g in gull_at:
+			var lg: float = t - float(g)
+			if lg >= 0.0 and lg < 0.45:
+				var ph: float = TAU * (1250.0 * lg - 0.5 * (550.0 / 0.45) * lg * lg)
+				v += sin(ph) * 0.035 * sin(lg / 0.45 * PI)
 		samples[i] = v * 0.6
 	_blend_loop_edge(samples, MIX_RATE / 2)
 	return _make_wav(samples, true)

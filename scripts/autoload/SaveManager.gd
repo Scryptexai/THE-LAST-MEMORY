@@ -66,6 +66,8 @@ func collect() -> Dictionary:
 			"sfx_volume": am.sfx_volume,
 			"ambient_volume": am.ambient_volume,
 			"language": DataManager.language,
+			"text_speed": gm.text_speed,
+			"cam_sensitivity": gm.cam_sensitivity,
 		},
 	}
 
@@ -104,6 +106,8 @@ func apply(data: Dictionary) -> bool:
 		am.set_sfx_volume(float(settings.get("sfx_volume", 0.9)))
 		am.set_ambient_volume(float(settings.get("ambient_volume", 0.7)))
 		DataManager.set_language(str(settings.get("language", "id")))
+	gm.text_speed = float(settings.get("text_speed", 1.0))
+	gm.cam_sensitivity = float(settings.get("cam_sensitivity", 1.0))
 	Logger.info("SaveManager: save diterapkan (chapter=%s, lokasi=%s)." % [gm.current_chapter, gm.current_location])
 	return true
 

@@ -45,12 +45,12 @@
       "npcs": [
         {
           "character_id": "rara", "display_name": "Rara", "dialogue_id": "dlg_rara_intro",
-          "variants": {"rara_v3": "dlg_rara_v3", "rara_v2": "dlg_rara_v2"},
+          "variants": {"rara_pengakuan_done": "dlg_rara_v4", "rara_v3": "dlg_rara_v3", "rara_v2": "dlg_rara_v2"},
           "gifts": {"bunga_liar": {"dialogue": "dlg_rara_bunga", "relationship": {"rara": 3}, "flag": "gift_rara_bunga"}}
         },
         {
           "character_id": "pak_harto", "display_name": "Pak Harto", "dialogue_id": "dlg_harto_intro",
-          "variants": {"harto_bersaksi": "dlg_harto_after", "harto_terbuka": "dlg_harto_v3", "harto_v2": "dlg_harto_v2"},
+          "variants": {"ded4": "dlg_harto_v4", "harto_bersaksi": "dlg_harto_after", "harto_terbuka": "dlg_harto_v3", "harto_v2": "dlg_harto_v2"},
           "gifts": {"teh_melati": {"dialogue": "dlg_harto_teh", "relationship": {"pak_harto": 3}, "flag": "gift_harto_teh"}}
         }
       ],
@@ -80,7 +80,7 @@
       },
       "npcs": [
         {"character_id": "mira", "display_name": "Mira", "dialogue_id": "dlg_mira_intro",
-         "variants": {"mira_v2": "dlg_mira_v2"}},
+         "variants": {"ded4": "dlg_mira_v4", "mira_v2": "dlg_mira_v2"}},
         {"character_id": "warga", "slot": "pedagang", "display_name": "Pedagang Antik", "dialogue_id": "dlg_pedagang",
          "variants": {"pedagang_bicara": "dlg_pedagang_after"}},
         {"character_id": "warga", "slot": "warga_pasar", "display_name": "Warga Pasar", "dialogue_id": "dlg_warga_pasar"}

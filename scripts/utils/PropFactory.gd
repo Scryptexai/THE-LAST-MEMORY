@@ -347,7 +347,7 @@ func make_rug(parent: Node3D, pos: Vector3, size: Vector2, color: Color) -> void
 
 
 ## Partikel debu melayang (untuk loteng / ruangan bernostalgia).
-func make_dust_motes(parent: Node3D, center: Vector3, extents: Vector3) -> GPUParticles3D:
+func make_dust_motes(parent: Node3D, center: Vector3, extents: Vector3, tint: Color = Color(1.0, 0.92, 0.75, 0.45)) -> GPUParticles3D:
 	var p := GPUParticles3D.new()
 	p.amount = 48
 	p.lifetime = 7.0
@@ -363,13 +363,13 @@ func make_dust_motes(parent: Node3D, center: Vector3, extents: Vector3) -> GPUPa
 	mat_proc.spread = 35.0
 	mat_proc.scale_min = 0.02
 	mat_proc.scale_max = 0.05
-	mat_proc.color = Color(1.0, 0.9, 0.7, 0.5)
+	mat_proc.color = Color(tint.r, tint.g, tint.b, 0.5)
 	p.process_material = mat_proc
 	var quad := QuadMesh.new()
 	quad.size = Vector2(0.06, 0.06)
 	var qmat := StandardMaterial3D.new()
 	qmat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	qmat.albedo_color = Color(1.0, 0.92, 0.75, 0.45)
+	qmat.albedo_color = tint
 	qmat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	qmat.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
 	quad.material = qmat

@@ -52,3 +52,4 @@ func _build_visuals() -> void:
 	pf.sphere(self, 0.5, Vector3(8, 0.4, 2), pf.mat(Color(0.3, 0.4, 0.24), 0.95))
 	pf.sphere(self, 0.4, Vector3(-8.5, 0.35, 3), pf.mat(Color(0.3, 0.4, 0.24), 0.95))
 	pf.make_fence(self, Vector3(-9, 0.5, 5), Vector3(-2, 0.5, 5))
+	pf.make_dust_motes(self, Vector3(0, 1.5, -3.0), Vector3(6.0, 1.2, 2.5), Color(0.7, 0.7, 0.72, 0.35))
