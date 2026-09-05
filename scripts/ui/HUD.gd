@@ -67,6 +67,7 @@ func _build() -> void:
 	_add_hud_button("🎒", "open_inventory", "Tas [I]")
 	_add_hud_button("📓", "open_journal", "Jurnal [J]")
 	_add_hud_button("⚙", "open_settings", "Opsi")
+	_add_hud_button("📷", "photo_mode", "Foto [P]")
 	# --- Banner lokasi (tengah atas) ---
 	_banner = PanelContainer.new()
 	_banner.set_anchors_preset(Control.PRESET_CENTER_TOP)
@@ -190,6 +191,8 @@ func _on_hud_button(action: String) -> void:
 			gm.change_state("inventory" if gm.state == "gameplay" else "gameplay")
 		"open_journal":
 			gm.change_state("journal" if gm.state == "gameplay" else "gameplay")
+		"photo_mode":
+			gm.change_state("photo" if gm.state == "gameplay" else "gameplay")
 		"open_settings":
 			(get_parent() as CanvasLayer).get_parent()  # no-op aman
 			SignalBus.ui_screen_requested.emit("settings")
@@ -199,8 +202,8 @@ func _on_hud_button(action: String) -> void:
 
 func refresh_state() -> void:
 	var gm := GameManager
-	var in_game: bool = gm.state in ["gameplay", "dialogue", "investigation", "inventory", "journal", "pause"]
-	_hud_buttons.visible = in_game
+	var in_game: bool = gm.state in ["gameplay", "dialogue", "investigation", "inventory", "journal", "pause", "photo"]
+	_hud_buttons.visible = in_game and gm.state != "photo"
 	_objective_label.text = "🎯 " + gm.objective_text()
 	if gm.state != "gameplay":
 		_travel_panel.visible = false

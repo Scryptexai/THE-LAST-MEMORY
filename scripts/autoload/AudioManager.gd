@@ -326,6 +326,8 @@ func _synth_sfx(sfx_id: String) -> AudioStreamWAV:
 			return _sweep(180.0, 420.0, 0.45, 0.3)
 		"sfx_photo_taken":
 			return _tone(1400.0, 0.08, 0.3, 12.0)
+		"sfx_shutter":
+			return _chime([1800.0, 900.0], 0.12, 0.35)
 		"sfx_letter_open":
 			return _noise_burst(0.25, 0.22)
 		"sfx_memory":

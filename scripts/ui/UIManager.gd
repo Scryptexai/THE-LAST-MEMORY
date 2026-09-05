@@ -12,6 +12,7 @@ const SCREENS := {
 	"settings": "res://scenes/ui/SettingsUI.tscn",
 	"loading": "res://scenes/ui/LoadingUI.tscn",
 	"ending": "res://scenes/ui/EndingUI.tscn",
+	"photomode": "res://scenes/ui/PhotoModeUI.tscn",
 }
 
 var nodes: Dictionary = {}
@@ -76,6 +77,8 @@ func _on_state_changed(state: String) -> void:
 			show_only(["hud", "inventory"])
 		"journal":
 			show_only(["hud", "journal"])
+		"photo":
+			show_only(["hud", "photomode"])
 		"settings":
 			if settings_return == "main_menu":
 				show_only(["main_menu", "settings"])
@@ -114,6 +117,11 @@ func _unhandled_input(event: InputEvent) -> void:
 			gm.change_state("investigation")
 		elif gm.state == "investigation":
 			gm.change_state("gameplay")
+	elif event.is_action_pressed("photo_mode"):
+		if gm.state == "gameplay":
+			gm.change_state("photo")
+		elif gm.state == "photo":
+			gm.change_state("gameplay")
 	elif event.is_action_pressed("open_map"):
 		if gm.state == "gameplay":
 			var hud := get_screen("hud")
@@ -121,7 +129,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				hud.toggle_travel()
 	elif event.is_action_pressed("ui_cancel"):
 		match gm.state:
-			"journal", "inventory", "investigation":
+			"journal", "inventory", "investigation", "photo":
 				gm.change_state("gameplay")
 			"settings":
 				gm.change_state(settings_return if settings_return != "settings" else "gameplay")

@@ -7,6 +7,7 @@ var _chars_list: VBoxContainer
 var _timeline_list: VBoxContainer
 var _moments_list: VBoxContainer
 var _ach_list: VBoxContainer
+var _photos_box: VBoxContainer
 var _tabs: TabContainer
 var _stats_label: Label
 
@@ -53,6 +54,7 @@ func _build() -> void:
 	_timeline_list = _make_tab("Linimasa")
 	_moments_list = _make_tab("Momen")
 	_ach_list = _make_tab("Pencapaian")
+	_photos_box = _make_tab("Foto")
 
 
 func _make_tab(tab_name: String) -> VBoxContainer:
@@ -75,6 +77,7 @@ func refresh() -> void:
 	_refresh_timeline()
 	_refresh_moments()
 	_refresh_achievements()
+	_refresh_photos()
 
 
 func _refresh_notes() -> void:
@@ -246,6 +249,49 @@ func _refresh_achievements() -> void:
 		l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		ThemeFactory.style_label(l, 15, ThemeFactory.PASTEL_YELLOW if un else Color(0.55, 0.55, 0.6))
 		_ach_list.add_child(l)
+
+
+func _refresh_photos() -> void:
+	var pm := PhotoManager
+	pm.rescan()
+	for c in _photos_box.get_children():
+		c.queue_free()
+	var head := Label.new()
+	head.text = "📷 %d foto" % pm.photo_count()
+	ThemeFactory.style_label(head, 16, ThemeFactory.PASTEL_BLUE, true)
+	_photos_box.add_child(head)
+	if pm.photo_count() == 0:
+		var empty := Label.new()
+		empty.text = DataManager.tr_key("photo_empty")
+		empty.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		ThemeFactory.style_label(empty, 15, Color(0.7, 0.7, 0.75))
+		_photos_box.add_child(empty)
+		return
+	var grid := GridContainer.new()
+	grid.columns = 3
+	grid.add_theme_constant_override("h_separation", 8)
+	grid.add_theme_constant_override("v_separation", 8)
+	_photos_box.add_child(grid)
+	var shown: int = 0
+	for f in pm.photos:
+		if shown >= PhotoManager.MAX_THUMBS:
+			break
+		var img := Image.load_from_file(pm.photo_path(str(f)))
+		if img == null or img.is_empty():
+			continue
+		var thumb := TextureRect.new()
+		thumb.texture = ImageTexture.create_from_image(img)
+		thumb.custom_minimum_size = Vector2(170, 100)
+		thumb.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		thumb.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		thumb.tooltip_text = str(f)
+		grid.add_child(thumb)
+		shown += 1
+	if pm.photo_count() > shown:
+		var more := Label.new()
+		more.text = "+%d lainnya di user://photos" % (pm.photo_count() - shown)
+		ThemeFactory.style_label(more, 14, Color(0.7, 0.7, 0.75))
+		_photos_box.add_child(more)
 
 
 func _on_visibility_refresh() -> void:

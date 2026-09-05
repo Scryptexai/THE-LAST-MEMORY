@@ -3,7 +3,7 @@ extends Node
 ## objektif, evaluasi ending, dan orkestrasi pindah lokasi.
 
 const STATES := ["main_menu", "loading", "gameplay", "dialogue", "investigation",
-	"inventory", "journal", "settings", "pause", "ending"]
+	"inventory", "journal", "settings", "pause", "photo", "ending"]
 
 var state: String = "main_menu"
 var previous_gameplay_state: String = "gameplay"

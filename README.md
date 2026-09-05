@@ -21,6 +21,7 @@ sepertinya *mengingat* sesuatu. Ungkap kebenaran, jaga hubunganmu, dan pilih end
 - 📷 **5 Momen foto** ala Life is Strange: abadikan vista kota, tersimpan sebagai PNG + galeri jurnal
 - ✨ **New Game+** (foto & hint bonus terbawa), **% penyelesaian**, warga bereaksi per-bab
 - 🏆 **11 pencapaian** (toast + fanfare + tab jurnal), 2 memori rahasia NG+, SFX achievement
+- 📷 **Mode foto bebas** (tombol P): letterbox + grid sepertiga + zoom + galeri jurnal + pencapaian Fotografer
 - 💾 **3 slot save + autosave**, pengaturan audio & bahasa (ID/EN)
 - 🎵 **Musik & SFX prosedural** (synth runtime — tanpa file audio eksternal, bisa di-override dengan `.ogg` di `assets/audio/`)
 

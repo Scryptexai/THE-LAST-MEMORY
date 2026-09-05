@@ -63,7 +63,10 @@
     "prompt_moment": "Abadikan {name}",
     "moment_taken": "📷 Momen diabadikan",
     "journal_src_moment": "Momen",
-    "menu_ngplus": "Baru+ (foto terbawa)"
+    "menu_ngplus": "Baru+ (foto terbawa)",
+    "photo_hint": "Klik / Spasi: jepret · Roda mouse: zoom · P / Esc: keluar",
+    "photo_saved": "Foto tersimpan di galeri.",
+    "photo_empty": "Belum ada foto. Tekan P saat bermain untuk memotret."
   },
   "en": {
     "menu_subtitle": "A Life is Strange mystery in Kota Tua Pesisir",
@@ -129,6 +132,9 @@
     "prompt_moment": "Capture {name}",
     "moment_taken": "📷 Moment captured",
     "journal_src_moment": "Moment",
-    "menu_ngplus": "New+ (photos kept)"
+    "menu_ngplus": "New+ (photos kept)",
+    "photo_hint": "Click / Space: snap · Mouse wheel: zoom · P / Esc: exit",
+    "photo_saved": "Photo saved to gallery.",
+    "photo_empty": "No photos yet. Press P while playing to snap one."
   }
 }
