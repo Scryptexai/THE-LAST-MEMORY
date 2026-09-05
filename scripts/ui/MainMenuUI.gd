@@ -8,6 +8,8 @@ var _button_box: VBoxContainer
 var _slot_box: VBoxContainer
 var _bg: ColorRect
 var _t: float = 0.0
+var _credits_dim: ColorRect
+var _credits_panel: PanelContainer
 
 
 func _ready() -> void:
@@ -63,6 +65,7 @@ func _build() -> void:
 	_slot_box = VBoxContainer.new()
 	_slot_box.add_theme_constant_override("separation", 6)
 	main.add_child(_slot_box)
+	_build_credits_overlay()
 
 
 func _process(delta: float) -> void:
@@ -88,14 +91,9 @@ func refresh() -> void:
 	_add_button(dm.tr_key("menu_load"), _on_show_slots)
 	_add_button(dm.tr_key("menu_settings"), func() -> void: sm.ui_screen_requested.emit("settings"))
 	_add_button(dm.tr_key("menu_quit"), _on_quit)
-	# Sapa pemain lama dengan progres ending.
-	var gm := GameManager
-	if not (gm.endings_seen as Array).is_empty():
-		var l := Label.new()
-		l.text = dm.tr_key("menu_endings_seen").format({"n": (gm.endings_seen as Array).size()})
-		l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		ThemeFactory.style_label(l, 14, ThemeFactory.PASTEL_PINK)
-		_slot_box.add_child(l)
+	_add_button(dm.tr_key("menu_credits"), _on_credits)
+	# Galeri ending.
+	_build_gallery(dm, GameManager)
 
 
 func _add_button(text: String, cb: Callable) -> Button:
@@ -169,3 +167,69 @@ func _on_quit() -> void:
 func _on_visibility_refresh() -> void:
 	if visible:
 		refresh()
+
+
+## Galeri 4 ending: yang sudah ditemukan tampil, sisanya "???".
+func _build_gallery(dm, gm) -> void:
+	var title := Label.new()
+	title.text = dm.tr_key("menu_endings_seen").format({"n": (gm.endings_seen as Array).size()})
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	ThemeFactory.style_label(title, 14, ThemeFactory.PASTEL_PINK)
+	_slot_box.add_child(title)
+	var row := HBoxContainer.new()
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	row.add_theme_constant_override("separation", 10)
+	_slot_box.add_child(row)
+	for eid in ["ending_kebenaranutuh", "ending_pengorbanan", "ending_rahasiaterkubur", "ending_lukalama"]:
+		var e: Dictionary = dm.get_ending(eid)
+		var chip := Label.new()
+		if eid in (gm.endings_seen as Array):
+			var t: String = str(e.get("title", eid)) if dm.language == "id" else str(e.get("title_en", eid))
+			chip.text = "%s %s" % [str(e.get("art", "\u2726")), t]
+			ThemeFactory.style_label(chip, 13, ThemeFactory.PASTEL_YELLOW)
+		else:
+			chip.text = "\u2754 ???"
+			ThemeFactory.style_label(chip, 13, Color(0.5, 0.5, 0.55))
+		row.add_child(chip)
+
+
+func _build_credits_overlay() -> void:
+	_credits_dim = ThemeFactory.dim_layer(0.75)
+	_credits_dim.visible = false
+	add_child(_credits_dim)
+	var center := CenterContainer.new()
+	center.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_credits_dim.add_child(center)
+	_credits_panel = PanelContainer.new()
+	_credits_panel.custom_minimum_size = Vector2(560, 0)
+	_credits_panel.add_theme_stylebox_override("panel", ThemeFactory.panel_style())
+	center.add_child(_credits_panel)
+	var vb := VBoxContainer.new()
+	vb.add_theme_constant_override("separation", 10)
+	_credits_panel.add_child(vb)
+	var body := RichTextLabel.new()
+	body.bbcode_enabled = true
+	body.fit_content = true
+	body.scroll_active = false
+	body.custom_minimum_size = Vector2(520, 0)
+	body.add_theme_font_override("normal_font", ThemeFactory.body_font(16))
+	body.add_theme_color_override("default_color", ThemeFactory.CREAM)
+	vb.add_child(body)
+	body.set_meta("credits_body", true)
+	var close_btn := Button.new()
+	close_btn.text = "\u2715"
+	ThemeFactory.style_button(close_btn, 16)
+	close_btn.pressed.connect(_on_credits_close)
+	vb.add_child(close_btn)
+
+
+func _on_credits() -> void:
+	var dm := DataManager
+	for c in _credits_panel.get_child(0).get_children():
+		if c is RichTextLabel and (c as RichTextLabel).has_meta("credits_body"):
+			(c as RichTextLabel).text = dm.tr_key("credits_body")
+	_credits_dim.visible = true
+
+
+func _on_credits_close() -> void:
+	_credits_dim.visible = false

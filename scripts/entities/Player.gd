@@ -12,6 +12,7 @@ var cam_yaw: float = 0.0
 var cam_pitch: float = -0.32
 var current_interactable: Node = null
 var footstep_timer: float = 0.0
+var _walk_phase: float = 0.0
 var _mesh_root: Node3D
 var _cam_pivot: Node3D
 var _cam: Camera3D
@@ -142,6 +143,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	_update_camera(delta)
 	_update_footsteps(delta)
+	_update_body_bob(delta)
 
 
 func _update_camera(_delta: float) -> void:
@@ -228,3 +230,16 @@ func place_at(pos: Vector3, yaw: float) -> void:
 	_mesh_root.rotation.y = yaw
 	velocity = Vector3.ZERO
 	_set_current(null)
+
+
+func _update_body_bob(delta: float) -> void:
+	# Goyangan vertikal + oleng halus saat bergerak (imbangan napas idle).
+	if _moving and is_on_floor():
+		_walk_phase += delta * (11.0 if _running else 7.5)
+		var amp: float = 0.055 if _running else 0.035
+		_mesh_root.position.y = absf(sin(_walk_phase)) * amp
+		_mesh_root.rotation.z = sin(_walk_phase) * 0.025
+	else:
+		_walk_phase = 0.0
+		_mesh_root.position.y = lerpf(_mesh_root.position.y, 0.0, delta * 10.0)
+		_mesh_root.rotation.z = lerpf(_mesh_root.rotation.z, 0.0, delta * 10.0)

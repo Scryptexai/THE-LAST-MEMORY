@@ -10,6 +10,7 @@ var _current_location: Node3D = null
 
 func _ready() -> void:
 	_location_container = $World/LocationContainer
+	($World/Player as Node3D).hide()
 	var bus := SignalBus
 	bus.ending_triggered.connect(_on_ending_triggered)
 	# Musik menu + pastikan mouse terlihat.
@@ -42,6 +43,7 @@ func continue_game(data: Dictionary) -> void:
 
 func quit_to_menu() -> void:
 	_clear_location()
+	($World/Player as Node3D).hide()
 	in_game = false
 	GameManager.quit_to_menu()
 	AudioManager.play_music("music_main_menu")
@@ -59,9 +61,13 @@ func travel_to(location_id: String, spawn_tag: String = "default") -> void:
 	var dm := DataManager
 	var gm := GameManager
 	var bus := SignalBus
-	if (dm.get_scene_data(location_id) as Dictionary).is_empty():
+	var sdata: Dictionary = dm.get_scene_data(location_id)
+	if sdata.is_empty():
 		Logger.warn("Main: lokasi tak dikenal: %s" % location_id)
 		return
+	# Bangun musik/ambient selagi layar loading tampil (hindari jeda).
+	AudioManager.precache_music(str(sdata.get("music", "")))
+	AudioManager.precache_ambient(str(sdata.get("ambient", "")))
 	gm.last_spawn_tag = spawn_tag
 	gm.change_state("loading")
 	bus.loading_progress.emit(0.1, dm.tr_key("loading_travel"))
@@ -69,7 +75,7 @@ func travel_to(location_id: String, spawn_tag: String = "default") -> void:
 	_clear_location()
 	bus.loading_progress.emit(0.35, dm.tr_key("loading_build"))
 	await get_tree().process_frame
-	var packed: PackedScene = load(str((dm.get_scene_data(location_id) as Dictionary).get("scene_path", "")))
+	var packed: PackedScene = load(str(sdata.get("scene_path", "")))
 	if packed == null:
 		Logger.error("Main: gagal memuat scene lokasi: %s" % location_id)
 		gm.change_state("gameplay")
@@ -90,6 +96,7 @@ func travel_to(location_id: String, spawn_tag: String = "default") -> void:
 	# Pastikan Player terlihat & kamera aktif.
 	var player := get_tree().get_first_node_in_group("player") as Node3D
 	if player:
+		player.show()
 		var cam := player.get_node_or_null("CamPivot/SpringArm3D/Camera3D") as Camera3D
 		if cam:
 			cam.current = true

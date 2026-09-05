@@ -212,7 +212,7 @@ func make_counter(parent: Node3D, pos: Vector3, rot_y: float, w: float = 3.0) ->
 func make_lamp(parent: Node3D, pos: Vector3, warm: Color = Color(1.0, 0.75, 0.45)) -> OmniLight3D:
 	cyl(parent, 0.06, 1.7, pos + Vector3(0, 0.85, 0), mat(Color(0.2, 0.2, 0.22), 0.5))
 	sphere(parent, 0.22, pos + Vector3(0, 1.8, 0), mat(warm, 0.4, warm, 2.0))
-	var light := OmniLight3D.new()
+	var light := FlickerLight.new()
 	light.position = pos + Vector3(0, 1.8, 0)
 	light.light_color = warm
 	light.light_energy = 0.9
@@ -253,7 +253,7 @@ func make_palm(parent: Node3D, pos: Vector3, s: float = 1.0) -> void:
 func make_streetlamp(parent: Node3D, pos: Vector3) -> void:
 	cyl(parent, 0.08, 3.6, pos + Vector3(0, 1.8, 0), mat(Color(0.15, 0.15, 0.18), 0.5), true)
 	box(parent, Vector3(0.5, 0.35, 0.5), pos + Vector3(0, 3.7, 0), mat(Color(1.0, 0.8, 0.5), 0.4, Color(1.0, 0.8, 0.5), 2.5))
-	var light := OmniLight3D.new()
+	var light := FlickerLight.new()
 	light.position = pos + Vector3(0, 3.6, 0)
 	light.light_color = Color(1.0, 0.8, 0.55)
 	light.light_energy = 1.2
@@ -344,3 +344,35 @@ func make_rug(parent: Node3D, pos: Vector3, size: Vector2, color: Color) -> void
 	mi.position = pos + Vector3(0, 0.02, 0)
 	mi.material_override = mat(color, 0.95)
 	parent.add_child(mi)
+
+
+## Partikel debu melayang (untuk loteng / ruangan bernostalgia).
+func make_dust_motes(parent: Node3D, center: Vector3, extents: Vector3) -> GPUParticles3D:
+	var p := GPUParticles3D.new()
+	p.amount = 48
+	p.lifetime = 7.0
+	p.preprocess = 7.0
+	p.position = center
+	var mat_proc := ParticleProcessMaterial.new()
+	mat_proc.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_BOX
+	mat_proc.emission_box_extents = extents
+	mat_proc.gravity = Vector3.ZERO
+	mat_proc.initial_velocity_min = 0.05
+	mat_proc.initial_velocity_max = 0.18
+	mat_proc.direction = Vector3(0, 1, 0)
+	mat_proc.spread = 35.0
+	mat_proc.scale_min = 0.02
+	mat_proc.scale_max = 0.05
+	mat_proc.color = Color(1.0, 0.9, 0.7, 0.5)
+	p.process_material = mat_proc
+	var quad := QuadMesh.new()
+	quad.size = Vector2(0.06, 0.06)
+	var qmat := StandardMaterial3D.new()
+	qmat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	qmat.albedo_color = Color(1.0, 0.92, 0.75, 0.45)
+	qmat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	qmat.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
+	quad.material = qmat
+	p.draw_pass_1 = quad
+	parent.add_child(p)
+	return p

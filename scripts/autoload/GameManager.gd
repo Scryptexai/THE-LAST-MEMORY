@@ -16,6 +16,7 @@ var final_choice: String = ""
 var endings_seen: Array = []
 var new_game_plus: bool = false
 var pre_ending_snapshot: Dictionary = {}
+var _ending_token: int = 0
 
 
 func _ready() -> void:
@@ -166,6 +167,9 @@ func _deferred_move(location_id: String, spawn_tag: String) -> void:
 # ---------- Alur game baru / lanjut ----------
 
 func new_game() -> void:
+	_ending_token += 1
+	if DialogueManager.is_active():
+		DialogueManager.cancel()
 	flags.clear()
 	final_choice = ""
 	current_chapter = "prolog"
@@ -174,7 +178,7 @@ func new_game() -> void:
 	current_objective = "obj_datang"
 	RelationshipManager.reset_to_defaults()
 	InvestigationManager.reset()
-	DialogueManager.history.clear()
+	DialogueManager.reset_for_new_game()
 	SaveManager.reset_playtime()
 	SaveManager.start_tracking()
 	var im := InvestigationManager
@@ -184,6 +188,9 @@ func new_game() -> void:
 
 
 func continue_from_data(data: Dictionary) -> bool:
+	_ending_token += 1
+	if DialogueManager.is_active():
+		DialogueManager.cancel()
 	if data.is_empty():
 		return false
 	if not SaveManager.apply(data):
@@ -193,6 +200,9 @@ func continue_from_data(data: Dictionary) -> bool:
 
 
 func quit_to_menu() -> void:
+	_ending_token += 1
+	if DialogueManager.is_active():
+		DialogueManager.cancel()
 	SaveManager.stop_tracking()
 	AudioManager.stop_music()
 	AudioManager.stop_ambient()
@@ -225,7 +235,11 @@ func restore_pre_ending() -> void:
 	if pre_ending_snapshot.is_empty():
 		return
 	final_choice = ""
+	var seen_keep: Array = endings_seen.duplicate(true)
 	SaveManager.apply(pre_ending_snapshot)
+	for e in seen_keep:
+		if not (str(e) in endings_seen):
+			endings_seen.append(str(e))
 	SaveManager.start_tracking()
 	pre_ending_snapshot = {}
 	call_deferred("_deferred_move", current_location, last_spawn_tag)
@@ -236,18 +250,24 @@ func register_final_choice(choice_id: String) -> void:
 	if pre_ending_snapshot.is_empty():
 		pre_ending_snapshot = SaveManager.collect()
 		pre_ending_snapshot["final_choice"] = ""
+	_ending_token += 1
 	final_choice = choice_id
 	Logger.info("GameManager: pilihan akhir = %s" % choice_id)
-	# Tunda evaluasi 1 frame agar dialog selesai dulu.
-	call_deferred("_deferred_ending")
+	# Tunda evaluasi hingga dialog selesai (dijaga token agar tak basi).
+	call_deferred("_deferred_ending", _ending_token)
 
 
-func _deferred_ending() -> void:
-	# Tunggu dialog selesai agar kalimat terakhir sempat terbaca.
+func _deferred_ending(token: int) -> void:
+	if token != _ending_token:
+		return  # permainan diulang/di-load; abaikan ending basi
 	var dlgm := DialogueManager
 	if dlgm.is_active():
 		await SignalBus.dialogue_finished
+		if token != _ending_token:
+			return
 	await get_tree().process_frame
+	if token != _ending_token:
+		return
 	trigger_ending(evaluate_ending())
 
 

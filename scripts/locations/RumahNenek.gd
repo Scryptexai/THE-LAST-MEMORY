@@ -71,6 +71,8 @@ func _build_visuals() -> void:
 	pf.box(self, Vector3(0.7, 0.4, 0.3), Vector3(0.5, 0.6, -4.8), pf.mat(Color(0.3, 0.2, 0.12), 0.7))
 	pf.make_lamp(self, Vector3(4.5, 0.25, 0.5))
 	pf.make_lamp(self, Vector3(-4.5, 0.25, -2.5))
+	pf.make_dust_motes(self, Vector3(-2.0, 1.5, -2.0), Vector3(4.0, 1.2, 3.0))
+	pf.make_dust_motes(self, Vector3(3.0, 1.5, 2.0), Vector3(3.0, 1.2, 3.0))
 	# Halaman: pohon + pagar + jalan setapak.
 	pf.make_tree(self, Vector3(-9, 0, 4), 1.2)
 	pf.make_tree(self, Vector3(9, 0, 2), 1.0)

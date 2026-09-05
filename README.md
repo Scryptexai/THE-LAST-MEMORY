@@ -16,6 +16,7 @@ sepertinya *mengingat* sesuatu. Ungkap kebenaran, jaga hubunganmu, dan pilih end
 - 📓 **Jurnal otomatis**: catatan, profil tokoh, linimasa
 - 🎒 **Inventory fungsional**: kunci, senter, dan hadiah yang diserahkan otomatis
 - 🏁 **4 ending** (Kebenaran Utuh / Rahasia Terkubur / Pengorbanan / Luka Lama) + statistik
+- 🎞️ **Kartu bab sinematik**, galeri ending, layar kredit, vignette, debu loteng, laut animasi, lampu berkedip
 - 💾 **3 slot save + autosave**, pengaturan audio & bahasa (ID/EN)
 - 🎵 **Musik & SFX prosedural** (synth runtime — tanpa file audio eksternal, bisa di-override dengan `.ogg` di `assets/audio/`)
 
@@ -88,6 +89,7 @@ THE-LAST-MEMORY/
 - Bahasa: Indonesia (default) & Inggris (dialog + UI). Ganti di Pengaturan.
 - Save tersimpan di `user://save_slot_*.json` + `user://autosave.json`.
 - Semua error penting dicatat via `Logger` (matikan `Logger.enabled` untuk production).
+- Efek dialog sekali-pakai (anti-farming hubungan), token anti-ending-basi, precache audio saat loading.
 - Dibangun & diuji sintaks dengan `gdparse` (gdtoolkit) + validasi silang data JSON.
 
 Selamat menyelidiki Kota Tua Pesisir. 🕵️

@@ -22,9 +22,29 @@ func _build_visuals() -> void:
 	var sea := MeshInstance3D.new()
 	var sea_mesh := PlaneMesh.new()
 	sea_mesh.size = Vector2(60, 24)
+	sea_mesh.subdivide_width = 48
+	sea_mesh.subdivide_depth = 20
 	sea.mesh = sea_mesh
 	sea.position = Vector3(0, -0.25, -20)
-	sea.material_override = pf.mat(Color(0.2, 0.45, 0.6), 0.3)
+	var sea_shader := Shader.new()
+	sea_shader.code = """
+shader_type spatial;
+render_mode cull_disabled;
+uniform vec4 col_deep : source_color = vec4(0.08, 0.25, 0.38, 1.0);
+uniform vec4 col_foam : source_color = vec4(0.55, 0.8, 0.85, 1.0);
+void vertex() {
+\tVERTEX.y += sin(VERTEX.x * 0.6 + TIME * 1.2) * 0.12 + cos(VERTEX.z * 0.8 + TIME * 0.9) * 0.12;
+}
+void fragment() {
+\tfloat band = 0.5 + 0.5 * sin(UV.y * 24.0 - TIME * 1.5);
+\tALBEDO = mix(col_deep.rgb, col_foam.rgb, band * 0.25);
+\tROUGHNESS = 0.25;
+\tSPECULAR = 0.6;
+}
+"""
+	var sea_mat := ShaderMaterial.new()
+	sea_mat.shader = sea_shader
+	sea.material_override = sea_mat
 	add_child(sea)
 	# Garis buih.
 	pf.box(self, Vector3(60, 0.03, 0.8), Vector3(0, -0.05, -8.5), pf.mat(Color(0.95, 0.95, 0.9, 0.8), 0.6))

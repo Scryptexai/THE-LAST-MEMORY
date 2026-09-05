@@ -5,7 +5,7 @@ extends Node
 ## langsung berbunyi tanpa file audio eksternal. Jika tersedia file di
 ## res://assets/audio/(music|sfx|ambient)/<id>.ogg/.wav, file itu dipakai.
 
-const MIX_RATE := 22050
+const MIX_RATE := 16000
 
 var music_volume: float = 0.8
 var sfx_volume: float = 0.9
@@ -132,6 +132,17 @@ func stop_ambient() -> void:
 	_ambient_player.stop()
 
 
+## Bangun stream lebih awal (dipanggil saat layar loading).
+func precache_music(track_id: String) -> void:
+	if track_id != "":
+		_get_music(track_id)
+
+
+func precache_ambient(track_id: String) -> void:
+	if track_id != "":
+		_get_ambient(track_id)
+
+
 func play_sfx(sfx_id: String) -> void:
 	if sfx_id == "":
 		return
@@ -151,7 +162,7 @@ func _get_music(track_id: String) -> AudioStream:
 	var stream: AudioStream = _try_load_file("music", track_id)
 	if stream == null:
 		var roots: Array = MUSIC_PRESETS.get(track_id, MUSIC_PRESETS["music_rumah_nenek"])
-		stream = _synth_pad(roots, 10.0)
+		stream = _synth_pad(roots, 8.0)
 	_cache["m:" + track_id] = stream
 	return stream
 
@@ -246,7 +257,7 @@ func _synth_pad(roots: Array, seconds: float) -> AudioStreamWAV:
 
 
 func _synth_ambient(track_id: String) -> AudioStreamWAV:
-	var seconds: float = 10.0
+	var seconds: float = 8.0
 	var n: int = int(MIX_RATE * seconds)
 	var samples := PackedFloat32Array()
 	samples.resize(n)

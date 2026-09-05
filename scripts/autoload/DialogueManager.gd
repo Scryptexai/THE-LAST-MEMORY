@@ -7,6 +7,7 @@ var active: bool = false
 var dialogue_id: String = ""     # id node awal dialog yang sedang berjalan
 var current_node: Dictionary = {}
 var history: Array = []          # Array[Dictionary] {node, choice, text, time}
+var effects_applied: Array = []  # kunci efek sekali-pakai yg sudah dipakai
 var _memory_open: bool = false
 
 
@@ -38,10 +39,9 @@ func _show_node(node_id: String) -> void:
 		return
 	# Tandai pembicara sebagai "dikenal".
 	_mark_speaker_met(str(current_node.get("speaker_id", current_node.get("speaker", ""))))
-	# Efek saat node ditampilkan.
+	# Efek saat node ditampilkan (sekali saja per node).
 	var effects: Dictionary = current_node.get("effects", {})
-	_apply_choice_side_effects({}, true)
-	GameManager.apply_effects(effects)
+	_apply_node_effects_once(node_id, effects)
 	# Mode memori?
 	var is_memory: bool = bool(current_node.get("memory", false))
 	if is_memory and not _memory_open:
@@ -102,10 +102,9 @@ func choose(index: int) -> bool:
 		"text": dm.localized(choice), "time": SaveManager.playtime})
 	bus2.dialogue_choice_made.emit(str(current_node.get("id", "")), index, dm.localized(choice))
 	bus2.sfx_requested.emit("sfx_dialogue_click")
-	_apply_choice_side_effects(choice, false)
 	var next_id: String = str(choice.get("next", ""))
-	# Efek yang melekat pada choice (setara effects node).
-	GameManager.apply_effects(_choice_effects(choice))
+	# Efek yang melekat pada choice (sekali saja per pilihan).
+	_apply_choice_effects_once(str(current_node.get("id", "")), index, choice)
 	if next_id == "" or next_id == "END":
 		finish()
 	else:
@@ -139,10 +138,32 @@ func _choice_effects(choice: Dictionary) -> Dictionary:
 	}
 
 
-func _apply_choice_side_effects(_choice: Dictionary, _is_node_enter: bool) -> void:
-	# (Efek flags/relasi node & choice semuanya lewat GameManager.apply_effects
-	# agar konsisten; fungsi ini dipertahankan sebagai hook ekstensi.)
-	pass
+## Terapkan efek node sekali saja (anti-farming & anti-regresi objektif).
+func _apply_node_effects_once(node_id: String, effects: Dictionary) -> void:
+	var key: String = "node:" + node_id
+	if key in effects_applied:
+		return
+	effects_applied.append(key)
+	GameManager.apply_effects(effects)
+
+
+## Terapkan efek pilihan sekali saja.
+func _apply_choice_effects_once(node_id: String, index: int, choice: Dictionary) -> void:
+	var key: String = "choice:%s:%d" % [node_id, index]
+	if key in effects_applied:
+		return
+	effects_applied.append(key)
+	GameManager.apply_effects(_choice_effects(choice))
+
+
+## Reset untuk permainan baru (riwayat + efek sekali-pakai).
+func reset_for_new_game() -> void:
+	history.clear()
+	effects_applied.clear()
+	active = false
+	current_node = {}
+	dialogue_id = ""
+	_memory_open = false
 
 
 func finish() -> void:

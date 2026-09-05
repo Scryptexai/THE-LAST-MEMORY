@@ -50,6 +50,7 @@ func collect() -> Dictionary:
 		"objective": gm.current_objective,
 		"flags": SaveUtils.deep_copy(gm.flags),
 		"choices_made": SaveUtils.deep_copy(dm.history),
+		"effects_applied": SaveUtils.deep_copy(dm.effects_applied),
 		"clues_found": SaveUtils.deep_copy(im.clues_found),
 		"deductions_solved": SaveUtils.deep_copy(im.deductions_solved),
 		"relationships": SaveUtils.deep_copy(rm.values),
@@ -88,6 +89,7 @@ func apply(data: Dictionary) -> bool:
 	gm.final_choice = str(data.get("final_choice", ""))
 	gm.endings_seen = (data.get("endings_seen", []) as Array).duplicate(true)
 	dm.history = (data.get("choices_made", []) as Array).duplicate(true)
+	dm.effects_applied = (data.get("effects_applied", []) as Array).duplicate(true)
 	im.clues_found = (data.get("clues_found", []) as Array).duplicate(true)
 	im.deductions_solved = (data.get("deductions_solved", []) as Array).duplicate(true)
 	im.inventory = (data.get("inventory", []) as Array).duplicate(true)

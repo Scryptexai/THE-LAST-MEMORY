@@ -9,6 +9,7 @@ var _mute_check: CheckBox
 var _title: Label
 var _resume_btn: Button
 var _slot_row: HBoxContainer
+var _help_label: Label
 
 
 func _ready() -> void:
@@ -74,6 +75,10 @@ func _build() -> void:
 	_resume_btn = _add_action(root, "▶ Lanjutkan", _on_resume)
 	_add_action(root, "🏠 Menu Utama", _on_menu)
 	_add_action(root, "🚪 Keluar Game", func() -> void: get_tree().quit())
+	_help_label = Label.new()
+	_help_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	ThemeFactory.style_label(_help_label, 13, Color(0.8, 0.8, 0.85))
+	root.add_child(_help_label)
 
 
 func _add_slider(parent: VBoxContainer, label_text: String) -> HSlider:
@@ -130,6 +135,7 @@ func refresh() -> void:
 		l.text = dm.tr_key("settings_no_save")
 		ThemeFactory.style_label(l, 14, Color(0.75, 0.75, 0.8))
 		_slot_row.add_child(l)
+	_help_label.text = dm.tr_key("settings_controls")
 
 
 func _on_language(index: int) -> void:

@@ -14,6 +14,9 @@ var _memory_overlay: ColorRect
 var _memory_label: Label
 var _banner_tween: Tween
 var _hud_buttons: HBoxContainer
+var _chapter_card: PanelContainer
+var _chapter_label: Label
+var _chapter_tween: Tween
 
 
 func _ready() -> void:
@@ -28,11 +31,13 @@ func _ready() -> void:
 	bus.toast_requested.connect(show_toast)
 	bus.memory_flashback_started.connect(_on_memory_start)
 	bus.memory_flashback_ended.connect(_on_memory_end)
+	bus.chapter_changed.connect(_on_chapter)
 	bus.relationship_changed.connect(_on_relationship)
 	refresh_state()
 
 
 func _build() -> void:
+	_add_vignette()
 	# --- Bar atas: objektif + tombol ---
 	var top := HBoxContainer.new()
 	top.set_anchors_preset(Control.PRESET_TOP_WIDE)
@@ -77,6 +82,22 @@ func _build() -> void:
 	ThemeFactory.style_label(_banner_label, 30, ThemeFactory.PASTEL_YELLOW, true)
 	_banner_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_banner.add_child(_banner_label)
+	# --- Kartu bab (tengah layar, muncul sesaat) ---
+	_chapter_card = PanelContainer.new()
+	_chapter_card.set_anchors_preset(Control.PRESET_CENTER)
+	_chapter_card.offset_left = -320
+	_chapter_card.offset_right = 320
+	_chapter_card.offset_top = -70
+	_chapter_card.offset_bottom = 70
+	_chapter_card.add_theme_stylebox_override("panel", ThemeFactory.panel_style(Color(0.04, 0.07, 0.14, 0.88), ThemeFactory.PASTEL_YELLOW, 2, 14))
+	_chapter_card.visible = false
+	_chapter_card.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_chapter_card)
+	_chapter_label = Label.new()
+	ThemeFactory.style_label(_chapter_label, 30, ThemeFactory.PASTEL_YELLOW, true)
+	_chapter_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_chapter_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_chapter_card.add_child(_chapter_label)
 	# --- Prompt interaksi (bawah tengah) ---
 	_prompt = PanelContainer.new()
 	_prompt.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
@@ -294,3 +315,47 @@ func _on_memory_start(_node_id: String) -> void:
 func _on_memory_end(_node_id: String) -> void:
 	_memory_overlay.visible = false
 	_memory_label.visible = false
+
+
+## Vignette sinematik di tepi layar (di belakang semua elemen HUD).
+func _add_vignette() -> void:
+	var rect := ColorRect.new()
+	rect.set_anchors_preset(Control.PRESET_FULL_RECT)
+	rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var sh := Shader.new()
+	sh.code = """
+shader_type canvas_item;
+void fragment() {
+	vec2 uv = UV - vec2(0.5);
+	float d = length(uv) * 1.5;
+	float v = smoothstep(0.45, 1.0, d);
+	COLOR = vec4(0.02, 0.03, 0.06, v * 0.5);
+}
+"""
+	var smat := ShaderMaterial.new()
+	smat.shader = sh
+	rect.material = smat
+	add_child(rect)
+
+
+## Kartu judul bab ala Life is Strange.
+func _on_chapter(chapter_id: String) -> void:
+	var dm := DataManager
+	var key: String = "chapter_" + chapter_id
+	var title: String = dm.tr_key(key)
+	if title == key:
+		return
+	_chapter_label.text = title
+	_chapter_card.visible = true
+	_chapter_card.modulate.a = 0.0
+	if _chapter_tween and _chapter_tween.is_valid():
+		_chapter_tween.kill()
+	_chapter_tween = create_tween()
+	_chapter_tween.tween_property(_chapter_card, "modulate:a", 1.0, 0.6)
+	_chapter_tween.tween_interval(2.4)
+	_chapter_tween.tween_property(_chapter_card, "modulate:a", 0.0, 0.8)
+	_chapter_tween.tween_callback(_hide_chapter_card)
+
+
+func _hide_chapter_card() -> void:
+	_chapter_card.visible = false
