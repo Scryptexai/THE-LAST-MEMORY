@@ -1,0 +1,9 @@
+{
+  "moments": [
+    {"id": "m_teras", "name": "Teras Pagi", "location": "rumah_nenek", "hint": "Teras rumah nenek saat pagi hari."},
+    {"id": "m_kafe", "name": "Etalase Rara", "location": "kafe_rara", "hint": "Etalase kafe dilihat dari jalan."},
+    {"id": "m_gapura", "name": "Gapura Pasar", "location": "pasar_lama", "hint": "Gapura pasar di pagi hari."},
+    {"id": "m_peron", "name": "Peron Sunyi", "location": "stasiun", "hint": "Peron kosong dan gerbong tua."},
+    {"id": "m_senja", "name": "Senja Terakhir", "location": "pantai", "hint": "Dermaga saat matahari terbenam."}
+  ]
+}

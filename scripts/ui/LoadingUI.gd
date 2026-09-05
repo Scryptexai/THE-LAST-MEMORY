@@ -13,6 +13,7 @@ const TIPS := [
 	"TIPS: Benda milik nenek kadang memicu kilas balik 1983.",
 	"TIPS: Jurnal [J] mencatat semua penemuanmu otomatis.",
 	"TIPS: Tekan M untuk membuka peta perjalanan antarlokasi.",
+	"TIPS: Penanda emas berarti Momen - abadikan 5 kenangan kota.",
 	"TIPS: Persahabatan membuka pintu yang terkunci bagi orang asing.",
 ]
 

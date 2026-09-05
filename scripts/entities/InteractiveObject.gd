@@ -17,6 +17,7 @@ extends StaticBody3D
 @export var memory_dialogue: String = ""     # dialog kilas balik (psychometry)
 @export var gives_flag: String = ""          # "flag=value" setelah dipakai
 @export var journal_text: String = ""
+@export var moment_id: String = ""
 
 var _used: bool = false
 var _marker: MeshInstance3D
@@ -33,7 +34,7 @@ func _ready() -> void:
 func setup(cfg: Dictionary) -> void:
 	for k in ["object_id", "display_name", "prompt_key", "dialogue_id", "clue_id",
 			"item_id", "required_item", "required_flag", "consume_dialogue",
-			"target_location", "target_spawn", "memory_dialogue", "gives_flag", "journal_text"]:
+			"target_location", "target_spawn", "memory_dialogue", "gives_flag", "journal_text", "moment_id"]:
 		if cfg.has(k):
 			set(k, str(cfg[k]))
 	one_shot = bool(cfg.get("one_shot", one_shot))
@@ -119,6 +120,8 @@ func interact(_from: Node = null) -> void:
 		_apply_gives_flag(gm, gives_flag)
 	if journal_text != "":
 		im.add_journal_note("obj:" + object_id, journal_text, dm.tr_key("journal_src_world"))
+	if moment_id != "":
+		im.capture_moment(moment_id)
 	# 6) Dialog (memori lebih dulu bila ada; lalu dialog biasa).
 	if memory_dialogue != "" and dm.has_dialogue(memory_dialogue):
 		bus.sfx_requested.emit("sfx_memory")

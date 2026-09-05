@@ -5,6 +5,7 @@ extends Control
 var _notes_list: VBoxContainer
 var _chars_list: VBoxContainer
 var _timeline_list: VBoxContainer
+var _moments_list: VBoxContainer
 var _tabs: TabContainer
 var _stats_label: Label
 
@@ -49,6 +50,7 @@ func _build() -> void:
 	_notes_list = _make_tab("Catatan")
 	_chars_list = _make_tab("Tokoh")
 	_timeline_list = _make_tab("Linimasa")
+	_moments_list = _make_tab("Momen")
 
 
 func _make_tab(tab_name: String) -> VBoxContainer:
@@ -69,6 +71,7 @@ func refresh() -> void:
 	_refresh_notes()
 	_refresh_characters()
 	_refresh_timeline()
+	_refresh_moments()
 
 
 func _refresh_notes() -> void:
@@ -175,6 +178,46 @@ func _update_stats() -> void:
 	_stats_label.text = "⏱ %s    🔍 %d/%d    🧩 %d/4    💡 %d" % [
 		MathUtils.format_playtime(sm.playtime), prog["found"], prog["total"],
 		(im.deductions_solved as Array).size(), im.hints_left]
+
+
+func _refresh_moments() -> void:
+	var dm := DataManager
+	var im := InvestigationManager
+	for c in _moments_list.get_children():
+		c.queue_free()
+	for mid in dm.moments.keys():
+		var m: Dictionary = dm.moments[mid]
+		var taken: bool = str(mid) in im.moments_taken
+		var p := PanelContainer.new()
+		p.add_theme_stylebox_override("panel", ThemeFactory.panel_style(Color(0.1, 0.15, 0.26, 0.9), Color(0.5, 0.55, 0.65, 0.5), 1, 6))
+		var hb := HBoxContainer.new()
+		hb.add_theme_constant_override("separation", 12)
+		p.add_child(hb)
+		var thumb := TextureRect.new()
+		thumb.custom_minimum_size = Vector2(220, 124)
+		thumb.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		thumb.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		if taken:
+			var img := Image.load_from_file("user://moments/%s.png" % str(mid))
+			if img != null and not img.is_empty():
+				thumb.texture = ImageTexture.create_from_image(img)
+		hb.add_child(thumb)
+		var vb := VBoxContainer.new()
+		vb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		hb.add_child(vb)
+		var nm := Label.new()
+		nm.text = ("📷 " + str(m.get("name", mid))) if taken else "❔ ???"
+		ThemeFactory.style_label(nm, 17, ThemeFactory.PASTEL_YELLOW if taken else Color(0.6, 0.6, 0.65), true)
+		vb.add_child(nm)
+		var hint := Label.new()
+		if taken:
+			hint.text = str((dm.get_scene_data(str(m.get("location", ""))) as Dictionary).get("name", ""))
+		else:
+			hint.text = str(m.get("hint", ""))
+		hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		ThemeFactory.style_label(hint, 14, ThemeFactory.CREAM)
+		vb.add_child(hint)
+		_moments_list.add_child(p)
 
 
 func _on_visibility_refresh() -> void:

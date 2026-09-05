@@ -9,6 +9,7 @@ var journal_notes: Array = []      # Array[Dictionary] {id, text, source}
 var timeline_events: Array = []    # Array[Dictionary] {id, year, text}
 var characters_met: Array = []     # Array[String]
 var hints_left: int = 3
+var moments_taken: Array = []    # Array[String] id momen yg diabadikan
 var _note_counter: int = 0
 var _timeline_counter: int = 0
 
@@ -21,6 +22,7 @@ func reset() -> void:
 	timeline_events.clear()
 	characters_met.clear()
 	hints_left = 3
+	moments_taken.clear()
 	_note_counter = 0
 	_timeline_counter = 0
 
@@ -202,3 +204,40 @@ func mark_character_met(char_id: String) -> void:
 		var c: Dictionary = dm.get_character(char_id)
 		if not c.is_empty():
 			add_journal_note("met:" + char_id, dm.tr_key("journal_met").format({"name": str(c.get("name", char_id))}), dm.tr_key("journal_src_people"))
+
+
+## Abadikan Momen: sembunyikan UI sejenak, jepret viewport, simpan PNG.
+func capture_moment(moment_id: String) -> void:
+	var dm := DataManager
+	var bus := SignalBus
+	var m: Dictionary = dm.get_moment(moment_id)
+	if m.is_empty():
+		return
+	if moment_id in moments_taken:
+		bus.toast_requested.emit(str(m.get("name", moment_id)), "system")
+		return
+	var ui := get_tree().get_first_node_in_group("ui_layer") as CanvasLayer
+	if ui:
+		ui.hide()
+	await get_tree().process_frame
+	await get_tree().process_frame
+	var img: Image = get_viewport().get_texture().get_image()
+	if ui and is_instance_valid(ui):
+		ui.show()
+	if img == null or img.is_empty():
+		Logger.warn("InvestigationManager: gagal mengabadikan momen.")
+		return
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("user://moments"))
+	if img.save_png("user://moments/%s.png" % moment_id) != OK:
+		Logger.warn("InvestigationManager: gagal menyimpan momen.")
+		return
+	moments_taken.append(moment_id)
+	bus.sfx_requested.emit("sfx_photo_taken")
+	bus.toast_requested.emit("%s: %s" % [dm.tr_key("moment_taken"), str(m.get("name", moment_id))], "item")
+	add_journal_note("moment:" + moment_id, "%s - %s" % [str(m.get("name", "")), str((dm.get_scene_data(str(m.get("location", ""))) as Dictionary).get("name", ""))], dm.tr_key("journal_src_moment"))
+	GameManager.set_flag("moment_" + moment_id, true)
+	SaveManager.autosave()
+
+
+func has_moment(moment_id: String) -> bool:
+	return moment_id in moments_taken

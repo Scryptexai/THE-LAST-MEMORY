@@ -18,6 +18,7 @@ sepertinya *mengingat* sesuatu. Ungkap kebenaran, jaga hubunganmu, dan pilih end
 - 🏁 **4 ending** (Kebenaran Utuh / Rahasia Terkubur / Pengorbanan / Luka Lama) + statistik
 - 🎞️ **Kartu bab sinematik**, galeri ending, layar kredit, vignette, debu loteng, laut animasi, lampu berkedip
 - 🧩 **Panduan teka-teki** di papan deduksi, dialog reaktif pasca-pengakuan, 10 kilas balik, slider teks/kamera
+- 📷 **5 Momen foto** ala Life is Strange: abadikan vista kota, tersimpan sebagai PNG + galeri jurnal
 - 💾 **3 slot save + autosave**, pengaturan audio & bahasa (ID/EN)
 - 🎵 **Musik & SFX prosedural** (synth runtime — tanpa file audio eksternal, bisa di-override dengan `.ogg` di `assets/audio/`)
 

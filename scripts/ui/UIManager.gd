@@ -20,6 +20,7 @@ var settings_return: String = "gameplay"
 
 func _ready() -> void:
 	layer = 10
+	add_to_group("ui_layer")
 	for key in SCREENS.keys():
 		var packed: PackedScene = load(SCREENS[key])
 		if packed == null:

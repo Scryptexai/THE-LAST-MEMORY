@@ -14,6 +14,7 @@ func _build_layout() -> void:
 	layout["obj:peluit_rel"] = {"pos": Vector3(-2.5, 0, -4.6)}
 	layout["obj:plakat"] = {"pos": Vector3(0, 0, -0.5)}
 	layout["obj:bangku_peron"] = {"pos": Vector3(-2.0, 0, 1.5)}
+	layout["obj:vista_peron"] = {"pos": Vector3(0, 0, 6.5)}
 
 
 func _build_visuals() -> void:

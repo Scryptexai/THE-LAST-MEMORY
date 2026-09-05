@@ -14,6 +14,7 @@ func _build_layout() -> void:
 	layout["obj:bunga_liar"] = {"pos": Vector3(2.5, 0, 5.5)}
 	layout["obj:mercusuar"] = {"pos": Vector3(9.0, 0, -4.0)}
 	layout["obj:dermaga"] = {"pos": Vector3(7.5, 0, -1.0)}
+	layout["obj:vista_senja"] = {"pos": Vector3(7.5, 0, 0.5)}
 
 
 func _build_visuals() -> void:
