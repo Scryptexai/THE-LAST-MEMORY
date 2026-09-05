@@ -101,8 +101,41 @@ func set_chapter(chapter_id: String) -> void:
 	if chapter_id == "" or chapter_id == current_chapter:
 		return
 	current_chapter = chapter_id
+	flags["chseen_" + chapter_id] = true
 	SignalBus.chapter_changed.emit(chapter_id)
 	Logger.info("GameManager: chapter -> %s" % chapter_id)
+
+
+## Tandai semua bab s/d bab saat ini (untuk save lama yg belum punya flag chseen_*).
+func _backfill_chseen() -> void:
+	var order: Array = ["prolog", "bab1", "bab2", "bab3", "bab4", "final"]
+	var idx: int = order.find(current_chapter)
+	if idx < 0:
+		idx = 0
+	for i in range(idx + 1):
+		flags["chseen_" + str(order[i])] = true
+
+
+## Persentase penyelesaian: petunjuk 30 + deduksi 20 + ending 20 + momen 20 + relasi 10.
+func completion_percent() -> int:
+	var im := InvestigationManager
+	var dm := DataManager
+	var rm := RelationshipManager
+	var prog: Dictionary = im.clue_progress()
+	var score: float = 0.0
+	if int(prog.get("total", 0)) > 0:
+		score += 30.0 * float(prog.get("found", 0)) / float(prog.get("total", 1))
+	score += 20.0 * float((im.deductions_solved as Array).size()) / 4.0
+	score += 20.0 * float((endings_seen as Array).size()) / 4.0
+	if dm.moments.size() > 0:
+		score += 20.0 * float((im.moments_taken as Array).size()) / float(dm.moments.size())
+	var rel: float = 0.0
+	for c in ["rara", "pak_harto", "mira"]:
+		var mx: int = rm.get_max(c)
+		if mx > 0:
+			rel += float(rm.get_value(c)) / float(mx)
+	score += 10.0 * rel / 3.0
+	return int(roundf(score))
 
 
 func set_objective(objective_id: String) -> void:
@@ -168,10 +201,13 @@ func _deferred_move(location_id: String, spawn_tag: String) -> void:
 
 # ---------- Alur game baru / lanjut ----------
 
-func new_game() -> void:
+func new_game(plus: bool = false) -> void:
 	_ending_token += 1
 	if DialogueManager.is_active():
 		DialogueManager.cancel()
+	var kept_moments: Array = []
+	if plus:
+		kept_moments = InvestigationManager.moments_taken.duplicate(true)
 	flags.clear()
 	final_choice = ""
 	current_chapter = "prolog"
@@ -184,6 +220,12 @@ func new_game() -> void:
 	SaveManager.reset_playtime()
 	SaveManager.start_tracking()
 	var im := InvestigationManager
+	if plus:
+		im.moments_taken = kept_moments
+		im.hints_left = 5
+		set_flag("ng_plus", true)
+		im.add_journal_note("ngplus", "Perjalanan Baru+: foto kenangan dan pengalaman terbawa.", DataManager.tr_key("journal_src_story"))
+	set_flag("chseen_prolog", true)
 	im.add_timeline_event("ev_now", "2026", "Ardi kembali ke Kota Tua Pesisir.")
 	im.mark_character_met("ardi")
 	Logger.info("GameManager: permainan baru dimulai.")
@@ -197,6 +239,7 @@ func continue_from_data(data: Dictionary) -> bool:
 		return false
 	if not SaveManager.apply(data):
 		return false
+	_backfill_chseen()
 	SaveManager.start_tracking()
 	return true
 

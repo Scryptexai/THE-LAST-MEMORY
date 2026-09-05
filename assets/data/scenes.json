@@ -84,8 +84,8 @@
         {"character_id": "mira", "display_name": "Mira", "dialogue_id": "dlg_mira_intro",
          "variants": {"ded4": "dlg_mira_v4", "mira_v2": "dlg_mira_v2"}},
         {"character_id": "warga", "slot": "pedagang", "display_name": "Pedagang Antik", "dialogue_id": "dlg_pedagang",
-         "variants": {"pedagang_bicara": "dlg_pedagang_after"}},
-        {"character_id": "warga", "slot": "warga_pasar", "display_name": "Warga Pasar", "dialogue_id": "dlg_warga_pasar"}
+         "variants": {"chseen_bab3": "dlg_pedagang_bab3", "pedagang_bicara": "dlg_pedagang_after"}},
+        {"character_id": "warga", "slot": "warga_pasar", "display_name": "Warga Pasar", "dialogue_id": "dlg_warga_pasar", "variants": {"chseen_bab2": "dlg_warga_bab2"}}
       ],
       "interactables": [
         {"object_id": "gapura", "display_name": "Gapura Pasar", "prompt_key": "prompt_travel", "target_location": "__travel__", "target_spawn": "default"},
@@ -113,7 +113,7 @@
         "sun_rotation": [-1.1, -1.2], "exposure": 0.9, "ambient_energy": 0.45
       },
       "npcs": [
-        {"character_id": "warga", "slot": "penjaga", "display_name": "Penjaga Stasiun", "dialogue_id": "dlg_penjaga"}
+        {"character_id": "warga", "slot": "penjaga", "display_name": "Penjaga Stasiun", "dialogue_id": "dlg_penjaga", "variants": {"chseen_bab4": "dlg_penjaga_bab4"}}
       ],
       "interactables": [
         {"object_id": "gerbang_stasiun", "display_name": "Gerbang Stasiun", "prompt_key": "prompt_travel", "target_location": "__travel__", "target_spawn": "default"},

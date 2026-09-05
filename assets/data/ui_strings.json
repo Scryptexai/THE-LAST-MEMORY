@@ -62,7 +62,8 @@
     "credits_body": "[b]THE LAST MEMORY[/b]\nSebuah misteri Life is Strange di Kota Tua Pesisir.\n\nCerita, naskah & dunia: Tim Scryptexai\nMesin: Godot 4 (GDScript) · 3D prosedural\nMusik & suara: Synthesizer runtime — tanpa file eksternal\n\nTerima kasih telah menjaga ingatan Kota Tua. 🕯",
     "prompt_moment": "Abadikan {name}",
     "moment_taken": "📷 Momen diabadikan",
-    "journal_src_moment": "Momen"
+    "journal_src_moment": "Momen",
+    "menu_ngplus": "Baru+ (foto terbawa)"
   },
   "en": {
     "menu_subtitle": "A Life is Strange mystery in Kota Tua Pesisir",
@@ -127,6 +128,7 @@
     "credits_body": "[b]THE LAST MEMORY[/b]\nA Life is Strange mystery in Kota Tua Pesisir.\n\nStory, script & world: Scryptexai Team\nEngine: Godot 4 (GDScript) · procedural 3D\nMusic & SFX: runtime synthesizer — zero external files\n\nThank you for keeping the town's memory. 🕯",
     "prompt_moment": "Capture {name}",
     "moment_taken": "📷 Moment captured",
-    "journal_src_moment": "Moment"
+    "journal_src_moment": "Moment",
+    "menu_ngplus": "New+ (photos kept)"
   }
 }

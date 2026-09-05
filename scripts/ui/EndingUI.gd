@@ -91,11 +91,11 @@ func _on_ending(ending_id: String) -> void:
 	var body: String = str(e.get("description_en", "")) if dm.language == "en" and str(e.get("description_en", "")) != "" else str(e.get("description", ""))
 	_desc.text = body
 	var prog: Dictionary = im.clue_progress()
-	_stats.text = "Petunjuk %d/%d   ·   Deduksi %d/4   ·   Rara 💛%d   Harto 💛%d   Mira 💛%d\nWaktu %s   ·   Pilihan %d   ·   Ending %d/4" % [
+	_stats.text = "Petunjuk %d/%d   ·   Deduksi %d/4   ·   Rara 💛%d   Harto 💛%d   Mira 💛%d\nWaktu %s   ·   Pilihan %d   ·   Ending %d/4   \u00b7   \u2605 %d%%" % [
 		prog["found"], prog["total"], (im.deductions_solved as Array).size(),
 		rm.get_value("rara"), rm.get_value("pak_harto"), rm.get_value("mira"),
 		MathUtils.format_playtime(sm.playtime), (DialogueManager.history as Array).size(),
-		(gm.endings_seen as Array).size()]
+		(gm.endings_seen as Array).size(), gm.completion_percent()]
 	SignalBus.music_requested.emit(str(e.get("music", "music_ending")))
 
 

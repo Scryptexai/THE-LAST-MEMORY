@@ -175,9 +175,9 @@ func _update_stats() -> void:
 	var im := InvestigationManager
 	var sm := SaveManager
 	var prog: Dictionary = im.clue_progress()
-	_stats_label.text = "⏱ %s    🔍 %d/%d    🧩 %d/4    💡 %d" % [
+	_stats_label.text = "⏱ %s    🔍 %d/%d    🧩 %d/4    💡 %d    \u2605 %d%%" % [
 		MathUtils.format_playtime(sm.playtime), prog["found"], prog["total"],
-		(im.deductions_solved as Array).size(), im.hints_left]
+		(im.deductions_solved as Array).size(), im.hints_left, GameManager.completion_percent()]
 
 
 func _refresh_moments() -> void:
