@@ -1,0 +1,15 @@
+{
+  "achievements": [
+    {"id": "ach_first_clue", "name": "Langkah Pertama", "name_en": "First Step", "desc": "Temukan petunjuk pertamamu.", "desc_en": "Find your first clue."},
+    {"id": "ach_eagle", "name": "Mata Elang", "name_en": "Eagle Eye", "desc": "Temukan semua petunjuk.", "desc_en": "Find every clue."},
+    {"id": "ach_first_ded", "name": "Deduksi Perdana", "name_en": "First Deduction", "desc": "Pecahkan kesimpulan pertamamu.", "desc_en": "Solve your first deduction."},
+    {"id": "ach_detective", "name": "Detektif Kota", "name_en": "Town Detective", "desc": "Pecahkan semua kesimpulan.", "desc_en": "Solve all deductions."},
+    {"id": "ach_no_help", "name": "Tanpa Bantuan", "name_en": "No Help Needed", "desc": "Pecahkan semua kesimpulan tanpa memakai hint.", "desc_en": "Solve all deductions without using hints."},
+    {"id": "ach_first_shot", "name": "Jepretan Pertama", "name_en": "First Shot", "desc": "Abadikan Momen pertamamu.", "desc_en": "Capture your first Moment."},
+    {"id": "ach_collector", "name": "Kolektor Kenangan", "name_en": "Memory Collector", "desc": "Abadikan semua Momen.", "desc_en": "Capture every Moment."},
+    {"id": "ach_explorer", "name": "Penjelajah", "name_en": "Explorer", "desc": "Kunjungi semua lokasi.", "desc_en": "Visit every location."},
+    {"id": "ach_one_ending", "name": "Salah Satu Akhir", "name_en": "One Ending", "desc": "Saksikan satu ending.", "desc_en": "Witness one ending."},
+    {"id": "ach_all_endings", "name": "Segala Kemungkinan", "name_en": "Every Possibility", "desc": "Saksikan semua ending.", "desc_en": "Witness every ending."},
+    {"id": "ach_ngplus", "name": "Putaran Kedua", "name_en": "Second Round", "desc": "Mulai New Game+.", "desc_en": "Start New Game+."}
+  ]
+}

@@ -283,6 +283,8 @@ func show_toast(text: String, kind: String) -> void:
 			border = ThemeFactory.BAD
 		"objective":
 			border = ThemeFactory.PASTEL_BLUE
+		"achievement":
+			border = ThemeFactory.PASTEL_YELLOW
 		_:
 			border = ThemeFactory.ACCENT
 	panel.add_theme_stylebox_override("panel", ThemeFactory.panel_style(Color(0.06, 0.12, 0.22, 0.9), border, 1, 8))

@@ -22,6 +22,7 @@ RelationshipManager="*res://scripts/autoload/RelationshipManager.gd"
 InvestigationManager="*res://scripts/autoload/InvestigationManager.gd"
 DialogueManager="*res://scripts/autoload/DialogueManager.gd"
 GameManager="*res://scripts/autoload/GameManager.gd"
+AchievementManager="*res://scripts/autoload/AchievementManager.gd"
 
 [display]
 

@@ -316,6 +316,8 @@ func _synth_sfx(sfx_id: String) -> AudioStreamWAV:
 			return _chime([392.0, 523.25, 659.25, 783.99], 0.7, 0.45)
 		"sfx_deduction_wrong":
 			return _chime([220.0, 174.61], 0.5, 0.4)
+		"sfx_achievement":
+			return _chime([523.25, 659.25, 783.99, 1046.5, 1318.5], 1.0, 0.4)
 		"sfx_footstep_wood":
 			return _thump(140.0, 0.09, 0.35)
 		"sfx_footstep_grass":

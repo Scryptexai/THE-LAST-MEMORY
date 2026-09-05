@@ -14,6 +14,7 @@ var current_objective: String = "obj_datang"
 var flags: Dictionary = {}
 var final_choice: String = ""
 var endings_seen: Array = []
+var visited_locations: Array = []  # Array[String] lokasi pernah dikunjungi
 var new_game_plus: bool = false
 var pre_ending_snapshot: Dictionary = {}
 var text_speed: float = 1.0
@@ -209,6 +210,8 @@ func new_game(plus: bool = false) -> void:
 	if plus:
 		kept_moments = InvestigationManager.moments_taken.duplicate(true)
 	flags.clear()
+	visited_locations.clear()
+	AchievementManager.reset()
 	final_choice = ""
 	current_chapter = "prolog"
 	current_location = "rumah_nenek"
@@ -228,6 +231,7 @@ func new_game(plus: bool = false) -> void:
 	set_flag("chseen_prolog", true)
 	im.add_timeline_event("ev_now", "2026", "Ardi kembali ke Kota Tua Pesisir.")
 	im.mark_character_met("ardi")
+	AchievementManager.evaluate()
 	Logger.info("GameManager: permainan baru dimulai.")
 
 
@@ -258,8 +262,11 @@ func quit_to_menu() -> void:
 
 func notify_location_loaded(location_id: String) -> void:
 	current_location = location_id
+	if location_id != "" and not (location_id in visited_locations):
+		visited_locations.append(location_id)
 	SignalBus.location_changed.emit(location_id)
 	restore_location_audio()
+	AchievementManager.evaluate()
 	SaveManager.autosave()
 
 
@@ -348,6 +355,7 @@ func evaluate_ending() -> String:
 func trigger_ending(ending_id: String) -> void:
 	if not (ending_id in endings_seen):
 		endings_seen.append(ending_id)
+	AchievementManager.evaluate()
 	change_state("ending")
 	SignalBus.ending_triggered.emit(ending_id)
 	SaveManager.autosave()

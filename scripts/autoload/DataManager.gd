@@ -12,6 +12,7 @@ const PATH_ENDINGS := "res://assets/data/endings.json"
 const PATH_STRINGS := "res://assets/data/ui_strings.json"
 const PATH_OBJECTIVES := "res://assets/data/objectives.json"
 const PATH_MOMENTS := "res://assets/data/moments.json"
+const PATH_ACHIEVEMENTS := "res://assets/data/achievements.json"
 
 var dialogues: Dictionary = {}      # id -> node
 var characters: Dictionary = {}     # id -> data
@@ -23,6 +24,7 @@ var endings: Dictionary = {}        # id -> data
 var ui_strings: Dictionary = {}     # lang -> { key -> text }
 var objectives: Dictionary = {}     # objective_id -> {text, text_en}
 var moments: Dictionary = {}        # moment_id -> data
+var achievements: Dictionary = {}   # ach_id -> data
 
 var language: String = "id"
 
@@ -44,6 +46,7 @@ func load_all() -> void:
 	ui_strings = _load_dict(PATH_STRINGS)
 	objectives = _index(_load_array(PATH_OBJECTIVES, "objectives"))
 	moments = _index(_load_array(PATH_MOMENTS, "moments"))
+	achievements = _index(_load_array(PATH_ACHIEVEMENTS, "achievements"))
 	Logger.info("DataManager: %d dialog, %d karakter, %d clue, %d deduksi dimuat." % [
 		dialogues.size(), characters.size(), clues.size(), deductions.size()])
 
@@ -94,6 +97,10 @@ func get_item(item_id: String) -> Dictionary:
 
 func get_moment(moment_id: String) -> Dictionary:
 	return moments.get(moment_id, {})
+
+
+func get_achievement(ach_id: String) -> Dictionary:
+	return achievements.get(ach_id, {})
 
 
 func get_scene_data(scene_id: String) -> Dictionary:

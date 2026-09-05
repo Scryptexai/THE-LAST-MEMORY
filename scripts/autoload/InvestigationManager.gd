@@ -48,6 +48,7 @@ func add_clue(clue_id: String) -> bool:
 	bus.sfx_requested.emit("sfx_clue_found")
 	bus.toast_requested.emit("%s: %s" % [dm.tr_key("toast_clue_found"), clue_name], "clue")
 	add_journal_note("clue:" + clue_id, "%s — %s" % [clue_name, str((dm.get_clue(clue_id) as Dictionary).get("description", ""))], dm.tr_key("journal_src_clue"))
+	AchievementManager.evaluate()
 	SaveManager.autosave()
 	return true
 
@@ -129,6 +130,7 @@ func try_deduction(selected_clues: Array) -> Dictionary:
 		# Terapkan efek deduksi (flags / buka dialog / timeline).
 		var effects: Dictionary = ded.get("effects", {})
 		GameManager.apply_effects(effects)
+		AchievementManager.evaluate()
 		SaveManager.autosave()
 	else:
 		bus.sfx_requested.emit("sfx_deduction_wrong")
@@ -236,6 +238,7 @@ func capture_moment(moment_id: String) -> void:
 	bus.toast_requested.emit("%s: %s" % [dm.tr_key("moment_taken"), str(m.get("name", moment_id))], "item")
 	add_journal_note("moment:" + moment_id, "%s - %s" % [str(m.get("name", "")), str((dm.get_scene_data(str(m.get("location", ""))) as Dictionary).get("name", ""))], dm.tr_key("journal_src_moment"))
 	GameManager.set_flag("moment_" + moment_id, true)
+	AchievementManager.evaluate()
 	SaveManager.autosave()
 
 

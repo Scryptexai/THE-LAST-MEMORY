@@ -6,6 +6,7 @@ var _notes_list: VBoxContainer
 var _chars_list: VBoxContainer
 var _timeline_list: VBoxContainer
 var _moments_list: VBoxContainer
+var _ach_list: VBoxContainer
 var _tabs: TabContainer
 var _stats_label: Label
 
@@ -51,6 +52,7 @@ func _build() -> void:
 	_chars_list = _make_tab("Tokoh")
 	_timeline_list = _make_tab("Linimasa")
 	_moments_list = _make_tab("Momen")
+	_ach_list = _make_tab("Pencapaian")
 
 
 func _make_tab(tab_name: String) -> VBoxContainer:
@@ -72,6 +74,7 @@ func refresh() -> void:
 	_refresh_characters()
 	_refresh_timeline()
 	_refresh_moments()
+	_refresh_achievements()
 
 
 func _refresh_notes() -> void:
@@ -218,6 +221,31 @@ func _refresh_moments() -> void:
 		ThemeFactory.style_label(hint, 14, ThemeFactory.CREAM)
 		vb.add_child(hint)
 		_moments_list.add_child(p)
+
+
+func _refresh_achievements() -> void:
+	var dm := DataManager
+	var am := AchievementManager
+	for c in _ach_list.get_children():
+		c.queue_free()
+	var got: int = 0
+	for aid in dm.achievements.keys():
+		if am.is_unlocked(str(aid)):
+			got += 1
+	var head := Label.new()
+	head.text = "🏆 %d/%d terbuka" % [got, dm.achievements.size()]
+	ThemeFactory.style_label(head, 16, ThemeFactory.PASTEL_YELLOW, true)
+	_ach_list.add_child(head)
+	for aid in dm.achievements.keys():
+		var a: Dictionary = dm.achievements[aid]
+		var un: bool = am.is_unlocked(str(aid))
+		var nm: String = str(a.get("name_en", "")) if dm.language == "en" and str(a.get("name_en", "")) != "" else str(a.get("name", aid))
+		var ds: String = str(a.get("desc_en", "")) if dm.language == "en" and str(a.get("desc_en", "")) != "" else str(a.get("desc", ""))
+		var l := Label.new()
+		l.text = ("🏆 " if un else "🔒 ") + nm + "\n" + ds
+		l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		ThemeFactory.style_label(l, 15, ThemeFactory.PASTEL_YELLOW if un else Color(0.55, 0.55, 0.6))
+		_ach_list.add_child(l)
 
 
 func _on_visibility_refresh() -> void:

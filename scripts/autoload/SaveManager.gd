@@ -7,7 +7,7 @@ extends Node
 ##   journal_notes, timeline_events, hints_left, final_choice, endings_seen,
 ##   settings:{music_volume, sfx_volume, ambient_volume, language} }
 
-const SAVE_VERSION := 4
+const SAVE_VERSION := 5
 const SLOT_COUNT := 3
 const SAVE_PATH := "user://save_slot_%d.json"
 const AUTOSAVE_PATH := "user://autosave.json"
@@ -52,6 +52,8 @@ func collect() -> Dictionary:
 		"choices_made": SaveUtils.deep_copy(dm.history),
 		"effects_applied": SaveUtils.deep_copy(dm.effects_applied),
 		"moments_taken": SaveUtils.deep_copy(im.moments_taken),
+		"achievements": AchievementManager.unlocked.duplicate(true),
+		"visited_locations": SaveUtils.deep_copy(GameManager.visited_locations),
 		"clues_found": SaveUtils.deep_copy(im.clues_found),
 		"deductions_solved": SaveUtils.deep_copy(im.deductions_solved),
 		"relationships": SaveUtils.deep_copy(rm.values),
@@ -94,6 +96,8 @@ func apply(data: Dictionary) -> bool:
 	dm.history = (data.get("choices_made", []) as Array).duplicate(true)
 	dm.effects_applied = (data.get("effects_applied", []) as Array).duplicate(true)
 	im.moments_taken = (data.get("moments_taken", []) as Array).duplicate(true)
+	AchievementManager.unlocked = (data.get("achievements", []) as Array).duplicate(true)
+	GameManager.visited_locations = (data.get("visited_locations", []) as Array).duplicate(true)
 	im.clues_found = (data.get("clues_found", []) as Array).duplicate(true)
 	im.deductions_solved = (data.get("deductions_solved", []) as Array).duplicate(true)
 	im.inventory = (data.get("inventory", []) as Array).duplicate(true)
