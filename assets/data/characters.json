@@ -1,0 +1,46 @@
+{
+  "characters": [
+    {
+      "id": "ardi",
+      "name": "Ardi",
+      "description": "Arsitek muda 25 tahun yang kembali ke Kota Tua Pesisir. Pendiam dan perfeksionis, menyimpan luka karena ditinggal orang tuanya sejak kecil.",
+      "relationship_start": 0,
+      "relationship_max": 10
+    },
+    {
+      "id": "rara",
+      "name": "Rara",
+      "description": "Pemilik Kafe Rara, teman masa kecil Ardi. Selalu ceria di depan pelanggan, tetapi menyembunyikan rahasia keluarganya tentang tahun 1983.",
+      "relationship_start": 5,
+      "relationship_max": 20
+    },
+    {
+      "id": "pak_harto",
+      "name": "Pak Harto",
+      "description": "Detektif pensiun 68 tahun. Dulu penyidik kasus kecelakaan kereta 1983. Sekarang menghabiskan hari di sudut Kafe Rara bersama teh dan penyesalan.",
+      "relationship_start": 0,
+      "relationship_max": 15
+    },
+    {
+      "id": "mira",
+      "name": "Mira",
+      "description": "Jurnalis lepas 26 tahun yang sedang menulis sejarah Kota Tua Pesisir. Tajam, gigih, dan haus kebenaran — apa pun harganya.",
+      "relationship_start": 0,
+      "relationship_max": 15
+    },
+    {
+      "id": "nenek",
+      "name": "Nenek Lastri",
+      "description": "Nenek Ardi, wafat 6 bulan lalu. Mantan juru tulis Stasiun Kota Tua. Tegas, penuh kasih, dan membawa sebuah rahasia ke liang lahat.",
+      "relationship_start": 10,
+      "relationship_max": 10
+    },
+    {
+      "id": "darmo",
+      "name": "Kakek Darmo",
+      "description": "Suami Nenek Lastri, masinis kereta yang dinyatakan bersalah atas kecelakaan 1983. Ardi tak pernah mengenalnya — hanya lewat foto dan kenangan rumah.",
+      "relationship_start": 0,
+      "relationship_max": 10
+    }
+  ]
+}

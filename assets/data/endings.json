@@ -1,0 +1,44 @@
+{
+  "endings": [
+    {
+      "id": "ending_kebenaranutuh",
+      "title": "Kebenaran Utuh",
+      "title_en": "The Whole Truth",
+      "art": "🌅",
+      "tone": "healing",
+      "music": "music_ending",
+      "description": "Ardi berdiri di peron tua itu bersama Rara, Pak Harto, dan Mira — menyerahkan seluruh bukti kepada publik, [b]bersama-sama[/b].\n\nNama Kakek Darmo dibersihkan. Keluarga Rara meminta maaf secara terbuka dan mendirikan beasiswa untuk keluarga korban. Pak Harto akhirnya berziarah ke makam ayahnya tanpa rasa malu.\n\nMalamnya, Ardi menaruh jam saku yang telah diperbaiki itu di meja tulis nenek. Untuk pertama kalinya, rumah itu terasa [b]damai[/b] — seolah akhirnya boleh melupakan.\n\n[i]Kebenaran memang melukai. Tetapi luka yang dirawat bersama akan sembuh.[/i]",
+      "description_en": "Ardi stands on the old platform with Rara, Mr. Harto, and Mira — handing all the evidence to the public, [b]together[/b]. Grandpa Darmo's name is cleared, and the old house finally feels at peace."
+    },
+    {
+      "id": "ending_rahasiaterkubur",
+      "title": "Rahasia Terkubur",
+      "title_en": "Buried Secret",
+      "art": "🌑",
+      "tone": "quiet",
+      "music": "music_ending",
+      "description": "Ardi membakar surat perintah itu di halaman belakang, tepat saat matahari terbenam.\n\nKafe Rara tetap ramai. Pak Harto tetap menyeruput tehnya dalam diam. Mira pergi dari kota dengan buku catatan kosong — dan tatapan kecewa yang tak akan Ardi lupakan.\n\nRumah nenek kini rapi dan sunyi. Terlalu sunyi. Setiap malam pukul 07:14, Ardi terbangun tanpa tahu mengapa.\n\n[i]Beberapa rahasia memang melindungi yang hidup. Tetapi yang hidup harus membayarnya — setiap hari, selamanya.[/i]",
+      "description_en": "Ardi burns the order letter in the backyard at sunset. The town stays peaceful — but every night at 07:14, he wakes up without knowing why."
+    },
+    {
+      "id": "ending_pengorbanan",
+      "title": "Pengorbanan",
+      "title_en": "Sacrifice",
+      "art": "🕯",
+      "tone": "bittersweet",
+      "music": "music_ending",
+      "description": "Ardi mengungkap kebenaran tentang perusahaan kereta dan membersihkan nama kakeknya — tetapi [b]menyembunyikan peran keluarga Rara[/b] dari laporannya.\n\nIa menanggung sendiri pertanyaan-pertanyaan yang tak terjawab. Mira tahu ada yang disembunyikan, namun memilih diam. Rara menangis di pantai malam itu — antara lega dan bersalah.\n\nKebenaran terungkap separuh. Keadilan tercapai separuh. Dan persahabatan mereka... bertahan, meski tak lagi sama.\n\n[i]Melindungi seseorang kadang berarti memikul dosanya. Ardi memilih memikulnya — dengan sukarela.[/i]",
+      "description_en": "Ardi exposes the company and clears his grandpa's name — but [b]hides the role of Rara's family[/b]. Half-truth, half-justice, and a friendship that survives, though never the same."
+    },
+    {
+      "id": "ending_lukalama",
+      "title": "Luka Lama",
+      "title_en": "Old Wound",
+      "art": "🌧",
+      "tone": "bitter",
+      "music": "music_ending",
+      "description": "Tanpa bukti yang cukup dan tanpa sekutu yang percaya, kata-kata Ardi tenggelam dalam bisik-bisik kota.\n\nRara menjauh. Pak Harto kembali menutup diri. Mira menulis artikelnya tanpa namanya — sekadar rumor yang dilupakan minggu berikutnya.\n\nArdi menjual rumah nenek itu musim dingin berikutnya. Saat kereta terakhirnya meninggalkan Kota Tua Pesisir, ia bersumpah mendengar peluit tiga kali dari peron yang kosong.\n\n[i]Kebenaran tanpa keberanian untuk merangkulnya hanyalah luka lama yang kembali berdarah.[/i]",
+      "description_en": "Without enough proof or allies, Ardi's words drown in the town's whispers. He sells the house — but as his train leaves, he swears he hears a whistle three times from the empty platform."
+    }
+  ]
+}

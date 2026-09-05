@@ -1,0 +1,289 @@
+extends Node
+## GameManager — state machine global, progres chapter, flags cerita,
+## objektif, evaluasi ending, dan orkestrasi pindah lokasi.
+
+const STATES := ["main_menu", "loading", "gameplay", "dialogue", "investigation",
+	"inventory", "journal", "settings", "pause", "ending"]
+
+var state: String = "main_menu"
+var previous_gameplay_state: String = "gameplay"
+var current_chapter: String = "prolog"
+var current_location: String = "rumah_nenek"
+var last_spawn_tag: String = "default"
+var current_objective: String = "obj_datang"
+var flags: Dictionary = {}
+var final_choice: String = ""
+var endings_seen: Array = []
+var new_game_plus: bool = false
+var pre_ending_snapshot: Dictionary = {}
+
+
+func _ready() -> void:
+	_ensure_input_actions()
+	change_state("main_menu")
+
+
+## Jaring pengaman: pastikan aksi input ada walau project.godot berubah.
+func _ensure_input_actions() -> void:
+	_add_key_action("move_forward", [KEY_W, KEY_UP])
+	_add_key_action("move_back", [KEY_S, KEY_DOWN])
+	_add_key_action("move_left", [KEY_A, KEY_LEFT])
+	_add_key_action("move_right", [KEY_D, KEY_RIGHT])
+	_add_key_action("run", [KEY_SHIFT])
+	_add_key_action("interact", [KEY_E])
+	_add_key_action("open_journal", [KEY_J, KEY_TAB])
+	_add_key_action("open_inventory", [KEY_I])
+	_add_key_action("open_investigation", [KEY_L])
+	_add_key_action("open_map", [KEY_M])
+
+
+func _add_key_action(action: String, keys: Array) -> void:
+	if not InputMap.has_action(action):
+		InputMap.add_action(action)
+	for k in keys:
+		var exists: bool = false
+		for e in InputMap.action_get_events(action):
+			if e is InputEventKey and (e as InputEventKey).physical_keycode == k:
+				exists = true
+				break
+		if not exists:
+			var ev := InputEventKey.new()
+			ev.physical_keycode = k
+			InputMap.action_add_event(action, ev)
+
+
+# ---------- State ----------
+
+func change_state(new_state: String) -> void:
+	if not (new_state in STATES):
+		Logger.warn("GameManager: state tak dikenal: %s" % new_state)
+		return
+	if state == new_state:
+		return
+	if state == "gameplay" and new_state != "gameplay":
+		previous_gameplay_state = state
+	state = new_state
+	Logger.debug("GameManager: state -> %s" % state)
+	# Kontrol mouse per state.
+	if state == "gameplay":
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	else:
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	SignalBus.game_state_changed.emit(state)
+
+
+func is_gameplay_input_active() -> bool:
+	return state == "gameplay"
+
+
+func toggle_pause() -> void:
+	if state == "gameplay":
+		change_state("pause")
+	elif state == "pause":
+		change_state("gameplay")
+
+
+# ---------- Flags / chapter / objektif ----------
+
+func set_flag(flag_name: String, value: Variant) -> void:
+	flags[flag_name] = value
+	SignalBus.flag_changed.emit(flag_name, value)
+
+
+func get_flag(flag_name: String, default: Variant = null) -> Variant:
+	return flags.get(flag_name, default)
+
+
+func set_chapter(chapter_id: String) -> void:
+	if chapter_id == "" or chapter_id == current_chapter:
+		return
+	current_chapter = chapter_id
+	SignalBus.chapter_changed.emit(chapter_id)
+	Logger.info("GameManager: chapter -> %s" % chapter_id)
+
+
+func set_objective(objective_id: String) -> void:
+	if objective_id == "":
+		return
+	current_objective = objective_id
+	var text: String = DataManager.get_objective(objective_id)
+	SignalBus.objective_changed.emit(text)
+
+
+func objective_text() -> String:
+	return DataManager.get_objective(current_objective)
+
+
+# ---------- Efek generik (dipakai dialog & deduksi) ----------
+
+## Terapkan Dictionary efek ke seluruh manager.
+func apply_effects(effects: Dictionary) -> void:
+	if effects.is_empty():
+		return
+	var im := InvestigationManager
+	var rm := RelationshipManager
+	var bus := SignalBus
+	for k in (effects.get("flags", {}) as Dictionary).keys():
+		set_flag(str(k), (effects["flags"] as Dictionary)[k])
+	for c in effects.get("add_clues", []):
+		im.add_clue(str(c))
+	for it in effects.get("add_items", []):
+		im.add_item(str(it))
+	for it in effects.get("remove_items", []):
+		im.remove_item(str(it))
+	for k in (effects.get("relationship", {}) as Dictionary).keys():
+		rm.add(str(k), int((effects["relationship"] as Dictionary)[k]))
+	var journal_text: String = str(effects.get("journal", ""))
+	if journal_text != "":
+		var dm := DataManager
+		im.add_journal_note("fx:%s:%d" % [current_chapter, randi()], journal_text, dm.tr_key("journal_src_story"))
+	var tl: Dictionary = effects.get("timeline", {})
+	if not tl.is_empty():
+		im.add_timeline_event(str(tl.get("id", "ev%d" % randi())), str(tl.get("year", "?")), str(tl.get("text", "")))
+	var chapter: String = str(effects.get("chapter", ""))
+	if chapter != "":
+		set_chapter(chapter)
+	var objective: String = str(effects.get("objective", ""))
+	if objective != "":
+		set_objective(objective)
+	var ending_choice: String = str(effects.get("ending_choice", ""))
+	if ending_choice != "":
+		register_final_choice(ending_choice)
+	var move_to: String = str(effects.get("move_to", ""))
+	if move_to != "":
+		call_deferred("_deferred_move", move_to, str(effects.get("spawn_tag", "default")))
+	var sfx: String = str(effects.get("sfx", ""))
+	if sfx != "":
+		bus.sfx_requested.emit(sfx)
+
+
+func _deferred_move(location_id: String, spawn_tag: String) -> void:
+	var main := get_tree().current_scene
+	if main and main.has_method("travel_to"):
+		main.travel_to(location_id, spawn_tag)
+
+
+# ---------- Alur game baru / lanjut ----------
+
+func new_game() -> void:
+	flags.clear()
+	final_choice = ""
+	current_chapter = "prolog"
+	current_location = "rumah_nenek"
+	last_spawn_tag = "intro"
+	current_objective = "obj_datang"
+	RelationshipManager.reset_to_defaults()
+	InvestigationManager.reset()
+	DialogueManager.history.clear()
+	SaveManager.reset_playtime()
+	SaveManager.start_tracking()
+	var im := InvestigationManager
+	im.add_timeline_event("ev_now", "2026", "Ardi kembali ke Kota Tua Pesisir.")
+	im.mark_character_met("ardi")
+	Logger.info("GameManager: permainan baru dimulai.")
+
+
+func continue_from_data(data: Dictionary) -> bool:
+	if data.is_empty():
+		return false
+	if not SaveManager.apply(data):
+		return false
+	SaveManager.start_tracking()
+	return true
+
+
+func quit_to_menu() -> void:
+	SaveManager.stop_tracking()
+	AudioManager.stop_music()
+	AudioManager.stop_ambient()
+	change_state("main_menu")
+
+
+# ---------- Lokasi & audio ----------
+
+func notify_location_loaded(location_id: String) -> void:
+	current_location = location_id
+	SignalBus.location_changed.emit(location_id)
+	restore_location_audio()
+	SaveManager.autosave()
+
+
+func restore_location_audio() -> void:
+	var dm := DataManager
+	var bus := SignalBus
+	var data: Dictionary = dm.get_scene_data(current_location)
+	if data.is_empty():
+		return
+	bus.music_requested.emit(str(data.get("music", "")))
+	bus.ambient_requested.emit(str(data.get("ambient", "")))
+
+
+# ---------- Ending ----------
+
+## Kembali ke sesaat sebelum pilihan akhir (tombol "Jelajahi Lagi").
+func restore_pre_ending() -> void:
+	if pre_ending_snapshot.is_empty():
+		return
+	final_choice = ""
+	SaveManager.apply(pre_ending_snapshot)
+	SaveManager.start_tracking()
+	pre_ending_snapshot = {}
+	call_deferred("_deferred_move", current_location, last_spawn_tag)
+	change_state("loading")
+
+
+func register_final_choice(choice_id: String) -> void:
+	if pre_ending_snapshot.is_empty():
+		pre_ending_snapshot = SaveManager.collect()
+		pre_ending_snapshot["final_choice"] = ""
+	final_choice = choice_id
+	Logger.info("GameManager: pilihan akhir = %s" % choice_id)
+	# Tunda evaluasi 1 frame agar dialog selesai dulu.
+	call_deferred("_deferred_ending")
+
+
+func _deferred_ending() -> void:
+	# Tunggu dialog selesai agar kalimat terakhir sempat terbaca.
+	var dlgm := DialogueManager
+	if dlgm.is_active():
+		await SignalBus.dialogue_finished
+	await get_tree().process_frame
+	trigger_ending(evaluate_ending())
+
+
+## Tentukan ending dari clue, deduksi, hubungan, dan pilihan akhir.
+func evaluate_ending() -> String:
+	var im := InvestigationManager
+	var rm := RelationshipManager
+	var clues_n: int = (im.clues_found as Array).size()
+	var ded_n: int = (im.deductions_solved as Array).size()
+	var total_clues: int = DataManager.clues.size()
+	match final_choice:
+		"bungkam":
+			return "ending_rahasiaterkubur"
+		"sebagian":
+			if clues_n >= 10:
+				return "ending_pengorbanan"
+			return "ending_lukalama"
+		"ungkap":
+			var rel_ok: bool = rm.get_value("rara") >= 14 and rm.get_value("pak_harto") >= 9 and rm.get_value("mira") >= 7
+			var all_ded: bool = ded_n >= 4
+			var all_clues: bool = clues_n >= total_clues
+			if rel_ok and all_ded and all_clues:
+				return "ending_kebenaranutuh"
+			if ded_n >= 3 and clues_n >= 12:
+				# Jujur tapi ada yang retak — tetap pahit-manis.
+				if rm.get_value("rara") < 8 or rm.get_value("pak_harto") < 5:
+					return "ending_lukalama"
+				return "ending_pengorbanan"
+			return "ending_lukalama"
+	return "ending_lukalama"
+
+
+func trigger_ending(ending_id: String) -> void:
+	if not (ending_id in endings_seen):
+		endings_seen.append(ending_id)
+	change_state("ending")
+	SignalBus.ending_triggered.emit(ending_id)
+	SaveManager.autosave()
+	Logger.info("GameManager: ENDING -> %s" % ending_id)

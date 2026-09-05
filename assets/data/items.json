@@ -1,0 +1,36 @@
+{
+  "items": [
+    {
+      "id": "kunci_loteng",
+      "name": "Kunci Kuningan",
+      "kind": "key",
+      "description": "Kunci kuningan kecil berukir huruf L. Nenek selalu menyembunyikannya di dapur.",
+      "usable_on": ["kotak_kayu"],
+      "consumable": false
+    },
+    {
+      "id": "senter_tua",
+      "name": "Senter Tua",
+      "kind": "tool",
+      "description": "Senter besi peninggalan jawatan kereta. Masih menyala — cahayanya cukup untuk menembus gerbong yang gelap.",
+      "usable_on": ["gerbong_gelap"],
+      "consumable": false
+    },
+    {
+      "id": "teh_melati",
+      "name": "Teh Melati",
+      "kind": "gift",
+      "description": "Bungkusan teh melati harum dari Kafe Rara. Pak Harto konon tak pernah menolak seduhan yang nikmat.",
+      "usable_on": ["pak_harto"],
+      "consumable": true
+    },
+    {
+      "id": "bunga_liar",
+      "name": "Bunga Pantai",
+      "kind": "gift",
+      "description": "Rumpun bunga liar kuning dari Pantai. Dulu Rara dan Ardi sering memetiknya sepulang sekolah.",
+      "usable_on": ["rara"],
+      "consumable": true
+    }
+  ]
+}

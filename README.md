@@ -1,1 +1,93 @@
-# THE-LAST-MEMORY
+# 🎬 THE LAST MEMORY
+
+**Genre:** Life is Strange + Mystery — game naratif investigasi 3D (Godot 4, GDScript).
+
+Seorang arsitek muda bernama **Ardi** kembali ke **Kota Tua Pesisir** untuk merenovasi rumah neneknya.
+Di loteng, ia menemukan surat-surat lama tentang kecelakaan kereta 40 tahun lalu — dan rumah itu
+sepertinya *mengingat* sesuatu. Ungkap kebenaran, jaga hubunganmu, dan pilih ending-mu.
+
+## ✨ Fitur (Full Release)
+
+- 🗺️ **5 lokasi 3D** bergaya diorama miniatur prosedural: Rumah Nenek, Kafe Rara, Pasar Lama, Stasiun, Pantai
+- 💬 **~80 simpul dialog bercabang** (Indonesia + Inggris) dengan efek mengetik & pratinjau hubungan
+- 🔍 **18 petunjuk + 4 deduksi** berantai di papan investigasi ala *Golden Idol*
+- 💛 **Sistem hubungan** (Rara, Pak Harto, Mira) yang membuka dialog & kesaksian spesial
+- 👻 **Psychometry**: objek memicu kilas balik 1983 (overlay sepia + musik memori)
+- 📓 **Jurnal otomatis**: catatan, profil tokoh, linimasa
+- 🎒 **Inventory fungsional**: kunci, senter, dan hadiah yang diserahkan otomatis
+- 🏁 **4 ending** (Kebenaran Utuh / Rahasia Terkubur / Pengorbanan / Luka Lama) + statistik
+- 💾 **3 slot save + autosave**, pengaturan audio & bahasa (ID/EN)
+- 🎵 **Musik & SFX prosedural** (synth runtime — tanpa file audio eksternal, bisa di-override dengan `.ogg` di `assets/audio/`)
+
+## 🕹️ Kontrol
+
+| Aksi | Keyboard | Gamepad |
+|---|---|---|
+| Gerak | WASD / Panah | Stick kiri / D-pad |
+| Lari | Shift | LB (tombol 8) |
+| Interaksi | E | A |
+| Jurnal | J / Tab | X |
+| Tas | I | Y |
+| Investigasi | L | B |
+| Peta perjalanan | M | RB |
+| Lanjut dialog | Klik / Spasi / Enter | — |
+| Jeda / kembali | Esc | — |
+| Kamera | Gerak mouse (terkunci saat main) | — |
+
+Alur: **E** untuk bicara/periksa → baca jurnal **[J]** → hubungkan clue di papan **[L]** →
+rangkai 4 deduksi → kembali ke loteng untuk pilihan akhir.
+
+## 🚀 Cara Menjalankan
+
+1. Install **Godot 4.3+** (disarankan 4.3–4.5, renderer GL Compatibility didukung).
+2. Clone repo ini, lalu buka folder proyek di Godot (*Import* → pilih `project.godot`).
+3. Tekan **F5** (Run). Main scene: `res://scenes/Main.tscn`.
+
+Tidak perlu mengunduh apa pun: model 3D, musik, dan SFX dibuat prosedural oleh kode.
+
+## 📁 Struktur Proyek
+
+```
+THE-LAST-MEMORY/
+├── project.godot                 # autoload, input map, main scene
+├── icon.svg
+├── assets/data/                  # dialogues, characters, clues, items, scenes,
+│                                 # deductions, endings, objectives, ui_strings (JSON)
+├── assets/audio/{music,sfx,ambient}/  # opsional: taruh .ogg/.wav <id>.ogg untuk override synth
+├── scripts/
+│   ├── autoload/  SignalBus, DataManager, SaveManager, AudioManager,
+│   │              RelationshipManager, InvestigationManager, DialogueManager, GameManager
+│   ├── entities/  Player, NPC, InteractiveObject
+│   ├── locations/ LocationBase + RumahNenek, KafeRara, PasarLama, Stasiun, Pantai
+│   ├── systems/   DialogueParser, ClueSystem, DeductionSystem, RelationshipSystem
+│   ├── ui/        UIManager, HUD, MainMenuUI, DialogueUI, InvestigationUI,
+│   │              InventoryUI, JournalUI, SettingUI, LoadingUI, EndingUI
+│   └── utils/     Logger, MathUtils, SaveUtils, PropFactory, CharacterFactory, ThemeFactory
+├── scripts/Main.gd               # orkestrasi scene & perjalanan
+└── scenes/                       # Main, entities, locations, ui (.tscn)
+```
+
+## 🎨 Menambah Konten (Data-Driven)
+
+- **Dialog baru**: tambah node di `assets/data/dialogues.json`, rujuk dari `dialogue_id` / `next` / `choices[].next` / `variants`.
+- **Clue baru**: tambah di `clues.json`, pasang `clue_id` pada objek di `scenes.json`, opsional masukkan ke resep `deductions.json`.
+- **Lokasi baru**: tambah entri `scenes.json` + script `scripts/locations/X.gd` (extends `LocationBase`) + `scenes/locations/X.tscn`.
+- **Musik/SFX sendiri**: taruh `assets/audio/music/<track_id>.ogg` (mis. `music_kafe.ogg`) — otomatis dipakai menggantikan synth.
+
+## 🏁 Syarat Ending
+
+| Ending | Kondisi |
+|---|---|
+| 🌅 Kebenaran Utuh | Pilihan UNGKAP + 18/18 clue + 4/4 deduksi + Rara ≥14, Harto ≥9, Mira ≥7 |
+| 🕯 Pengorbanan | Pilihan SEBAGIAN (lindungi keluarga Rara) dengan bukti cukup |
+| 🌑 Rahasia Terkubur | Pilihan KUBUR |
+| 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
+
+## 📝 Catatan Teknis
+
+- Bahasa: Indonesia (default) & Inggris (dialog + UI). Ganti di Pengaturan.
+- Save tersimpan di `user://save_slot_*.json` + `user://autosave.json`.
+- Semua error penting dicatat via `Logger` (matikan `Logger.enabled` untuk production).
+- Dibangun & diuji sintaks dengan `gdparse` (gdtoolkit) + validasi silang data JSON.
+
+Selamat menyelidiki Kota Tua Pesisir. 🕵️

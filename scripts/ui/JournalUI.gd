@@ -1,0 +1,168 @@
+extends Control
+## JournalUI — buku harian Ardi: tab Catatan, Tokoh, dan Linimasa.
+## Terisi otomatis dari clue, dialog, dan deduksi.
+
+var _notes_list: VBoxContainer
+var _chars_list: VBoxContainer
+var _timeline_list: VBoxContainer
+var _tabs: TabContainer
+
+
+func _ready() -> void:
+	set_anchors_preset(Control.PRESET_FULL_RECT)
+	_build()
+	visibility_changed.connect(_on_visibility_refresh)
+	SignalBus.journal_updated.connect(_on_visibility_refresh)
+
+
+func _build() -> void:
+	add_child(ThemeFactory.dim_layer(0.6))
+	var center := CenterContainer.new()
+	center.set_anchors_preset(Control.PRESET_FULL_RECT)
+	add_child(center)
+	var panel := PanelContainer.new()
+	panel.custom_minimum_size = Vector2(900, 560)
+	panel.add_theme_stylebox_override("panel", ThemeFactory.panel_style())
+	center.add_child(panel)
+	var root := VBoxContainer.new()
+	root.add_theme_constant_override("separation", 8)
+	panel.add_child(root)
+	var header := HBoxContainer.new()
+	root.add_child(header)
+	var title := Label.new()
+	title.text = "📓 Jurnal Ardi"
+	ThemeFactory.style_label(title, 24, ThemeFactory.PASTEL_YELLOW, true)
+	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	header.add_child(title)
+	var close_btn := Button.new()
+	close_btn.text = "✕"
+	ThemeFactory.style_button(close_btn, 16)
+	close_btn.pressed.connect(func() -> void: GameManager.change_state("gameplay"))
+	header.add_child(close_btn)
+	_tabs = TabContainer.new()
+	_tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	root.add_child(_tabs)
+	_notes_list = _make_tab("Catatan")
+	_chars_list = _make_tab("Tokoh")
+	_timeline_list = _make_tab("Linimasa")
+
+
+func _make_tab(tab_name: String) -> VBoxContainer:
+	var scroll := ScrollContainer.new()
+	scroll.name = tab_name
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_tabs.add_child(scroll)
+	var box := VBoxContainer.new()
+	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	box.add_theme_constant_override("separation", 6)
+	scroll.add_child(box)
+	return box
+
+
+func refresh() -> void:
+	_refresh_notes()
+	_refresh_characters()
+	_refresh_timeline()
+
+
+func _refresh_notes() -> void:
+	var im := InvestigationManager
+	for c in _notes_list.get_children():
+		c.queue_free()
+	if (im.journal_notes as Array).is_empty():
+		_notes_list.add_child(_empty_label("Belum ada catatan."))
+		return
+	var notes: Array = (im.journal_notes as Array).duplicate()
+	notes.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return int(a.get("order", 0)) > int(b.get("order", 0)))
+	for n in notes:
+		var p := PanelContainer.new()
+		p.add_theme_stylebox_override("panel", ThemeFactory.panel_style(Color(0.1, 0.15, 0.26, 0.9), Color(0.5, 0.55, 0.65, 0.5), 1, 6))
+		var vb := VBoxContainer.new()
+		p.add_child(vb)
+		var src := Label.new()
+		src.text = str((n as Dictionary).get("source", ""))
+		ThemeFactory.style_label(src, 12, ThemeFactory.ACCENT_LIGHT)
+		vb.add_child(src)
+		var t := Label.new()
+		t.text = str((n as Dictionary).get("text", ""))
+		t.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		ThemeFactory.style_label(t, 15, ThemeFactory.CREAM)
+		vb.add_child(t)
+		_notes_list.add_child(p)
+
+
+func _refresh_characters() -> void:
+	var dm := DataManager
+	var im := InvestigationManager
+	var rm := RelationshipManager
+	for c in _chars_list.get_children():
+		c.queue_free()
+	for char_id in dm.characters.keys():
+		var cdata: Dictionary = dm.characters[char_id]
+		var met: bool = str(char_id) in im.characters_met
+		var p := PanelContainer.new()
+		p.add_theme_stylebox_override("panel", ThemeFactory.panel_style(Color(0.1, 0.15, 0.26, 0.9), Color(0.5, 0.55, 0.65, 0.5), 1, 6))
+		var hb := HBoxContainer.new()
+		hb.add_theme_constant_override("separation", 12)
+		p.add_child(hb)
+		var vb := VBoxContainer.new()
+		vb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		hb.add_child(vb)
+		var nm := Label.new()
+		nm.text = str(cdata.get("name", char_id)) if met else "??? (belum dikenal)"
+		ThemeFactory.style_label(nm, 18, ThemeFactory.PASTEL_YELLOW if met else Color(0.6, 0.6, 0.65), true)
+		vb.add_child(nm)
+		var desc := Label.new()
+		desc.text = str(cdata.get("description", "")) if met else "Seseorang yang belum kau temui di Kota Tua Pesisir."
+		desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		ThemeFactory.style_label(desc, 14, ThemeFactory.CREAM)
+		vb.add_child(desc)
+		if met and str(char_id) != "ardi" and str(char_id) != "nenek":
+			var rel := Label.new()
+			rel.text = "💛 %s (%d/%d)" % [rm.level_label(str(char_id)), rm.get_value(str(char_id)), rm.get_max(str(char_id))]
+			ThemeFactory.style_label(rel, 14, ThemeFactory.PASTEL_PINK)
+			vb.add_child(rel)
+		_chars_list.add_child(p)
+
+
+func _refresh_timeline() -> void:
+	var im := InvestigationManager
+	for c in _timeline_list.get_children():
+		c.queue_free()
+	if (im.timeline_events as Array).is_empty():
+		_timeline_list.add_child(_empty_label("Linimasa masih kosong."))
+		return
+	var events: Array = (im.timeline_events as Array).duplicate()
+	events.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return int(a.get("order", 0)) < int(b.get("order", 0)))
+	for e in events:
+		var hb := HBoxContainer.new()
+		hb.add_theme_constant_override("separation", 10)
+		var year := Label.new()
+		year.text = str((e as Dictionary).get("year", "?"))
+		year.custom_minimum_size = Vector2(70, 0)
+		ThemeFactory.style_label(year, 16, ThemeFactory.ACCENT_LIGHT, true)
+		hb.add_child(year)
+		var dot := Label.new()
+		dot.text = "●"
+		ThemeFactory.style_label(dot, 14, ThemeFactory.ACCENT)
+		hb.add_child(dot)
+		var t := Label.new()
+		t.text = str((e as Dictionary).get("text", ""))
+		t.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		t.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		ThemeFactory.style_label(t, 15, ThemeFactory.CREAM)
+		hb.add_child(t)
+		_timeline_list.add_child(hb)
+
+
+func _empty_label(text: String) -> Label:
+	var l := Label.new()
+	l.text = text
+	ThemeFactory.style_label(l, 15, Color(0.75, 0.75, 0.8))
+	return l
+
+
+func _on_visibility_refresh() -> void:
+	if visible:
+		refresh()

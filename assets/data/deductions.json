@@ -1,0 +1,63 @@
+{
+  "deductions": [
+    {
+      "id": "ded_surat",
+      "title": "Nenek Menyimpan Rahasia",
+      "required_clues": ["surat_01", "surat_02"],
+      "requires_deductions": [],
+      "conclusion": "Nenek tahu kebenaran kecelakaan 1983, tetapi dipaksa diam demi melindungi putrinya yang masih kecil.",
+      "hint": "Dua surat nenek saling melengkapi. Hubungkan keduanya di papan deduksi.",
+      "effects": {
+        "flags": {"ded1": true},
+        "timeline": {"id": "tl_ded1", "year": "1983", "text": "Nenek Lastri dipaksa bungkam tentang kecelakaan kereta."},
+        "journal": "Deduksi: Nenek tidak sekadar berduka — ia dibungkam.",
+        "objective": "obj_kafe"
+      }
+    },
+    {
+      "id": "ded_laporan",
+      "title": "Laporan Resmi Janggal",
+      "required_clues": ["laporan_resmi", "foto_kereta", "jadwal_1983"],
+      "requires_deductions": ["ded_surat"],
+      "conclusion": "Kereta seharusnya tidak berangkat malam itu, kondisinya sudah reot, namun laporan menyalahkan masinis seorang diri.",
+      "hint": "Bandingkan laporan resmi dengan foto dan jadwal aslinya. Ada yang tidak cocok.",
+      "effects": {
+        "flags": {"ded2": true},
+        "timeline": {"id": "tl_ded2", "year": "1983", "text": "Kereta dipaksa berangkat di luar jadwal, dalam kondisi rusak."},
+        "journal": "Deduksi: laporan resmi menutupi sesuatu. Kereta itu tak layak jalan.",
+        "chapter": "bab3",
+        "objective": "obj_stasiun"
+      }
+    },
+    {
+      "id": "ded_perintah",
+      "title": "Perintah dari Atas",
+      "required_clues": ["surat_perintah", "kesaksian_harto", "arsip_koran"],
+      "requires_deductions": ["ded_laporan"],
+      "conclusion": "Kepala stasiun memerintahkan keberangkatan demi setoran perusahaan; penyidik muda Harto disuruh menutup kasus; pers dibungkam.",
+      "hint": "Siapa yang memerintah, siapa yang menutup, siapa yang dibungkam? Hubungkan ketiganya.",
+      "effects": {
+        "flags": {"ded3": true},
+        "timeline": {"id": "tl_ded3", "year": "1983", "text": "Kebenaran dikubur: perintah jalan, kasus ditutup, koran disunting."},
+        "journal": "Deduksi: kecelakaan itu kejahatan yang direncanakan — dan ditutup-tutupi.",
+        "chapter": "bab4",
+        "objective": "obj_pantai"
+      }
+    },
+    {
+      "id": "ded_akhir",
+      "title": "Kebenaran 1983",
+      "required_clues": ["jam_saku", "surat_terakhir", "pengakuan_rara"],
+      "requires_deductions": ["ded_perintah"],
+      "conclusion": "Kakek Darmo tidak bersalah — ia korban. Nenek mewariskan pilihan kepadamu: ungkap dan hancurkan yang hidup, atau kubur dan khianati yang mati.",
+      "hint": "Waktu berhenti (jam), wasiat terakhir (surat), dan pengakuan yang hidup (Rara). Satukan ketiganya.",
+      "effects": {
+        "flags": {"ded4": true},
+        "timeline": {"id": "tl_ded4", "year": "2026", "text": "Ardi merangkai seluruh kebenaran 1983."},
+        "journal": "Deduksi akhir: Kakek tidak bersalah. Kini aku harus memilih.",
+        "chapter": "final",
+        "objective": "obj_akhir"
+      }
+    }
+  ]
+}

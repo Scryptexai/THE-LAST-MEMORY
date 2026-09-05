@@ -1,0 +1,14 @@
+{
+  "objectives": [
+    {"id": "obj_datang", "text": "Tiba di rumah nenek. Lihat sekeliling.", "text_en": "Arrive at grandma's house. Look around."},
+    {"id": "obj_loteng", "text": "Naiki loteng dan periksa peninggalan nenek.", "text_en": "Search the attic and grandma's belongings."},
+    {"id": "obj_kafe", "text": "Temui Rara di kafenya. Tanyakan tentang masa lalu kota.", "text_en": "Meet Rara at her cafe. Ask about the town's past."},
+    {"id": "obj_harto", "text": "Dekati Pak Harto, sang detektif pensiun.", "text_en": "Approach Mr. Harto, the retired detective."},
+    {"id": "obj_pasar", "text": "Cari jejak di Pasar Lama. Temui Mira si jurnalis.", "text_en": "Follow the trail to the Old Market. Meet Mira the journalist."},
+    {"id": "obj_stasiun", "text": "Selidiki Stasiun tua yang terbengkalai.", "text_en": "Investigate the abandoned old station."},
+    {"id": "obj_pantai", "text": "Temui seseorang di Pantai saat senja.", "text_en": "Meet someone at the beach at dusk."},
+    {"id": "obj_deduksi", "text": "Rangkai kebenaran di papan investigasi [L].", "text_en": "Piece the truth together on the investigation board [L]."},
+    {"id": "obj_laci", "text": "Ada yang belum terbuka di rumah nenek...", "text_en": "Something in grandma's house remains unopened..."},
+    {"id": "obj_akhir", "text": "Kembali ke loteng. Saatnya memilih.", "text_en": "Return to the attic. It is time to choose."}
+  ]
+}

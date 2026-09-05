@@ -1,0 +1,154 @@
+{
+  "scenes": [
+    {
+      "id": "rumah_nenek",
+      "name": "Rumah Nenek",
+      "description": "Rumah tua di pinggir kota. Masih terawat, tapi ada aroma waktu yang terperangkap.",
+      "scene_path": "res://scenes/locations/RumahNenek.tscn",
+      "music": "music_rumah_nenek",
+      "ambient": "ambient_rumah",
+      "env": {
+        "sky_top": "#2c4a6e", "sky_horizon": "#e8b98a",
+        "ground_bottom": "#1a2233", "ground_horizon": "#c98f5f",
+        "fog_color": "#d8b48f", "fog_density": 0.006,
+        "sun_color": "#ffdcb0", "sun_energy": 1.1,
+        "sun_rotation": [-0.9, -0.6], "exposure": 1.0, "ambient_energy": 0.7
+      },
+      "npcs": [],
+      "interactables": [
+        {"object_id": "pintu_depan", "display_name": "Pintu Depan", "prompt_key": "prompt_travel", "target_location": "__travel__", "target_spawn": "default"},
+        {"object_id": "surat_loteng", "display_name": "Tumpukan Surat", "prompt_key": "prompt_read", "clue_id": "surat_01", "dialogue_id": "dlg_loteng_first", "variants": {"ded4": "dlg_final_01", "surat1_dibaca": "dlg_loteng_ulang"}},
+        {"object_id": "kotak_kayu", "display_name": "Kotak Kayu", "prompt_key": "prompt_open", "required_item": "kunci_loteng", "consume_dialogue": "dlg_kotak_kunci", "dialogue_id": "dlg_kotak", "variants": {"kotak_dibuka": "dlg_kotak_kosong"}},
+        {"object_id": "laci_dapur", "display_name": "Laci Dapur", "prompt_key": "prompt_open", "item_id": "kunci_loteng", "dialogue_id": "dlg_laci_dapur", "one_shot": true},
+        {"object_id": "album_foto", "display_name": "Album Foto", "prompt_key": "prompt_read", "clue_id": "foto_kereta", "dialogue_id": "dlg_album"},
+        {"object_id": "foto_kamar", "display_name": "Foto Kamar", "prompt_key": "prompt_examine", "clue_id": "foto_keluarga", "dialogue_id": "dlg_foto_kamar"},
+        {"object_id": "laci_tulis", "display_name": "Laci Meja Tulis", "prompt_key": "prompt_open", "required_flag": "ded3=true", "consume_dialogue": "dlg_laci_macet", "dialogue_id": "dlg_laci", "variants": {"laci_dibuka": "dlg_laci_kosong"}},
+        {"object_id": "rak_buku", "display_name": "Rak Buku", "prompt_key": "prompt_examine", "dialogue_id": "dlg_rak_buku"},
+        {"object_id": "radio_tua", "display_name": "Radio Tua", "prompt_key": "prompt_examine", "dialogue_id": "dlg_radio"},
+        {"object_id": "tempat_tidur", "display_name": "Tempat Tidur Nenek", "prompt_key": "prompt_examine", "journal_text": "Selimutnya masih terlipat rapi, seolah nenek hanya pergi sebentar ke dapur."}
+      ]
+    },
+    {
+      "id": "kafe_rara",
+      "name": "Kafe Rara",
+      "description": "Kafe kecil di sudut kota. Tempat berkumpulnya warga Kota Tua.",
+      "scene_path": "res://scenes/locations/KafeRara.tscn",
+      "music": "music_kafe",
+      "ambient": "ambient_kafe",
+      "env": {
+        "sky_top": "#3a6ea5", "sky_horizon": "#ffe3b3",
+        "ground_bottom": "#2a2a33", "ground_horizon": "#e0a060",
+        "fog_color": "#e8c890", "fog_density": 0.004,
+        "sun_color": "#fff0c8", "sun_energy": 1.2,
+        "sun_rotation": [-0.7, 0.4], "exposure": 1.05, "ambient_energy": 0.8
+      },
+      "npcs": [
+        {
+          "character_id": "rara", "display_name": "Rara", "dialogue_id": "dlg_rara_intro",
+          "variants": {"rara_v3": "dlg_rara_v3", "rara_v2": "dlg_rara_v2"},
+          "gifts": {"bunga_liar": {"dialogue": "dlg_rara_bunga", "relationship": {"rara": 3}, "flag": "gift_rara_bunga"}}
+        },
+        {
+          "character_id": "pak_harto", "display_name": "Pak Harto", "dialogue_id": "dlg_harto_intro",
+          "variants": {"harto_bersaksi": "dlg_harto_after", "harto_terbuka": "dlg_harto_v3", "harto_v2": "dlg_harto_v2"},
+          "gifts": {"teh_melati": {"dialogue": "dlg_harto_teh", "relationship": {"pak_harto": 3}, "flag": "gift_harto_teh"}}
+        }
+      ],
+      "interactables": [
+        {"object_id": "pintu_kafe", "display_name": "Pintu Kafe", "prompt_key": "prompt_travel", "target_location": "__travel__", "target_spawn": "default"},
+        {"object_id": "foto_dinding", "display_name": "Foto Dinding", "prompt_key": "prompt_examine", "clue_id": "foto_dinding", "dialogue_id": "dlg_foto_kafe"},
+        {"object_id": "menu_kafe", "display_name": "Papan Menu", "prompt_key": "prompt_read", "journal_text": "Menu andalan: Kopi Tubruk Nenek — resep yang konon lebih tua dari kafe itu sendiri."},
+        {"object_id": "teh_counter", "display_name": "Bungkusan Teh", "prompt_key": "prompt_pickup", "item_id": "teh_melati", "dialogue_id": "dlg_teh_ambil", "one_shot": true},
+        {"object_id": "meja_harto", "display_name": "Meja Sudut", "prompt_key": "prompt_examine", "journal_text": "Meja sudut yang selalu dipesan Pak Harto. Ada goresan samar: S.H. — 1983."},
+        {"object_id": "papan_kafe", "display_name": "Papan Pengumuman", "prompt_key": "prompt_read", "journal_text": "Selebaran lomba memancing, les gitar, dan... fotokopian artikel lama tentang kecelakaan kereta. Seseorang melingkari tanggalnya."},
+        {"object_id": "teras_bunga", "display_name": "Pot Bunga", "prompt_key": "prompt_examine", "journal_text": "Bunga melati yang dirawat Rara. Wanginya sama seperti halaman rumah nenek dulu."}
+      ]
+    },
+    {
+      "id": "pasar_lama",
+      "name": "Pasar Lama",
+      "description": "Pasar pagi yang tak pernah benar-benar berubah. Semua orang tahu semua orang — dan semua rahasia.",
+      "scene_path": "res://scenes/locations/PasarLama.tscn",
+      "music": "music_pasar",
+      "ambient": "ambient_pasar",
+      "env": {
+        "sky_top": "#4a90c2", "sky_horizon": "#ffedd0",
+        "ground_bottom": "#33302a", "ground_horizon": "#e8b070",
+        "fog_color": "#eed9a8", "fog_density": 0.003,
+        "sun_color": "#fff5d8", "sun_energy": 1.35,
+        "sun_rotation": [-0.5, 0.2], "exposure": 1.1, "ambient_energy": 0.9
+      },
+      "npcs": [
+        {"character_id": "mira", "display_name": "Mira", "dialogue_id": "dlg_mira_intro",
+         "variants": {"mira_v2": "dlg_mira_v2"}},
+        {"character_id": "warga", "slot": "pedagang", "display_name": "Pedagang Antik", "dialogue_id": "dlg_pedagang",
+         "variants": {"pedagang_bicara": "dlg_pedagang_after"}},
+        {"character_id": "warga", "slot": "warga_pasar", "display_name": "Warga Pasar", "dialogue_id": "dlg_warga_pasar"}
+      ],
+      "interactables": [
+        {"object_id": "gapura", "display_name": "Gapura Pasar", "prompt_key": "prompt_travel", "target_location": "__travel__", "target_spawn": "default"},
+        {"object_id": "kios_arsip", "display_name": "Kios Arsip Koran", "prompt_key": "prompt_open", "required_flag": "arsip_terbuka=true", "consume_dialogue": "dlg_arsip_tutup", "dialogue_id": "dlg_arsip", "variants": {"arsip_diambil": "dlg_arsip_empty"}},
+        {"object_id": "lapak_antik", "display_name": "Lapak Antik", "prompt_key": "prompt_examine", "clue_id": "bros_nenek", "dialogue_id": "dlg_lapak"},
+        {"object_id": "karcis_jatuh", "display_name": "Karcis Kusam", "prompt_key": "prompt_pickup", "clue_id": "karcis_kereta", "dialogue_id": "dlg_karcis"},
+        {"object_id": "peti_senter", "display_name": "Peti Tua", "prompt_key": "prompt_open", "item_id": "senter_tua", "dialogue_id": "dlg_peti", "one_shot": true},
+        {"object_id": "papan_pasar", "display_name": "Papan Pengumuman", "prompt_key": "prompt_read", "journal_text": "Pengumuman pasar tahun 80-an yang tak pernah dilepas: 'DILARANG MEMBAHAS KECELAKAAN KERETA DI AREA PASAR. — Lurah.' Astaga."},
+        {"object_id": "gerobak", "display_name": "Gerobak Tua", "prompt_key": "prompt_examine", "journal_text": "Gerobak penjual jamu. Bau beras kencur mengingatkan Ardi pada masa kecilnya."}
+      ]
+    },
+    {
+      "id": "stasiun",
+      "name": "Stasiun Kota Tua",
+      "description": "Stasiun mati sejak 1983. Angin berdesir di peron kosong, seolah masih menunggu kereta yang tak datang.",
+      "scene_path": "res://scenes/locations/Stasiun.tscn",
+      "music": "music_stasiun",
+      "ambient": "ambient_stasiun",
+      "env": {
+        "sky_top": "#232c3d", "sky_horizon": "#8a6a55",
+        "ground_bottom": "#14161c", "ground_horizon": "#5a4a3d",
+        "fog_color": "#9a8a76", "fog_density": 0.014,
+        "sun_color": "#d8b090", "sun_energy": 0.7,
+        "sun_rotation": [-1.1, -1.2], "exposure": 0.9, "ambient_energy": 0.45
+      },
+      "npcs": [
+        {"character_id": "warga", "slot": "penjaga", "display_name": "Penjaga Stasiun", "dialogue_id": "dlg_penjaga"}
+      ],
+      "interactables": [
+        {"object_id": "gerbang_stasiun", "display_name": "Gerbang Stasiun", "prompt_key": "prompt_travel", "target_location": "__travel__", "target_spawn": "default"},
+        {"object_id": "loket", "display_name": "Loket Tua", "prompt_key": "prompt_open", "clue_id": "laporan_resmi", "dialogue_id": "dlg_loket"},
+        {"object_id": "papan_jadwal", "display_name": "Papan Jadwal", "prompt_key": "prompt_read", "clue_id": "jadwal_1983", "dialogue_id": "dlg_jadwal"},
+        {"object_id": "gerbong_gelap", "display_name": "Gerbong Tua", "prompt_key": "prompt_open", "required_item": "senter_tua", "consume_dialogue": "dlg_gerbong_kunci", "dialogue_id": "dlg_gerbong", "variants": {"gerbong_dibuka": "dlg_gerbong_kosong"}},
+        {"object_id": "peluit_rel", "display_name": "Benda di Rel", "prompt_key": "prompt_pickup", "clue_id": "peluit_masinis", "dialogue_id": "dlg_peluit"},
+        {"object_id": "plakat", "display_name": "Plakat Peringatan", "prompt_key": "prompt_read", "dialogue_id": "dlg_plakat"},
+        {"object_id": "bangku_peron", "display_name": "Bangku Peron", "prompt_key": "prompt_examine", "journal_text": "Bangku peron yang catnya mengelupas. Diukir di sandarannya: 'Kami menunggu. — Keluarga korban 1983.'"}
+      ]
+    },
+    {
+      "id": "pantai",
+      "name": "Pantai Senja",
+      "description": "Pantai tempat anak-anak kota menghabiskan sore. Ombak menyimpan rahasia sebaik manusia.",
+      "scene_path": "res://scenes/locations/Pantai.tscn",
+      "music": "music_pantai",
+      "ambient": "ambient_pantai",
+      "env": {
+        "sky_top": "#3d3a6e", "sky_horizon": "#ff9a5a",
+        "ground_bottom": "#1c1a2e", "ground_horizon": "#e0703f",
+        "fog_color": "#e89878", "fog_density": 0.005,
+        "sun_color": "#ffb070", "sun_energy": 1.0,
+        "sun_rotation": [-0.35, 1.2], "exposure": 1.05, "ambient_energy": 0.65
+      },
+      "npcs": [
+        {"character_id": "rara", "slot": "rara_pantai", "display_name": "Rara", "dialogue_id": "dlg_rara_pantai_small",
+         "variants": {"rara_pengakuan_done": "dlg_rara_after", "ded3": "dlg_rara_pengakuan"}},
+        {"character_id": "mira", "slot": "mira_pantai", "display_name": "Mira", "dialogue_id": "dlg_mira_pantai"}
+      ],
+      "interactables": [
+        {"object_id": "jalan_pantai", "display_name": "Jalan Setapak", "prompt_key": "prompt_travel", "target_location": "__travel__", "target_spawn": "default"},
+        {"object_id": "perahu_tua", "display_name": "Perahu Tua", "prompt_key": "prompt_examine", "dialogue_id": "dlg_perahu"},
+        {"object_id": "batu_foto", "display_name": "Foto Terselip", "prompt_key": "prompt_pickup", "clue_id": "foto_pantai", "dialogue_id": "dlg_batu_foto"},
+        {"object_id": "bunga_liar", "display_name": "Bunga Liar", "prompt_key": "prompt_pickup", "item_id": "bunga_liar", "dialogue_id": "dlg_bunga", "one_shot": true},
+        {"object_id": "mercusuar", "display_name": "Mercusuar Mini", "prompt_key": "prompt_examine", "journal_text": "Mercusuar hias yang dibangun warga setelah 1983 — 'agar tak ada lagi yang tersesat dalam gelap.'"},
+        {"object_id": "dermaga", "display_name": "Dermaga", "prompt_key": "prompt_examine", "journal_text": "Papan dermaga berderit. Dulu, dari sinilah Ardi dan Rara melempar karangan bunga untuk para korban."}
+      ]
+    }
+  ]
+}

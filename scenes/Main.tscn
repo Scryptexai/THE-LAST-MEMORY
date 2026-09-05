@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/Main.gd" id="1_main"]
+[ext_resource type="PackedScene" path="res://scenes/entities/Player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://scripts/ui/UIManager.gd" id="3_uimgr"]
+
+[sub_resource type="Environment" id="Environment_1"]
+background_mode = 2
+ambient_light_source = 2
+ambient_light_energy = 0.7
+tonemap_mode = 2
+fog_enabled = true
+fog_density = 0.006
+
+[node name="Main" type="Node"]
+script = ExtResource("1_main")
+
+[node name="World" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="World" groups=["world_env"]]
+environment = SubResource("Environment_1")
+
+[node name="Sun" type="DirectionalLight3D" parent="World" groups=["sun"]]
+rotation = Vector3(-0.9, -0.6, 0)
+light_color = Color(1, 0.86, 0.69, 1)
+light_energy = 1.1
+shadow_enabled = true
+
+[node name="LocationContainer" type="Node3D" parent="World"]
+
+[node name="Player" parent="World" instance=ExtResource("2_player")]
+position = Vector3(0, 0, 6)
+
+[node name="UI" type="CanvasLayer" parent="."]
+layer = 10
+script = ExtResource("3_uimgr")

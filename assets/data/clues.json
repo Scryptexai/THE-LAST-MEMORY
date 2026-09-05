@@ -1,0 +1,148 @@
+{
+  "clues": [
+    {
+      "id": "surat_01",
+      "name": "Surat Nenek #1",
+      "type": "document",
+      "description": "Surat tahun 1980-an, tulisan tangan nenek: 'Aku tahu apa yang sebenarnya terjadi malam itu. Tapi tak ada yang mau mendengar.'",
+      "related_to": ["kecelakaan_kereta", "nenek"],
+      "found_in": "rumah_nenek"
+    },
+    {
+      "id": "surat_02",
+      "name": "Surat Nenek #2",
+      "type": "document",
+      "description": "Lanjutan surat nenek: 'Mereka memintaku diam. Demi anakku yang masih kecil, aku menurut. Maafkan aku, Mo.'",
+      "related_to": ["kecelakaan_kereta", "nenek", "darmo"],
+      "found_in": "rumah_nenek"
+    },
+    {
+      "id": "foto_kereta",
+      "name": "Foto Kereta 1983",
+      "type": "photo",
+      "description": "Foto kereta api tua. Di belakangnya tertulis: 'Stasiun Kota Tua, 1983 — perjalanan terakhir.' Kondisi gerbong tampak sudah reot.",
+      "related_to": ["kecelakaan_kereta", "stasiun"],
+      "found_in": "rumah_nenek"
+    },
+    {
+      "id": "foto_keluarga",
+      "name": "Foto Keluarga",
+      "type": "photo",
+      "description": "Nenek muda menggendong bayi perempuan — ibu Ardi. Di belakangnya, sosok pria berseragam masinis yang wajahnya pudar.",
+      "related_to": ["nenek", "darmo", "keluarga"],
+      "found_in": "rumah_nenek"
+    },
+    {
+      "id": "jam_saku",
+      "name": "Jam Saku Kakek",
+      "type": "object",
+      "description": "Jam saku milik Kakek Darmo. Jarumnya berhenti tepat pukul 07:14 — diduga waktu kecelakaan terjadi.",
+      "related_to": ["darmo", "kecelakaan_kereta"],
+      "found_in": "rumah_nenek"
+    },
+    {
+      "id": "surat_terakhir",
+      "name": "Surat Terakhir Nenek",
+      "type": "document",
+      "description": "'Untuk cucuku: kebenaran ada di tiga tempat — perintahkepala stasiun, arsip yang disembunyikan, dan hati orang-orang yang ketakutan. Pilihlah dengan hati, bukan amarah.'",
+      "related_to": ["nenek", "kebenaran", "kepala_stasiun"],
+      "found_in": "rumah_nenek"
+    },
+    {
+      "id": "foto_dinding",
+      "name": "Foto Kafe 1983",
+      "type": "photo",
+      "description": "Foto pembukaan kafe tahun 1983. Di sudut foto: kepala stasiun bersalaman dengan seorang pria berjas — ayah Rara masih muda.",
+      "related_to": ["rara", "kepala_stasiun", "kafe"],
+      "found_in": "kafe_rara"
+    },
+    {
+      "id": "pengakuan_rara",
+      "name": "Pengakuan Rara",
+      "type": "testimony",
+      "description": "Rara mengakui: kakeknya — kepala stasiun 1983 — menandatangani perintah jalan meski tahu rem rusak. Keluarganya hidup dari uang tutup mulut.",
+      "related_to": ["rara", "kepala_stasiun", "kebenaran"],
+      "found_in": "pantai"
+    },
+    {
+      "id": "arsip_koran",
+      "name": "Arsip Koran 1983",
+      "type": "document",
+      "description": "Koran 'Suara Pesisir', sehari setelah kecelakaan. Paragraf terakhir digunting rapi — bagian yang memuat pernyataan saksi mata.",
+      "related_to": ["kecelakaan_kereta", "saksi"],
+      "found_in": "pasar_lama"
+    },
+    {
+      "id": "karcis_kereta",
+      "name": "Karcis Kereta",
+      "type": "object",
+      "description": "Karcis kusam jurusan Kota Tua, tertanggal sehari sebelum kecelakaan. Nama penumpang: S. Hartono — ayah Pak Harto.",
+      "related_to": ["kecelakaan_kereta", "pak_harto"],
+      "found_in": "pasar_lama"
+    },
+    {
+      "id": "bros_nenek",
+      "name": "Bros Nenek",
+      "type": "object",
+      "description": "Bros emas berbentuk melati. Nenek memakainya setiap hari — kecuali pada foto-foto setelah 1983. Mengapa dijual ke lapak antik?",
+      "related_to": ["nenek", "keluarga"],
+      "found_in": "pasar_lama"
+    },
+    {
+      "id": "kesaksian_pedagang",
+      "name": "Kesaksian Pedagang",
+      "type": "testimony",
+      "description": "Pedagang pasar bersaksi: malam kecelakaan, ia melihat gerbong tambahan dimuat melebihi kapasitas atas perintah 'orang berseragam rapi'.",
+      "related_to": ["saksi", "kecelakaan_kereta"],
+      "found_in": "pasar_lama"
+    },
+    {
+      "id": "laporan_resmi",
+      "name": "Laporan Resmi",
+      "type": "document",
+      "description": "Salinan laporan resmi: 'Kecelakaan akibat kelalaian masinis S. Darmo.' Tanda tangan penyidiknya: Harto muda — 40 tahun lalu.",
+      "related_to": ["pak_harto", "darmo", "kecelakaan_kereta"],
+      "found_in": "stasiun"
+    },
+    {
+      "id": "jadwal_1983",
+      "name": "Jadwal 1983",
+      "type": "document",
+      "description": "Jadwal perjalanan 1983 yang masih menempel. Kereta malam itu seharusnya TIDAK berangkat — jadwalnya dicoret, lalu ditulis ulang dengan tinta berbeda.",
+      "related_to": ["stasiun", "kecelakaan_kereta"],
+      "found_in": "stasiun"
+    },
+    {
+      "id": "surat_perintah",
+      "name": "Surat Perintah Jalan",
+      "type": "document",
+      "description": "Bukti kunci: surat perintah jalan yang ditandatangani Kepala Stasiun, memaksa kereta berangkat meski laporan kerusakan rem sudah masuk seminggu sebelumnya.",
+      "related_to": ["kepala_stasiun", "kebenaran", "darmo"],
+      "found_in": "stasiun"
+    },
+    {
+      "id": "kesaksian_harto",
+      "name": "Kesaksian Pak Harto",
+      "type": "testimony",
+      "description": "Pak Harto akhirnya bicara: ia diperintah atasannya menutup kasus. Ayahnya sendiri penumpang yang tewas — ia mengkhianati ayahnya demi karier.",
+      "related_to": ["pak_harto", "kebenaran"],
+      "found_in": "kafe_rara"
+    },
+    {
+      "id": "foto_pantai",
+      "name": "Foto Pantai 1983",
+      "type": "photo",
+      "description": "Foto Nenek dan Kakek Darmo tertawa di pantai, musim panas 1983 — bulan-bulan terakhir sebelum semuanya runtuh.",
+      "related_to": ["nenek", "darmo", "keluarga"],
+      "found_in": "pantai"
+    },
+    {
+      "id": "peluit_masinis",
+      "name": "Peluit Masinis",
+      "type": "object",
+      "description": "Peluit kuningan penyok di dekat rel. Darmo meniupnya tiga kali malam itu — tanda bahaya yang tak pernah ditanggapi.",
+      "related_to": ["darmo", "stasiun"],
+      "found_in": "stasiun"
+    }
+  ]
+}
