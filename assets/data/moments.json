@@ -4,6 +4,7 @@
     {"id": "m_kafe", "name": "Etalase Rara", "location": "kafe_rara", "hint": "Etalase kafe dilihat dari jalan."},
     {"id": "m_gapura", "name": "Gapura Pasar", "location": "pasar_lama", "hint": "Gapura pasar di pagi hari."},
     {"id": "m_peron", "name": "Peron Sunyi", "location": "stasiun", "hint": "Peron kosong dan gerbong tua."},
-    {"id": "m_senja", "name": "Senja Terakhir", "location": "pantai", "hint": "Dermaga saat matahari terbenam."}
+    {"id": "m_senja", "name": "Senja Terakhir", "location": "pantai", "hint": "Dermaga saat matahari terbenam."},
+    {"id": "m_bukit", "name": "Kota dari Atas", "location": "makam_bukit", "hint": "Bangku di tepi bukit, menghadap stasiun dan laut."}
   ]
 }

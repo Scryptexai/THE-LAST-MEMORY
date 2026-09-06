@@ -34,6 +34,7 @@
     },
     {"id": "pita_merah", "name": "Pita Merah", "kind": "gift", "description": "Seutas pita merah yang masih bagus, ditemukan di gerobak jamu Pasar Lama.", "usable_on": ["mira"], "consumable": true},
     {"id": "kelereng_kaca", "name": "Kelereng Kaca", "kind": "gift", "description": "Kelereng kaca bening dari celah dermaga. Simpanan masa kecil Ardi dan Rara.", "usable_on": ["rara"], "consumable": true},
+    {"id": "bunga_kamboja", "name": "Bunga Kamboja", "kind": "gift", "description": "Setangkai kamboja putih dari pohon tua di Makam Bukit. Wanginya lembut, seperti pamit yang tak terburu-buru.", "usable_on": ["nisan_nenek"], "consumable": true},
     {"id": "klepon", "name": "Klepon Hangat", "kind": "gift", "description": "Sebungkus klepon dari Pasar Lama, masih hangat. Bu RT pernah bilang ini kesukaannya sejak muda.", "usable_on": ["bu_rt"], "consumable": true},
     {"id": "lampu_minyak", "name": "Lampu Minyak", "kind": "tool", "description": "Lampu minyak tua milik penjaga stasiun. Sumbunya sudah diganti; tinggal menyalakannya di loket.", "usable_on": [], "consumable": true},
     {"id": "buku_catatan", "name": "Buku Catatan", "kind": "gift", "description": "Buku catatan kecil bersampul kulit dari bangku peron. Halaman depannya kosong, menunggu ditulis.", "usable_on": ["pak_harto"], "consumable": true}

@@ -30,12 +30,13 @@ const MUSIC_PRESETS := {
 	"music_pasar": [220.0, 196.0, 174.61, 196.0],
 	"music_stasiun": [110.0, 130.81, 98.0, 146.83],           # rendah & suram
 	"music_pantai": [146.83, 174.61, 130.81, 164.81],
+	"music_makam": [123.47, 146.83, 110.0, 130.81],           # B-D-A-C: tenang, pasrah
 	"music_investigation": [164.81, 164.81, 196.0, 146.83],
 	"music_memory": [261.63, 220.0, 174.61, 196.0],           # kilas balik
 	"music_ending": [130.81, 146.83, 164.81, 196.0],
 }
 
-const AMBIENT_PRESETS := ["ambient_rumah", "ambient_kafe", "ambient_pasar", "ambient_stasiun", "ambient_pantai", "ambient_city"]
+const AMBIENT_PRESETS := ["ambient_rumah", "ambient_kafe", "ambient_pasar", "ambient_stasiun", "ambient_pantai", "ambient_city", "ambient_bukit"]
 
 
 func _ready() -> void:
@@ -273,6 +274,9 @@ func _synth_ambient(track_id: String) -> AudioStreamWAV:
 			chirp_rate = 2.5  # celoteh samar
 		"ambient_stasiun":
 			wind_base = 0.06
+		"ambient_bukit":
+			wind_base = 0.11  # angin bukit lebih terbuka + jangkrik tipis
+			chirp_rate = 0.9
 		_:
 			wind_base = 0.05
 	var last: float = 0.0
@@ -280,6 +284,7 @@ func _synth_ambient(track_id: String) -> AudioStreamWAV:
 	var prev_noise: float = 0.0
 	var horn_at: Array = [2.0, 5.5] if track_id == "ambient_stasiun" else []
 	var gull_at: Array = [1.5, 4.0, 6.6] if track_id == "ambient_pantai" else []
+	var bell_at: Array = [3.2, 7.1] if track_id == "ambient_bukit" else []
 	for i in n:
 		var t: float = float(i) / MIX_RATE
 		var noise: float = rng.randf() * 2.0 - 1.0
@@ -307,6 +312,11 @@ func _synth_ambient(track_id: String) -> AudioStreamWAV:
 			if lg >= 0.0 and lg < 0.45:
 				var ph: float = TAU * (1250.0 * lg - 0.5 * (550.0 / 0.45) * lg * lg)
 				v += sin(ph) * 0.035 * sin(lg / 0.45 * PI)
+		# Lonceng jauh (bukit): nada murni meluruh panjang.
+		for b in bell_at:
+			var lb: float = t - float(b)
+			if lb >= 0.0 and lb < 2.4:
+				v += (sin(TAU * 523.25 * t) * 0.6 + sin(TAU * 1046.5 * t) * 0.25) * 0.03 * exp(-lb * 1.6)
 		samples[i] = v * 0.6
 	_blend_loop_edge(samples, MIX_RATE / 2)
 	return _make_wav(samples, true)

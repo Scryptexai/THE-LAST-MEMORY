@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/locations/MakamBukit.gd" id="1_loc"]
+
+[node name="MakamBukit" type="Node3D"]
+script = ExtResource("1_loc")
+location_id = "makam_bukit"

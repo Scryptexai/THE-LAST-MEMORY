@@ -58,8 +58,10 @@ func evaluate() -> void:
 		unlock("ach_one_ending")
 	if ne >= 4:
 		unlock("ach_all_endings")
-	if (gm.visited_locations as Array).size() >= 5:
+	if (gm.visited_locations as Array).size() >= dm.scenes.size():
 		unlock("ach_explorer")
+	if bool(gm.get_flag("makam_pamit", false)):
+		unlock("ach_farewell")
 	if bool(gm.get_flag("ng_plus", false)):
 		unlock("ach_ngplus")
 	if gm.hard_mode and ne >= 1:

@@ -91,6 +91,13 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## ⛰️ Lokasi ke-6: Makam Bukit
+
+- `scenes/locations/MakamBukit.tscn` + `MakamBukit.gd` — pemakaman di lereng bukit: nisan Nenek & Kakek berdampingan, 12 nisan korban 1983, pohon kamboja, gubuk juru kunci, bangku pandang ke stasiun & laut.
+- Terbuka setelah **bab 3** (`unlock_flag` di scenes.json; menu perjalanan menyaring lokasi terkunci; toast saat terbuka).
+- Konten: NPC Juru Kunci (3 varian), petunjuk ke-19 `daftar_korban`, item `bunga_kamboja` → pamit di nisan Nenek (pilihan `requires_items`), kilas balik 1984 `dlg_mem_makam` (psychometry di nisan Kakek), momen ke-6 `m_bukit`, musik `music_makam` + ambient `ambient_bukit` (angin bukit, jangkrik, lonceng jauh), override suasana bab final.
+- Pencapaian **Pamit**; **Penjelajah** kini dihitung dari jumlah scene aktual.
+
 ## 🌗 Suasana Berubah per Bab
 
 - `scenes.json` → `chapter_env: {bab: {override env}}` (bab terbaru yang sudah dilihat menang). Rumah Nenek: senja di bab 3, **malam berbintang** di bab final; Pantai: gerimis muram di bab 4; Kafe: jingga sore di bab 4; Stasiun: gerimis reda di bab final. Termasuk override `weather`.

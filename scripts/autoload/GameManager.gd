@@ -107,6 +107,16 @@ func set_chapter(chapter_id: String) -> void:
 	flags["chseen_" + chapter_id] = true
 	SignalBus.chapter_changed.emit(chapter_id)
 	Logger.info("GameManager: chapter -> %s" % chapter_id)
+	_announce_unlocked_locations(chapter_id)
+
+
+## Toast bila bab ini membuka lokasi baru (scenes.json "unlock_flag").
+func _announce_unlocked_locations(chapter_id: String) -> void:
+	var dm := DataManager
+	for sid in dm.scenes.keys():
+		var sdata: Dictionary = dm.scenes[sid]
+		if str(sdata.get("unlock_flag", "")) == "chseen_" + chapter_id:
+			SignalBus.toast_requested.emit(dm.tr_key("toast_location_unlocked").format({"name": str(sdata.get("name", sid))}), "system")
 
 
 ## Tandai semua bab s/d bab saat ini (untuk save lama yg belum punya flag chseen_*).

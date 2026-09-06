@@ -162,6 +162,28 @@
         {"object_id": "dermaga", "display_name": "Dermaga", "prompt_key": "prompt_pickup", "item_id": "kelereng_kaca", "dialogue_id": "dlg_dermaga", "one_shot": true, "journal_text": "Papan dermaga berderit. Dulu, dari sinilah Ardi dan Rara melempar karangan bunga untuk para korban."},
         {"object_id": "vista_senja", "display_name": "Sudut Pandang: Senja", "prompt_key": "prompt_moment", "moment_id": "m_senja", "dialogue_id": "dlg_moment_senja"}
       ]
+    },
+    {
+      "id": "makam_bukit",
+      "name": "Makam Bukit",
+      "description": "Pemakaman kecil di lereng bukit di atas Kota Tua. Dari sini, stasiun dan laut terlihat sekaligus — seperti dua ujung cerita yang sama.",
+      "scene_path": "res://scenes/locations/MakamBukit.tscn",
+      "music": "music_makam",
+      "ambient": "ambient_bukit",
+      "unlock_flag": "chseen_bab3",
+      "env": {"sky_top": "#5c6a8a", "sky_horizon": "#e8c7a0", "ground_bottom": "#2a3226", "ground_horizon": "#8a9a6e", "fog_color": "#d8c8b0", "fog_density": 0.008, "sun_color": "#ffe0b8", "sun_energy": 0.9, "sun_rotation": [-0.55, 0.6], "exposure": 1.0, "ambient_energy": 0.6, "weather": ""},
+      "chapter_env": {"final": {"sky_top": "#1a2140", "sky_horizon": "#c47a5a", "fog_color": "#8c6a62", "sun_color": "#ff9c68", "sun_energy": 0.7, "sun_rotation": [-0.2, 0.6], "exposure": 0.95}},
+      "npcs": [
+        {"character_id": "warga", "slot": "juru_kunci", "display_name": "Juru Kunci", "dialogue_id": "dlg_jurukunci", "wander": 0.0, "variants": {"makam_cerita_done": "dlg_jurukunci_after", "chseen_final": "dlg_jurukunci_final"}}
+      ],
+      "interactables": [
+        {"object_id": "gapura_makam", "display_name": "Gapura Makam", "prompt_key": "prompt_travel", "target_location": "__travel__", "target_spawn": "default"},
+        {"object_id": "nisan_nenek", "display_name": "Nisan Nenek Lastri", "prompt_key": "prompt_examine", "dialogue_id": "dlg_nisan_nenek", "variants": {"gift_makam_bunga": "dlg_nisan_nenek_bunga"}, "journal_text": "Nisan Nenek Lastri: 'Ia menunggu, dan tetap mencintai.'"},
+        {"object_id": "nisan_kakek", "display_name": "Nisan Kakek Darmo", "prompt_key": "prompt_examine", "dialogue_id": "dlg_nisan_kakek", "memory_dialogue": "dlg_mem_makam"},
+        {"object_id": "pohon_kamboja", "display_name": "Pohon Kamboja", "prompt_key": "prompt_pickup", "item_id": "bunga_kamboja", "dialogue_id": "dlg_kamboja", "one_shot": true, "journal_text": "Kamboja di pemakaman selalu berbunga — kata orang, untuk mereka yang tak sempat berpamitan."},
+        {"object_id": "nisan_korban", "display_name": "Dua Belas Nisan", "prompt_key": "prompt_examine", "clue_id": "daftar_korban", "dialogue_id": "dlg_nisan_korban"},
+        {"object_id": "vista_bukit", "display_name": "Sudut Pandang: Bukit", "prompt_key": "prompt_moment", "moment_id": "m_bukit", "dialogue_id": "dlg_moment_bukit"}
+      ]
     }
   ]
 }

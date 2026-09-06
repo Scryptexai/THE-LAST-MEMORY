@@ -387,6 +387,9 @@ func _rebuild_travel() -> void:
 	var gm := GameManager
 	for scene_id in dm.scenes.keys():
 		var data: Dictionary = dm.scenes[scene_id]
+		var unlock_flag: String = str(data.get("unlock_flag", ""))
+		if unlock_flag != "" and not bool(gm.get_flag(unlock_flag, false)):
+			continue  # lokasi belum terbuka (mis. Makam Bukit setelah bab 3)
 		var b := Button.new()
 		var here: String = " 📍" if scene_id == gm.current_location else ""
 		b.text = str(data.get("name", scene_id)) + here
