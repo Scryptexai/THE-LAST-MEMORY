@@ -17,6 +17,7 @@ var _progress_label: Label
 var _hint_label: Label
 var _hint_btn: Button
 var _selected: Array = []
+var _board: EvidenceBoard
 
 
 func _ready() -> void:
@@ -34,7 +35,7 @@ func _build() -> void:
 	center.set_anchors_preset(Control.PRESET_FULL_RECT)
 	add_child(center)
 	var panel := PanelContainer.new()
-	panel.custom_minimum_size = Vector2(1080, 600)
+	panel.custom_minimum_size = Vector2(1080, 640)
 	panel.add_theme_stylebox_override("panel", ThemeFactory.panel_style())
 	center.add_child(panel)
 	var root := VBoxContainer.new()
@@ -101,6 +102,14 @@ func _build() -> void:
 	_detail_body.add_theme_font_override("normal_font", ThemeFactory.body_font(15))
 	_detail_body.add_theme_color_override("default_color", ThemeFactory.CREAM)
 	mid.add_child(_detail_body)
+	var bh := Label.new()
+	bh.text = "🧵 Papan Benang Merah"
+	ThemeFactory.style_label(bh, 15, ThemeFactory.PASTEL_PINK, true)
+	mid.add_child(bh)
+	_board = EvidenceBoard.new()
+	_board.custom_minimum_size = Vector2(300, 230)
+	_board.clue_clicked.connect(_on_clue_toggled)
+	mid.add_child(_board)
 	# Kanan: papan deduksi.
 	var right := VBoxContainer.new()
 	right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -153,6 +162,8 @@ func refresh() -> void:
 	var dm := DataManager
 	var im := InvestigationManager
 	_selected = _selected.filter(func(c: Variant) -> bool: return str(c) in im.clues_found)
+	_board.selected = _selected
+	_board.rebuild()
 	# Daftar clue.
 	for c in _clue_list.get_children():
 		c.queue_free()
@@ -259,6 +270,8 @@ func _on_clue_toggled(clue_id: String) -> void:
 
 
 func refresh_selection_visual() -> void:
+	_board.selected = _selected
+	_board.rebuild()
 	# Bangun ulang daftar agar status toggle sinkron.
 	var keep_detail_name: String = _detail_name.text
 	var keep_detail_body: String = _detail_body.text

@@ -91,6 +91,10 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## 🧵 Papan Benang Merah
+
+- `scripts/ui/EvidenceBoard.gd` (`_draw`) di layar Investigasi: petunjuk yang ditemukan menjadi kartu di papan gabus (kolom per lokasi penemuan), **benang merah** menghubungkan petunjuk yang berbagi tema `related_to` (makin tebal makin banyak kesamaan), **benang emas berdenyut** untuk deduksi yang sudah terpecahkan. Klik kartu = memilih petunjuk (sinkron dengan daftar & papan deduksi).
+
 ## 🔊 Suara Posisional 3D
 
 - `AudioManager.spatial_stream(id)` mensintesis loop prosedural untuk `AudioStreamPlayer3D` (`register_spatial` → ikut slider Suasana & mute); `LocationBase.add_sound_source(pos, id, jarak, dB)`.
