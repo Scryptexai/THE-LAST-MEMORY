@@ -11,6 +11,7 @@ var _toast_box: VBoxContainer
 var _travel_panel: PanelContainer
 var _travel_title: Label
 var _travel_close: Button
+var _town_map: TownMap
 var _travel_list: VBoxContainer
 var _memory_overlay: ColorRect
 var _memory_label: Label
@@ -156,8 +157,8 @@ func _build() -> void:
 	# --- Panel perjalanan (tersembunyi) ---
 	_travel_panel = PanelContainer.new()
 	_travel_panel.set_anchors_preset(Control.PRESET_CENTER)
-	_travel_panel.offset_left = -260
-	_travel_panel.offset_right = 260
+	_travel_panel.offset_left = -430
+	_travel_panel.offset_right = 430
 	_travel_panel.offset_top = -280
 	_travel_panel.offset_bottom = 280
 	_travel_panel.add_theme_stylebox_override("panel", ThemeFactory.panel_style())
@@ -170,10 +171,19 @@ func _build() -> void:
 	ThemeFactory.style_label(_travel_title, 24, ThemeFactory.PASTEL_YELLOW, true)
 	_travel_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	tv.add_child(_travel_title)
+	var cols := HBoxContainer.new()
+	cols.add_theme_constant_override("separation", 12)
+	cols.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	tv.add_child(cols)
+	_town_map = TownMap.new()
+	_town_map.custom_minimum_size = Vector2(340, 380)
+	_town_map.location_picked.connect(_on_travel_to)
+	cols.add_child(_town_map)
 	var scroll := ScrollContainer.new()
-	scroll.custom_minimum_size = Vector2(0, 380)
+	scroll.custom_minimum_size = Vector2(440, 380)
+	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	tv.add_child(scroll)
+	cols.add_child(scroll)
 	_travel_list = VBoxContainer.new()
 	_travel_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_travel_list.add_theme_constant_override("separation", 6)
@@ -384,6 +394,7 @@ func toggle_travel() -> void:
 	_travel_panel.visible = not _travel_panel.visible
 	if _travel_panel.visible:
 		_rebuild_travel()
+		_town_map.queue_redraw()
 
 
 func _rebuild_travel() -> void:

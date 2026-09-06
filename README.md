@@ -91,6 +91,10 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## 🗺️ Peta Kota
+
+- `scripts/ui/TownMap.gd` — peta prosedural (`_draw`): kertas tua, laut, bukit, rel, jalan antar lokasi (putus-putus bila terkunci), node lokasi dari `scenes.json map_pos` (biru = belum dikunjungi, jingga = sudah, abu = terkunci), cincin hijau = posisi kini, cincin kuning berdenyut = tujuan aktif (mati di Mode Detektif). Hover menyorot; klik node = bepergian. Tampil di kolom kiri panel Perjalanan (M).
+
 ## ◇ Perjalanan Baru+ — Jejak Pilihan
 
 - Setiap pilihan dialog dicatat lintas-sesi di `user://memory.json` (`choices`: `node#index`). Di **Baru+**, pilihan yang pernah diambil di permainan mana pun ditandai **◇** sehingga mudah mencari cabang yang belum dijelajahi.

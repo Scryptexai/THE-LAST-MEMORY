@@ -15,6 +15,7 @@
         "sun_rotation": [-0.9, -0.6], "exposure": 1.0, "ambient_energy": 0.7
       },
       "chapter_env": {"bab3": {"sky_top": "#1d2f4a", "sky_horizon": "#d9905e", "sun_color": "#ffc88a", "sun_energy": 0.85, "sun_rotation": [-0.45, -0.9], "fog_color": "#c9986e", "exposure": 0.95}, "final": {"sky_top": "#0b1226", "sky_horizon": "#3a2f55", "ground_bottom": "#05070d", "ground_horizon": "#1f1a33", "sun_color": "#8fa4ff", "sun_energy": 0.35, "sun_rotation": [-0.5, 2.4], "fog_color": "#2a2540", "fog_density": 0.012, "exposure": 0.85, "ambient_energy": 0.45}},
+      "map_pos": [0.3, 0.42],
       "npcs": [
         {"character_id": "bu_rt", "slot": "bu_rt", "display_name": "Bu RT", "dialogue_id": "dlg_burt_intro", "wander": 1.8, "absent_if": ["chseen_bab4 & !chseen_final"], "gifts": {"klepon": {"dialogue": "dlg_burt_klepon", "relationship": {"bu_rt": 0}, "flag": "gift_burt_klepon"}},
          "variants": {"chseen_final": "dlg_burt_final", "chseen_bab3": "dlg_burt_bab3", "burt_bicara": "dlg_burt_after"}}
@@ -48,6 +49,7 @@
         "sun_rotation": [-0.7, 0.4], "exposure": 1.05, "ambient_energy": 0.8
       },
       "chapter_env": {"bab4": {"sky_top": "#2a3a5e", "sky_horizon": "#e9a06a", "sun_color": "#ffb884", "sun_energy": 0.9, "sun_rotation": [-0.4, -1.4], "exposure": 1.0}},
+      "map_pos": [0.5, 0.55],
       "npcs": [
         {
           "character_id": "rara", "display_name": "Rara", "dialogue_id": "dlg_rara_intro", "spots": {"rara_pengakuan_done": "rara_jendela"},
@@ -85,6 +87,7 @@
         "sun_color": "#fff5d8", "sun_energy": 1.35,
         "sun_rotation": [-0.5, 0.2], "exposure": 1.1, "ambient_energy": 0.9
       },
+      "map_pos": [0.68, 0.4],
       "npcs": [
         {"character_id": "mira", "display_name": "Mira", "dialogue_id": "dlg_mira_intro", "spots": {"ded4": "mira_gapura", "chseen_bab3": "mira_arsip"},
          "variants": {"ded4": "dlg_mira_v4", "mira_v2": "dlg_mira_v2"}, "gifts": {"pita_merah": {"dialogue": "dlg_mira_pita", "relationship": {"mira": 3}, "flag": "gift_mira_pita"}}},
@@ -119,6 +122,7 @@
         "sun_rotation": [-1.1, -1.2], "exposure": 0.9, "ambient_energy": 0.45, "weather": "drizzle"
       },
       "chapter_env": {"final": {"sky_top": "#1a2436", "sky_horizon": "#8a7a70", "fog_density": 0.009, "sun_color": "#e8c8a8", "sun_energy": 0.85, "exposure": 1.0, "weather": ""}},
+      "map_pos": [0.82, 0.68],
       "npcs": [
         {"character_id": "warga", "slot": "penjaga", "display_name": "Penjaga Stasiun", "dialogue_id": "dlg_penjaga", "variants": {"quest_lampu_done": "dlg_penjaga_terima", "quest_lampu": "dlg_penjaga_lampu2", "chseen_bab4": "dlg_penjaga_bab4", "gerbong_dibuka": "dlg_penjaga_lampu"}}
       ],
@@ -149,6 +153,7 @@
         "sun_rotation": [-0.35, 1.2], "exposure": 1.05, "ambient_energy": 0.65, "weather": "gulls"
       },
       "chapter_env": {"bab4": {"sky_top": "#2d2c48", "sky_horizon": "#c86a4a", "fog_color": "#a0706a", "fog_density": 0.011, "sun_color": "#ff9a60", "sun_energy": 0.8, "exposure": 0.95, "weather": "drizzle"}},
+      "map_pos": [0.4, 0.84],
       "npcs": [
         {"character_id": "rara", "slot": "rara_pantai", "display_name": "Rara", "dialogue_id": "dlg_rara_pantai_small", "present_if": ["chseen_bab2"],
          "variants": {"rara_pengakuan_done": "dlg_rara_after", "ded3": "dlg_rara_pengakuan"}},
@@ -174,6 +179,7 @@
       "unlock_flag": "chseen_bab3",
       "env": {"sky_top": "#5c6a8a", "sky_horizon": "#e8c7a0", "ground_bottom": "#2a3226", "ground_horizon": "#8a9a6e", "fog_color": "#d8c8b0", "fog_density": 0.008, "sun_color": "#ffe0b8", "sun_energy": 0.9, "sun_rotation": [-0.55, 0.6], "exposure": 1.0, "ambient_energy": 0.6, "weather": ""},
       "chapter_env": {"final": {"sky_top": "#1a2140", "sky_horizon": "#c47a5a", "fog_color": "#8c6a62", "sun_color": "#ff9c68", "sun_energy": 0.7, "sun_rotation": [-0.2, 0.6], "exposure": 0.95}},
+      "map_pos": [0.2, 0.14],
       "npcs": [
         {"character_id": "warga", "slot": "juru_kunci", "display_name": "Juru Kunci", "dialogue_id": "dlg_jurukunci", "wander": 0.0, "variants": {"makam_cerita_done": "dlg_jurukunci_after", "chseen_final": "dlg_jurukunci_final"}}
       ],
