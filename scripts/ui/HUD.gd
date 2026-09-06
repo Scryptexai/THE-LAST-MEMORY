@@ -22,6 +22,9 @@ var _compass_label: Label
 var _compass_cd: float = 0.0
 var _compass_target: Node3D = null
 const ARROWS := ["▲", "◥", "▶", "◢", "▼", "◣", "◀", "◤"]
+var _recap: PanelContainer
+var _recap_body: RichTextLabel
+var _recap_tween: Tween
 
 
 func _ready() -> void:
@@ -170,6 +173,37 @@ func _build() -> void:
 	ThemeFactory.style_button(close_btn, 16)
 	close_btn.pressed.connect(func() -> void: _travel_panel.visible = false)
 	tv.add_child(close_btn)
+	# --- Kartu "Sebelumnya..." saat melanjutkan simpanan ---
+	_recap = PanelContainer.new()
+	_recap.set_anchors_preset(Control.PRESET_CENTER_LEFT)
+	_recap.offset_left = 24
+	_recap.offset_right = 444
+	_recap.offset_top = -150
+	_recap.offset_bottom = 150
+	_recap.add_theme_stylebox_override("panel", ThemeFactory.panel_style(Color(0.04, 0.07, 0.14, 0.92), ThemeFactory.PASTEL_YELLOW, 2, 12))
+	_recap.visible = false
+	add_child(_recap)
+	var rv := VBoxContainer.new()
+	rv.add_theme_constant_override("separation", 6)
+	_recap.add_child(rv)
+	var rt := Label.new()
+	rt.name = "RecapTitle"
+	ThemeFactory.style_label(rt, 18, ThemeFactory.PASTEL_YELLOW, true)
+	rv.add_child(rt)
+	_recap_body = RichTextLabel.new()
+	_recap_body.bbcode_enabled = true
+	_recap_body.fit_content = true
+	_recap_body.scroll_active = false
+	_recap_body.custom_minimum_size = Vector2(380, 0)
+	_recap_body.add_theme_font_override("normal_font", ThemeFactory.body_font(14))
+	_recap_body.add_theme_font_override("bold_font", ThemeFactory.body_font(14))
+	_recap_body.add_theme_color_override("default_color", ThemeFactory.CREAM)
+	rv.add_child(_recap_body)
+	var rb := Button.new()
+	rb.name = "RecapClose"
+	ThemeFactory.style_button(rb, 14)
+	rb.pressed.connect(_hide_recap)
+	rv.add_child(rb)
 	# --- Overlay memori (sepia + label 1983) ---
 	_memory_overlay = ColorRect.new()
 	_memory_overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -298,6 +332,8 @@ func refresh_state() -> void:
 	if gm.state != "gameplay":
 		_travel_panel.visible = false
 		_on_prompt_cleared()
+		if _recap and _recap.visible and gm.state in ["main_menu", "loading", "ending"]:
+			_hide_recap()
 
 
 func toggle_travel() -> void:
@@ -454,3 +490,46 @@ func _on_chapter(chapter_id: String) -> void:
 
 func _hide_chapter_card() -> void:
 	_chapter_card.visible = false
+
+
+## Ringkasan "Sebelumnya di Kota Tua Pesisir": bab, objektif, 3 catatan terakhir, jam main.
+func show_recap() -> void:
+	var dm := DataManager
+	var gm := GameManager
+	var im := InvestigationManager
+	var rm := RelationshipManager
+	(_recap.get_node("VBoxContainer/RecapTitle") as Label).text = dm.tr_key("recap_title")
+	(_recap.get_node("VBoxContainer/RecapClose") as Button).text = dm.tr_key("recap_close")
+	var ch: String = dm.tr_key("chapter_" + gm.current_chapter)
+	var body: String = "[b]%s[/b]\n🎯 %s\n" % [ch, gm.objective_text()]
+	var notes: Array = (im.journal_notes as Array).duplicate()
+	notes.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return int(a.get("order", 0)) > int(b.get("order", 0)))
+	var shown: int = 0
+	for n in notes:
+		var nd: Dictionary = n
+		if str(nd.get("id", "")).begins_with("ach:") or str(nd.get("id", "")).begins_with("met:"):
+			continue
+		body += "\n• " + str(nd.get("text", ""))
+		shown += 1
+		if shown >= 3:
+			break
+	var prog: Dictionary = im.clue_progress()
+	body += "\n\n[color=#BFDBFE]🔍 %d/%d · 🧩 %d/4 · ⏱ %s · Rara 💛%d · Harto 💛%d · Mira 💛%d[/color]" % [
+		prog["found"], prog["total"], (im.deductions_solved as Array).size(),
+		MathUtils.format_playtime(SaveManager.playtime), rm.get_value("rara"), rm.get_value("pak_harto"), rm.get_value("mira")]
+	_recap_body.text = body
+	_recap.visible = true
+	_recap.modulate.a = 0.0
+	if _recap_tween and _recap_tween.is_valid():
+		_recap_tween.kill()
+	_recap_tween = create_tween()
+	_recap_tween.tween_property(_recap, "modulate:a", 1.0, 0.5)
+	_recap_tween.tween_interval(14.0)
+	_recap_tween.tween_property(_recap, "modulate:a", 0.0, 0.8)
+	_recap_tween.tween_callback(_hide_recap)
+
+
+func _hide_recap() -> void:
+	if _recap_tween and _recap_tween.is_valid():
+		_recap_tween.kill()
+	_recap.visible = false

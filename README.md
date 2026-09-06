@@ -91,6 +91,10 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## 📖 Kartu "Sebelumnya…"
+
+- Saat melanjutkan simpanan, HUD menampilkan ringkasan 14 detik (bab, objektif, 3 catatan jurnal terakhir, statistik & relasi) — bisa ditutup manual.
+
 ## ◈ Album Kenangan 1983
 
 - Jurnal tab **Kenangan**: semua kilas balik (node `memory`) yang pernah dialami (flag `memseen_*`) bisa **diputar ulang** dari jurnal tanpa efek ganda (efek node sekali-pakai). Yang belum dialami tampil terkunci. Pencapaian **Penjaga Kenangan** saat semua kilas balik dialami.

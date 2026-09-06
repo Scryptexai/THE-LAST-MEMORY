@@ -39,6 +39,12 @@ func continue_game(data: Dictionary) -> void:
 	in_game = true
 	var gm := GameManager
 	await travel_to(gm.current_location, gm.last_spawn_tag)
+	# Kartu "Sebelumnya..." agar pemain ingat konteks.
+	var ui := $UI as Node
+	if ui.has_method("get_screen"):
+		var hud := ui.call("get_screen", "hud")
+		if hud and hud.has_method("show_recap"):
+			hud.show_recap()
 
 
 func quit_to_menu() -> void:
