@@ -7,6 +7,8 @@ func _build_layout() -> void:
 	layout["spawn:door"] = {"pos": Vector3(0, 0, 6.5), "yaw": 0.0}
 	layout["npc:rara"] = {"pos": Vector3(-1.5, 0, -4.0), "yaw": 0.0}
 	layout["npc:pak_harto"] = {"pos": Vector3(3.6, 0, 0.5), "yaw": -PI / 2}
+	layout["npc:harto_teras"] = {"pos": Vector3(-2.5, 0, 7.0), "yaw": PI}     # setelah bersaksi: duduk di teras
+	layout["npc:rara_jendela"] = {"pos": Vector3(-4.0, 0, 1.5), "yaw": PI / 2}  # setelah pengakuan: menatap jendela
 	layout["obj:pintu_kafe"] = {"pos": Vector3(0, 0, 5.8)}
 	layout["obj:foto_dinding"] = {"pos": Vector3(-4.9, 0, -1.0)}
 	layout["obj:menu_kafe"] = {"pos": Vector3(0.5, 0, -4.0)}

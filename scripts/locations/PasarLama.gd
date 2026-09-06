@@ -7,8 +7,11 @@ func _build_layout() -> void:
 	layout["spawn:default"] = {"pos": Vector3(0, 0, 10), "yaw": 0.0}
 	layout["spawn:gate"] = {"pos": Vector3(0, 0, 8), "yaw": 0.0}
 	layout["npc:mira"] = {"pos": Vector3(4.5, 0, -2.0), "yaw": -PI / 2}
+	layout["npc:mira_arsip"] = {"pos": Vector3(3.2, 0, -4.2), "yaw": PI / 2}   # bab 3: menunggui kios arsip
+	layout["npc:mira_gapura"] = {"pos": Vector3(-1.5, 0, 6.5), "yaw": PI}      # setelah deduksi akhir: hendak pergi
 	layout["npc:pedagang"] = {"pos": Vector3(-4.0, 0, -1.0), "yaw": PI / 2}
 	layout["npc:warga_pasar"] = {"pos": Vector3(1.0, 0, 4.0), "yaw": PI}
+	layout["npc:burt_pasar"] = {"pos": Vector3(5.5, 0, 2.5), "yaw": -PI / 2}  # bab 4+: Bu RT belanja di pasar
 	layout["obj:gapura"] = {"pos": Vector3(0, 0, 7.5)}
 	layout["obj:kios_arsip"] = {"pos": Vector3(4.5, 0, -3.5)}
 	layout["obj:lapak_antik"] = {"pos": Vector3(-4.0, 0, -2.6)}

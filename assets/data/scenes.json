@@ -16,7 +16,7 @@
       },
       "chapter_env": {"bab3": {"sky_top": "#1d2f4a", "sky_horizon": "#d9905e", "sun_color": "#ffc88a", "sun_energy": 0.85, "sun_rotation": [-0.45, -0.9], "fog_color": "#c9986e", "exposure": 0.95}, "final": {"sky_top": "#0b1226", "sky_horizon": "#3a2f55", "ground_bottom": "#05070d", "ground_horizon": "#1f1a33", "sun_color": "#8fa4ff", "sun_energy": 0.35, "sun_rotation": [-0.5, 2.4], "fog_color": "#2a2540", "fog_density": 0.012, "exposure": 0.85, "ambient_energy": 0.45}},
       "npcs": [
-        {"character_id": "bu_rt", "slot": "bu_rt", "display_name": "Bu RT", "dialogue_id": "dlg_burt_intro", "wander": 1.8, "gifts": {"klepon": {"dialogue": "dlg_burt_klepon", "relationship": {"bu_rt": 0}, "flag": "gift_burt_klepon"}},
+        {"character_id": "bu_rt", "slot": "bu_rt", "display_name": "Bu RT", "dialogue_id": "dlg_burt_intro", "wander": 1.8, "absent_if": ["chseen_bab4"], "gifts": {"klepon": {"dialogue": "dlg_burt_klepon", "relationship": {"bu_rt": 0}, "flag": "gift_burt_klepon"}},
          "variants": {"chseen_final": "dlg_burt_final", "chseen_bab3": "dlg_burt_bab3", "burt_bicara": "dlg_burt_after"}}
       ],
       "interactables": [
@@ -50,12 +50,12 @@
       "chapter_env": {"bab4": {"sky_top": "#2a3a5e", "sky_horizon": "#e9a06a", "sun_color": "#ffb884", "sun_energy": 0.9, "sun_rotation": [-0.4, -1.4], "exposure": 1.0}},
       "npcs": [
         {
-          "character_id": "rara", "display_name": "Rara", "dialogue_id": "dlg_rara_intro",
+          "character_id": "rara", "display_name": "Rara", "dialogue_id": "dlg_rara_intro", "spots": {"rara_pengakuan_done": "rara_jendela"},
           "variants": {"rara_pengakuan_done": "dlg_rara_v4", "rara_v3": "dlg_rara_v3", "rara_v2": "dlg_rara_v2"},
           "gifts": {"bunga_liar": {"dialogue": "dlg_rara_bunga", "relationship": {"rara": 3}, "flag": "gift_rara_bunga"}, "kelereng_kaca": {"dialogue": "dlg_rara_kelereng", "relationship": {"rara": 3}, "flag": "gift_rara_kelereng"}}
         },
         {
-          "character_id": "pak_harto", "display_name": "Pak Harto", "dialogue_id": "dlg_harto_intro",
+          "character_id": "pak_harto", "display_name": "Pak Harto", "dialogue_id": "dlg_harto_intro", "spots": {"harto_bersaksi": "harto_teras"},
           "variants": {"ded4": "dlg_harto_v4", "harto_bersaksi": "dlg_harto_after", "harto_terbuka": "dlg_harto_v3", "harto_v2": "dlg_harto_v2"},
           "gifts": {"teh_melati": {"dialogue": "dlg_harto_teh", "relationship": {"pak_harto": 3}, "flag": "gift_harto_teh"}, "buku_catatan": {"dialogue": "dlg_harto_buku", "relationship": {"pak_harto": 3}, "flag": "gift_harto_buku"}}
         }
@@ -86,11 +86,12 @@
         "sun_rotation": [-0.5, 0.2], "exposure": 1.1, "ambient_energy": 0.9
       },
       "npcs": [
-        {"character_id": "mira", "display_name": "Mira", "dialogue_id": "dlg_mira_intro",
+        {"character_id": "mira", "display_name": "Mira", "dialogue_id": "dlg_mira_intro", "spots": {"ded4": "mira_gapura", "chseen_bab3": "mira_arsip"},
          "variants": {"ded4": "dlg_mira_v4", "mira_v2": "dlg_mira_v2"}, "gifts": {"pita_merah": {"dialogue": "dlg_mira_pita", "relationship": {"mira": 3}, "flag": "gift_mira_pita"}}},
         {"character_id": "warga", "slot": "pedagang", "display_name": "Pedagang Antik", "dialogue_id": "dlg_pedagang",
          "variants": {"chseen_bab3": "dlg_pedagang_bab3", "pedagang_bicara": "dlg_pedagang_after"}},
-        {"character_id": "warga", "slot": "warga_pasar", "display_name": "Warga Pasar", "dialogue_id": "dlg_warga_pasar", "variants": {"chseen_bab2": "dlg_warga_bab2"}}
+        {"character_id": "warga", "slot": "warga_pasar", "display_name": "Warga Pasar", "dialogue_id": "dlg_warga_pasar", "variants": {"chseen_bab2": "dlg_warga_bab2"}},
+        {"character_id": "bu_rt", "slot": "burt_pasar", "display_name": "Bu RT", "dialogue_id": "dlg_burt_pasar", "wander": 1.2, "present_if": ["chseen_bab4"], "variants": {"gift_burt_klepon": "dlg_burt_pasar_after"}, "gifts": {"klepon": {"dialogue": "dlg_burt_klepon", "relationship": {"bu_rt": 0}, "flag": "gift_burt_klepon"}}}
       ],
       "interactables": [
         {"object_id": "gapura", "display_name": "Gapura Pasar", "prompt_key": "prompt_travel", "target_location": "__travel__", "target_spawn": "default"},
@@ -149,9 +150,9 @@
       },
       "chapter_env": {"bab4": {"sky_top": "#2d2c48", "sky_horizon": "#c86a4a", "fog_color": "#a0706a", "fog_density": 0.011, "sun_color": "#ff9a60", "sun_energy": 0.8, "exposure": 0.95, "weather": "drizzle"}},
       "npcs": [
-        {"character_id": "rara", "slot": "rara_pantai", "display_name": "Rara", "dialogue_id": "dlg_rara_pantai_small",
+        {"character_id": "rara", "slot": "rara_pantai", "display_name": "Rara", "dialogue_id": "dlg_rara_pantai_small", "present_if": ["chseen_bab2"],
          "variants": {"rara_pengakuan_done": "dlg_rara_after", "ded3": "dlg_rara_pengakuan"}},
-        {"character_id": "mira", "slot": "mira_pantai", "display_name": "Mira", "dialogue_id": "dlg_mira_pantai"}
+        {"character_id": "mira", "slot": "mira_pantai", "display_name": "Mira", "dialogue_id": "dlg_mira_pantai", "present_if": ["chseen_bab3"]}
       ],
       "interactables": [
         {"object_id": "jalan_pantai", "display_name": "Jalan Setapak", "prompt_key": "prompt_travel", "target_location": "__travel__", "target_spawn": "default"},

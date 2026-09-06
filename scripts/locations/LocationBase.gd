@@ -177,9 +177,41 @@ func _spawn_from_data() -> void:
 	var dm := DataManager
 	var data: Dictionary = dm.get_scene_data(location_id)
 	for npc_cfg in data.get("npcs", []):
-		var nid: String = str((npc_cfg as Dictionary).get("slot", (npc_cfg as Dictionary).get("character_id", "warga")))
+		var ncfg: Dictionary = npc_cfg
+		if not _npc_present(ncfg):
+			continue
+		var nid: String = str(ncfg.get("slot", ncfg.get("character_id", "warga")))
 		var info: Dictionary = layout.get("npc:" + nid, {"pos": Vector3(2, 0, 2), "yaw": 0.0})
-		add_npc(npc_cfg, info["pos"], float(info.get("yaw", 0.0)))
+		# Jadwal posisi: "spots": {flag: layout_key} — flag pertama yang true menang.
+		var spots: Dictionary = ncfg.get("spots", {})
+		for f in spots.keys():
+			if _cond_ok(str(f)) and layout.has("npc:" + str(spots[f])):
+				info = layout["npc:" + str(spots[f])]
+				break
+		add_npc(ncfg, info["pos"], float(info.get("yaw", 0.0)))
+
+
+## Kehadiran NPC menurut jadwal flag: "present_if": [...] (semua harus terpenuhi)
+## dan "absent_if": [...] (satu saja terpenuhi → tidak hadir). Kondisi bisa
+## "flag", "!flag", atau "flag=nilai".
+func _npc_present(cfg: Dictionary) -> bool:
+	for c in cfg.get("present_if", []):
+		if not _cond_ok(str(c)):
+			return false
+	for c in cfg.get("absent_if", []):
+		if _cond_ok(str(c)):
+			return false
+	return true
+
+
+func _cond_ok(cond: String) -> bool:
+	var c: String = cond.strip_edges()
+	if c.begins_with("!"):
+		return not _cond_ok(c.substr(1))
+	if "=" in c:
+		var parts: PackedStringArray = c.split("=", true, 1)
+		return str(GameManager.get_flag(parts[0].strip_edges(), "")) == parts[1].strip_edges()
+	return bool(GameManager.get_flag(c, false))
 	for obj_cfg in data.get("interactables", []):
 		var oid: String = str((obj_cfg as Dictionary).get("object_id", "obj"))
 		var oinfo: Dictionary = layout.get("obj:" + oid, {"pos": Vector3(-2, 0, 2), "yaw": 0.0})
