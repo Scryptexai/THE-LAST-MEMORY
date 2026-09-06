@@ -9,6 +9,16 @@ extends CharacterBody3D
 ## Contoh: {"bab2": "dlg_rara_bab2"} + flag "rara_variant" = "bab2" -> pakai varian itu.
 ## Hadiah: {item_id: {"dialogue", "relationship", "flag"}} — diisi LocationBase dari scenes.json.
 var gift_options: Dictionary = {}
+## Radius berkeliling (0 = diam). Warga generik berjalan santai di sekitar posnya.
+var wander_radius: float = 0.0
+
+var _home: Vector3 = Vector3.ZERO
+var _wander_target: Vector3 = Vector3.ZERO
+var _wander_wait: float = 0.0
+var _walk_phase: float = 0.0
+var _wave_t: float = 0.0
+var _waved: bool = false
+var _arm_r: Node3D = null
 
 var _mesh_root: Node3D
 var _label: Label3D
@@ -56,6 +66,19 @@ func _build() -> void:
 	add_child(_label)
 	# Kumpulkan mesh untuk highlight.
 	_collect_meshes(_mesh_root)
+	call_deferred("_init_wander")
+
+
+func _init_wander() -> void:
+	_home = global_position
+	_wander_target = _home
+	_wander_wait = randf_range(1.0, 4.0)
+	if wander_radius <= 0.0 and character_id == "warga":
+		wander_radius = 2.5
+	# Ambil "lengan kanan" (kotak ketiga yang dibuat CharacterFactory) untuk lambaian.
+	var avatar := _mesh_root.get_child(0) as Node3D
+	if avatar and avatar.get_child_count() > 4:
+		_arm_r = avatar.get_child(4) as Node3D
 
 
 func _collect_meshes(n: Node) -> void:
@@ -70,12 +93,59 @@ func _process(delta: float) -> void:
 	# Idle: napas + menoleh ke pemain bila dekat.
 	_mesh_root.scale.y = 1.0 + sin(_t * 1.8 + float(get_instance_id() % 10)) * 0.015
 	var player := get_tree().get_first_node_in_group("player") as Node3D
+	var near_player: bool = false
 	if player:
 		var to: Vector3 = player.global_position - global_position
 		to.y = 0
-		if to.length() < 8.0 and to.length() > 0.05:
+		near_player = to.length() < 8.0
+		if near_player and to.length() > 0.05:
 			var target: float = atan2(-to.x, -to.z)
 			_mesh_root.rotation.y = MathUtils.lerp_angle_stable(_mesh_root.rotation.y, target, delta * 3.0)
+		# Lambaian sekali saat pemain mendekat (< 4 m), reset saat menjauh.
+		if to.length() < 4.0 and not _waved:
+			_waved = true
+			_wave_t = 1.4
+		elif to.length() > 6.0:
+			_waved = false
+	_update_wave(delta)
+	_update_wander(delta, near_player)
+
+
+func _update_wave(delta: float) -> void:
+	if _arm_r == null:
+		return
+	if _wave_t > 0.0:
+		_wave_t -= delta
+		_arm_r.rotation.z = -2.6 + sin(_t * 14.0) * 0.35
+	else:
+		_arm_r.rotation.z = lerpf(_arm_r.rotation.z, 0.0, delta * 6.0)
+
+
+## Berkeliling santai di sekitar pos; berhenti saat pemain dekat atau dialog aktif.
+func _update_wander(delta: float, near_player: bool) -> void:
+	if wander_radius <= 0.0:
+		return
+	if near_player or not GameManager.is_gameplay_input_active():
+		velocity = Vector3.ZERO
+		_mesh_root.position.y = lerpf(_mesh_root.position.y, 0.0, delta * 8.0)
+		return
+	var flat: Vector3 = _wander_target - global_position
+	flat.y = 0.0
+	if flat.length() < 0.25:
+		_wander_wait -= delta
+		_mesh_root.position.y = lerpf(_mesh_root.position.y, 0.0, delta * 8.0)
+		if _wander_wait <= 0.0:
+			var ang: float = randf() * TAU
+			var r: float = randf_range(0.6, wander_radius)
+			_wander_target = _home + Vector3(cos(ang) * r, 0.0, sin(ang) * r)
+			_wander_wait = randf_range(2.0, 6.0)
+		return
+	var dir: Vector3 = flat.normalized()
+	velocity = Vector3(dir.x * 0.9, -1.0, dir.z * 0.9)
+	move_and_slide()
+	_mesh_root.rotation.y = MathUtils.lerp_angle_stable(_mesh_root.rotation.y, atan2(-dir.x, -dir.z), delta * 4.0)
+	_walk_phase += delta * 7.0
+	_mesh_root.position.y = absf(sin(_walk_phase)) * 0.03
 
 
 func get_prompt() -> String:

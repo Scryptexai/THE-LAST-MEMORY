@@ -91,6 +91,10 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## 🚶 NPC Hidup
+
+- NPC melambai sekali saat pemain mendekat (< 4 m). Warga generik (dan NPC dengan `wander` di `scenes.json`) berjalan santai di sekitar posnya, berhenti saat pemain dekat/dialog aktif.
+
 ## 📖 Kartu "Sebelumnya…"
 
 - Saat melanjutkan simpanan, HUD menampilkan ringkasan 14 detik (bab, objektif, 3 catatan jurnal terakhir, statistik & relasi) — bisa ditutup manual.

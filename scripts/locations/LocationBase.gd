@@ -170,6 +170,7 @@ func add_npc(cfg: Dictionary, pos: Vector3, yaw: float) -> Node:
 	npc.set("dialogue_id", str(cfg.get("dialogue_id", "")))
 	npc.set("dialogue_flag_variants", cfg.get("variants", {}))
 	npc.set("gift_options", cfg.get("gifts", {}))
+	npc.set("wander_radius", float(cfg.get("wander", 0.0)))
 	add_child(npc)
 	npc.global_position = pos
 	npc.rotation.y = yaw

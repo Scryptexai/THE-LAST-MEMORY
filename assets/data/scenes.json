@@ -15,7 +15,7 @@
         "sun_rotation": [-0.9, -0.6], "exposure": 1.0, "ambient_energy": 0.7
       },
       "npcs": [
-        {"character_id": "bu_rt", "slot": "bu_rt", "display_name": "Bu RT", "dialogue_id": "dlg_burt_intro",
+        {"character_id": "bu_rt", "slot": "bu_rt", "display_name": "Bu RT", "dialogue_id": "dlg_burt_intro", "wander": 1.8,
          "variants": {"chseen_final": "dlg_burt_final", "chseen_bab3": "dlg_burt_bab3", "burt_bicara": "dlg_burt_after"}}
       ],
       "interactables": [
