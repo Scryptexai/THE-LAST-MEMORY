@@ -93,8 +93,8 @@ THE-LAST-MEMORY/
 
 ## 🕰️ Jadwal NPC per Bab
 
-- `scenes.json` NPC mendukung `present_if` / `absent_if` (kondisi `flag`, `!flag`, `flag=nilai`) dan `spots: {flag: layout_key}` untuk berpindah posisi. Dievaluasi saat memasuki lokasi.
-- Rara & Mira baru muncul di Pantai setelah bab 2/3; Mira menunggui kios arsip di bab 3 lalu berdiri di gapura setelah deduksi akhir; Pak Harto pindah ke teras setelah bersaksi; Rara menatap jendela setelah pengakuan; **Bu RT** pindah dari rumah nenek ke Pasar Lama mulai bab 4 (2 dialog baru, hadiah klepon tetap bisa diberikan di sana).
+- `scenes.json` NPC mendukung `present_if` / `absent_if` (kondisi `flag`, `!flag`, `flag=nilai`, gabungan `a & !b`) dan `spots: {flag: layout_key}` untuk berpindah posisi. Dievaluasi saat memasuki lokasi.
+- Rara & Mira baru muncul di Pantai setelah bab 2/3; Mira menunggui kios arsip di bab 3 lalu berdiri di gapura setelah deduksi akhir; Pak Harto pindah ke teras setelah bersaksi; Rara menatap jendela setelah pengakuan; **Bu RT** pindah dari rumah nenek ke Pasar Lama pada bab 4 dan kembali di bab final (2 dialog baru, hadiah klepon tetap bisa diberikan di sana).
 
 ## 🧪 Validasi Otomatis
 

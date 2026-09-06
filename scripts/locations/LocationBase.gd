@@ -193,7 +193,7 @@ func _spawn_from_data() -> void:
 
 ## Kehadiran NPC menurut jadwal flag: "present_if": [...] (semua harus terpenuhi)
 ## dan "absent_if": [...] (satu saja terpenuhi → tidak hadir). Kondisi bisa
-## "flag", "!flag", atau "flag=nilai".
+## "flag", "!flag", "flag=nilai", atau gabungan dengan " & " (semua harus true).
 func _npc_present(cfg: Dictionary) -> bool:
 	for c in cfg.get("present_if", []):
 		if not _cond_ok(str(c)):
@@ -206,6 +206,11 @@ func _npc_present(cfg: Dictionary) -> bool:
 
 func _cond_ok(cond: String) -> bool:
 	var c: String = cond.strip_edges()
+	if "&" in c:
+		for part in c.split("&"):
+			if not _cond_ok(str(part)):
+				return false
+		return true
 	if c.begins_with("!"):
 		return not _cond_ok(c.substr(1))
 	if "=" in c:
