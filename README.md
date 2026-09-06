@@ -91,6 +91,10 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## ◈ Album Kenangan 1983
+
+- Jurnal tab **Kenangan**: semua kilas balik (node `memory`) yang pernah dialami (flag `memseen_*`) bisa **diputar ulang** dari jurnal tanpa efek ganda (efek node sekali-pakai). Yang belum dialami tampil terkunci. Pencapaian **Penjaga Kenangan** saat semua kilas balik dialami.
+
 ## 🧭 Kompas Tujuan
 
 - `objectives.json` → `location`: HUD menampilkan panah relatif kamera + nama + jarak ke portal keluar (bila tujuan di lokasi lain) atau ke objek petunjuk terdekat yang belum ditemukan (bila di lokasi yang sama). Nonaktif di Mode Detektif.

@@ -44,6 +44,8 @@ func _show_node(node_id: String) -> void:
 	_apply_node_effects_once(node_id, effects)
 	# Mode memori?
 	var is_memory: bool = bool(current_node.get("memory", false))
+	if is_memory:
+		GameManager.set_flag("memseen_" + node_id, true)
 	if is_memory and not _memory_open:
 		_memory_open = true
 		bus.memory_flashback_started.emit(node_id)

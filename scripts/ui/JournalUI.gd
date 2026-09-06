@@ -9,6 +9,7 @@ var _moments_list: VBoxContainer
 var _ach_list: VBoxContainer
 var _photos_box: VBoxContainer
 var _choices_list: VBoxContainer
+var _memories_list: VBoxContainer
 var _tabs: TabContainer
 var _stats_label: Label
 
@@ -57,6 +58,7 @@ func _build() -> void:
 	_ach_list = _make_tab("Pencapaian")
 	_photos_box = _make_tab("Foto")
 	_choices_list = _make_tab("Pilihan")
+	_memories_list = _make_tab("Kenangan")
 
 
 func _make_tab(tab_name: String) -> VBoxContainer:
@@ -81,6 +83,58 @@ func refresh() -> void:
 	_refresh_achievements()
 	_refresh_photos()
 	_refresh_choices()
+	_refresh_memories()
+
+
+## Album kilas balik 1983: kenangan yang sudah dialami bisa diputar ulang.
+func _refresh_memories() -> void:
+	var dm := DataManager
+	var gm := GameManager
+	for c in _memories_list.get_children():
+		c.queue_free()
+	var roots: Array = dm.memory_roots()
+	var seen: int = 0
+	for nid in roots:
+		if bool(gm.get_flag("memseen_" + str(nid), false)):
+			seen += 1
+	var head := Label.new()
+	head.text = dm.tr_key("journal_memories_head").format({"n": seen, "t": roots.size()})
+	ThemeFactory.style_label(head, 16, ThemeFactory.PASTEL_YELLOW, true)
+	_memories_list.add_child(head)
+	for nid in roots:
+		var node: Dictionary = dm.get_dialogue(str(nid))
+		var known: bool = bool(gm.get_flag("memseen_" + str(nid), false))
+		var p := PanelContainer.new()
+		p.add_theme_stylebox_override("panel", ThemeFactory.panel_style(Color(0.22, 0.15, 0.07, 0.9) if known else Color(0.1, 0.12, 0.18, 0.8), Color(0.85, 0.65, 0.3, 0.6) if known else Color(0.4, 0.4, 0.45, 0.4), 1, 6))
+		var hb := HBoxContainer.new()
+		hb.add_theme_constant_override("separation", 10)
+		p.add_child(hb)
+		var vb := VBoxContainer.new()
+		vb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		hb.add_child(vb)
+		var nm := Label.new()
+		nm.text = ("◈ %s · 1983" % str(node.get("speaker", "???"))) if known else "◈ ??? · 1983"
+		ThemeFactory.style_label(nm, 16, ThemeFactory.PASTEL_YELLOW if known else Color(0.55, 0.55, 0.6), true)
+		vb.add_child(nm)
+		var t := Label.new()
+		var full: String = dm.localized(node)
+		t.text = (full.substr(0, 90) + ("…" if full.length() > 90 else "")) if known else dm.tr_key("journal_memory_locked")
+		t.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		ThemeFactory.style_label(t, 14, ThemeFactory.CREAM if known else Color(0.6, 0.6, 0.65))
+		vb.add_child(t)
+		if known:
+			var b := Button.new()
+			b.text = dm.tr_key("journal_memory_replay")
+			ThemeFactory.style_button(b, 14)
+			b.pressed.connect(_on_replay_memory.bind(str(nid)))
+			hb.add_child(b)
+		_memories_list.add_child(p)
+
+
+func _on_replay_memory(node_id: String) -> void:
+	SignalBus.sfx_requested.emit("sfx_memory")
+	GameManager.change_state("gameplay")
+	DialogueManager.start_dialogue(node_id)
 
 
 ## Riwayat pilihan dialog (terbaru di atas) + waktu bermain saat memilih.

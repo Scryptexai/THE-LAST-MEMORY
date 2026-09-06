@@ -160,6 +160,28 @@ func epilogue_lines() -> Array:
 	return out
 
 
+## Node kilas balik yang bisa diputar ulang: node memory yang bukan lanjutan
+## node memory lain, dan bukan bagian rangkaian final (berujung pilihan ending).
+func memory_roots() -> Array:
+	var continuations: Dictionary = {}
+	for nid in dialogues.keys():
+		var n: Dictionary = dialogues[nid]
+		if bool(n.get("memory", false)):
+			var nx: String = str(n.get("next", ""))
+			if nx != "" and nx != "END":
+				continuations[nx] = true
+	var out: Array = []
+	for nid in dialogues.keys():
+		var n: Dictionary = dialogues[nid]
+		if not bool(n.get("memory", false)):
+			continue
+		if continuations.has(nid) or str(nid).begins_with("dlg_final"):
+			continue
+		out.append(str(nid))
+	out.sort()
+	return out
+
+
 ## Lokasi tujuan objektif ("" bila tidak terikat lokasi, mis. papan deduksi).
 func get_objective_location(objective_id: String) -> String:
 	return str((objectives.get(objective_id, {}) as Dictionary).get("location", ""))

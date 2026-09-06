@@ -70,5 +70,12 @@ func evaluate() -> void:
 			ng += 1
 	if ng >= 5:
 		unlock("ach_generous")
+	var roots: Array = dm.memory_roots()
+	var nmem: int = 0
+	for nid in roots:
+		if bool(gm.get_flag("memseen_" + str(nid), false)):
+			nmem += 1
+	if roots.size() > 0 and nmem >= roots.size():
+		unlock("ach_archivist")
 	if GameManager.completion_percent() >= 100:
 		unlock("ach_completionist")

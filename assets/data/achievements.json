@@ -14,6 +14,7 @@
     {"id": "ach_photographer", "name": "Fotografer Bebas", "name_en": "Free Photographer", "desc": "Jepret satu foto bebas di mode foto.", "desc_en": "Take one free photo in photo mode."},
     {"id": "ach_generous", "name": "Murah Hati", "name_en": "Big Heart", "desc": "Berikan semua hadiah kepada pemiliknya.", "desc_en": "Give every gift to its owner."},
     {"id": "ach_hardboiled", "name": "Detektif Sejati", "name_en": "Hard-Boiled", "desc": "Saksikan ending mana pun dalam Mode Detektif.", "desc_en": "Reach any ending in Detective Mode."},
+    {"id": "ach_archivist", "name": "Penjaga Kenangan", "name_en": "Keeper of Memories", "desc": "Alami semua kilas balik 1983.", "desc_en": "Experience every 1983 flashback."},
     {"id": "ach_completionist", "name": "Sempurna", "name_en": "Completionist", "desc": "Capai 100% penyelesaian.", "desc_en": "Reach 100% completion."}
   ]
 }

@@ -76,7 +76,10 @@
     "ending_epilogue": "Epilog",
     "journal_choices_empty": "Belum ada pilihan yang dibuat.",
     "journal_choices_head": "🗣 {n} pilihan dibuat",
-    "settings_auto_advance": "▶▶ Dialog lanjut otomatis (tekan A saat dialog)"
+    "settings_auto_advance": "▶▶ Dialog lanjut otomatis (tekan A saat dialog)",
+    "journal_memories_head": "◈ Kilas balik 1983: {n}/{t}",
+    "journal_memory_locked": "Belum dialami. Sentuh benda-benda peninggalan 1983.",
+    "journal_memory_replay": "▶ Putar ulang"
   },
   "en": {
     "menu_subtitle": "A Life is Strange mystery in Kota Tua Pesisir",
@@ -155,6 +158,9 @@
     "ending_epilogue": "Epilogue",
     "journal_choices_empty": "No choices made yet.",
     "journal_choices_head": "🗣 {n} choices made",
-    "settings_auto_advance": "▶▶ Auto-advance dialogue (press A during dialogue)"
+    "settings_auto_advance": "▶▶ Auto-advance dialogue (press A during dialogue)",
+    "journal_memories_head": "◈ 1983 flashbacks: {n}/{t}",
+    "journal_memory_locked": "Not yet experienced. Touch relics from 1983.",
+    "journal_memory_replay": "▶ Replay"
   }
 }
