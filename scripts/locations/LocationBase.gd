@@ -23,11 +23,28 @@ var _thunder_delay: float = 0.0
 
 
 func _ready() -> void:
+	add_to_group("location")
 	_build_layout()
 	_build_visuals()
 	_apply_env()
 	_apply_weather()
 	_spawn_from_data()
+
+
+## Zona permukaan langkah kaki: Array of {"rect": Rect2 (x,z), "surface": String}.
+## Diperiksa berurutan; jika tak ada yang cocok dipakai `default_surface`.
+var surface_zones: Array = []
+var default_surface: String = "grass"
+
+
+## Permukaan di posisi dunia (x,z) untuk sfx langkah kaki.
+func surface_at(world_pos: Vector3) -> String:
+	var p := Vector2(world_pos.x, world_pos.z)
+	for z in surface_zones:
+		var zone: Dictionary = z
+		if (zone.get("rect", Rect2()) as Rect2).has_point(p):
+			return str(zone.get("surface", default_surface))
+	return default_surface
 
 
 ## Di-override subclass: isi `layout` (spawn + posisi tiap id).

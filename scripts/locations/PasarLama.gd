@@ -17,6 +17,7 @@ func _build_layout() -> void:
 	layout["obj:papan_pasar"] = {"pos": Vector3(-6.0, 0, 3.0)}
 	layout["obj:gerobak"] = {"pos": Vector3(6.5, 0, 4.5)}
 	layout["obj:vista_gapura"] = {"pos": Vector3(0, 0, 9.5)}
+	default_surface = "stone"  # paving pasar
 
 
 func _build_visuals() -> void:

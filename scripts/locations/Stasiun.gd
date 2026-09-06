@@ -10,6 +10,8 @@ func _build_layout() -> void:
 	layout["obj:gerbang_stasiun"] = {"pos": Vector3(-6, 0, 7.5)}
 	layout["obj:loket"] = {"pos": Vector3(-6.5, 0, -2.0)}
 	layout["obj:kait_lampu"] = {"pos": Vector3(-5.0, 0, -2.6)}
+	default_surface = "gravel"
+	surface_zones = [{"rect": Rect2(-9.0, -1.5, 18.0, 6.0), "surface": "stone"}]  # peron beton
 	layout["obj:papan_jadwal"] = {"pos": Vector3(5.5, 0, -1.5)}
 	layout["obj:gerbong_gelap"] = {"pos": Vector3(2.0, 0, -5.5)}
 	layout["obj:peluit_rel"] = {"pos": Vector3(-2.5, 0, -4.6)}

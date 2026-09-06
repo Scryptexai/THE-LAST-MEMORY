@@ -13,6 +13,8 @@ func _build_layout() -> void:
 	layout["obj:nisan_korban"] = {"pos": Vector3(6.0, 0, -1.0)}
 	layout["obj:vista_bukit"] = {"pos": Vector3(0.0, 0, -8.0)}
 	layout["npc:juru_kunci"] = {"pos": Vector3(3.5, 0, 4.0), "yaw": -0.8}
+	default_surface = "grass"
+	surface_zones = [{"rect": Rect2(-1.5, -12.0, 3.0, 30.0), "surface": "gravel"}]  # jalan setapak
 
 
 func _build_visuals() -> void:

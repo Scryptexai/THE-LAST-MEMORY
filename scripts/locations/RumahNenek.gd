@@ -19,6 +19,11 @@ func _build_layout() -> void:
 	layout["obj:radio_tua"] = {"pos": Vector3(0.5, 0, -4.8)}
 	layout["obj:tempat_tidur"] = {"pos": Vector3(4.8, 0, 4.2)}
 	layout["obj:vista_teras"] = {"pos": Vector3(0, 0, 10.5)}
+	default_surface = "grass"
+	surface_zones = [
+		{"rect": Rect2(-7.0, -6.0, 14.0, 12.0), "surface": "wood"},   # lantai rumah
+		{"rect": Rect2(-1.0, 6.5, 2.0, 6.0), "surface": "stone"},     # jalan setapak teras
+	]
 
 
 func _build_visuals() -> void:

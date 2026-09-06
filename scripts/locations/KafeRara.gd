@@ -15,6 +15,8 @@ func _build_layout() -> void:
 	layout["obj:papan_kafe"] = {"pos": Vector3(4.9, 0, -3.5)}
 	layout["obj:teras_bunga"] = {"pos": Vector3(-4.0, 0, 6.5)}
 	layout["obj:vista_etalase"] = {"pos": Vector3(0, 0, 8.2)}
+	default_surface = "stone"
+	surface_zones = [{"rect": Rect2(-6.0, -5.5, 12.0, 11.0), "surface": "wood"}]  # lantai kafe
 
 
 func _build_visuals() -> void:

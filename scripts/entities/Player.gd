@@ -12,6 +12,7 @@ var cam_yaw: float = 0.0
 var cam_pitch: float = -0.32
 var current_interactable: Node = null
 var footstep_timer: float = 0.0
+var _step_parity: bool = false  # kiri/kanan → variasi nada langkah
 var _walk_phase: float = 0.0
 var _mesh_root: Node3D
 var _cam_pivot: Node3D
@@ -196,13 +197,15 @@ func _update_footsteps(delta: float) -> void:
 	if footstep_timer <= 0.0:
 		footstep_timer = 0.34 if _running else 0.5
 		var surface: String = "grass"
-		if abs(global_position.y) < 0.6:
-			# Di dalam/lok Atas lantai kayu vs luar — pendekatan sederhana:
-			# lokasi rumah/kafe/stasiun memakai langkah kayu.
+		var loc_node: Node = get_tree().get_first_node_in_group("location")
+		if loc_node and loc_node.has_method("surface_at"):
+			surface = str(loc_node.call("surface_at", global_position))
+		else:
 			var loc: String = GameManager.current_location
 			if loc in ["rumah_nenek", "kafe_rara", "stasiun"]:
 				surface = "wood"
-		SignalBus.sfx_requested.emit("sfx_footstep_" + surface)
+		_step_parity = not _step_parity
+		SignalBus.sfx_requested.emit("sfx_footstep_" + surface + ("" if _step_parity else "_b"))
 
 
 # ---------- Interaksi ----------

@@ -91,6 +91,11 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## 👣 Langkah Kaki per Permukaan
+
+- `LocationBase.surface_zones` + `default_surface`; `Player` menanyakan `surface_at(pos)` tiap langkah. Enam permukaan prosedural: kayu, rumput, **pasir** & **kerikil** (`_crunch` derau ber-envelope), **batu**, **papan dermaga** (`_plank`: thump + derit). Langkah kiri/kanan berselang nada (`_b`).
+- Zona: lantai rumah/kafe (kayu), teras & pasar (batu), pantai (pasir, dermaga papan), stasiun (kerikil rel, peron batu), Makam Bukit (rumput, setapak kerikil).
+
 ## 📜 Epilog Kota (berbasis flag)
 
 - `epilogues.json` kini mendukung entri **tanpa karakter**: tier dipilih dari `flags` (semua harus true) + opsional `met`. Nama entri via `name_key` (ui_strings).

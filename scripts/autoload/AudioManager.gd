@@ -340,8 +340,20 @@ func _synth_sfx(sfx_id: String) -> AudioStreamWAV:
 			return _chime([523.25, 659.25, 783.99, 1046.5, 1318.5], 1.0, 0.4)
 		"sfx_footstep_wood":
 			return _thump(140.0, 0.09, 0.35)
+		"sfx_footstep_wood_b":
+			return _thump(128.0, 0.1, 0.33)
 		"sfx_footstep_grass":
 			return _thump(95.0, 0.11, 0.25)
+		"sfx_footstep_grass_b":
+			return _thump(88.0, 0.12, 0.23)
+		"sfx_footstep_sand", "sfx_footstep_sand_b":
+			return _crunch(0.12, 0.16, 0.6 if sfx_id.ends_with("_b") else 0.7)
+		"sfx_footstep_gravel", "sfx_footstep_gravel_b":
+			return _crunch(0.09, 0.3, 0.9 if sfx_id.ends_with("_b") else 1.0)
+		"sfx_footstep_stone", "sfx_footstep_stone_b":
+			return _thump(210.0 if sfx_id.ends_with("_b") else 240.0, 0.06, 0.3)
+		"sfx_footstep_plank", "sfx_footstep_plank_b":
+			return _plank(sfx_id.ends_with("_b"))
 		"sfx_door_open":
 			return _sweep(180.0, 420.0, 0.45, 0.3)
 		"sfx_photo_taken":
@@ -386,6 +398,42 @@ func _chime(freqs: Array, seconds: float, amp: float) -> AudioStreamWAV:
 				var lt: float = t - start
 				v += sin(TAU * float(freqs[k]) * lt) * exp(-4.0 * lt)
 		samples[i] = v * amp / float(freqs.size()) * 2.0
+	return _make_wav(samples)
+
+
+## Langkah di pasir/kerikil: derau ber-envelope; `grit` mengatur kekasaran high-pass.
+func _crunch(seconds: float, amp: float, grit: float) -> AudioStreamWAV:
+	var n: int = int(MIX_RATE * seconds)
+	var samples := PackedFloat32Array()
+	samples.resize(n)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 77
+	var prev: float = 0.0
+	var lp: float = 0.0
+	for i in n:
+		var t: float = float(i) / MIX_RATE
+		var noise: float = rng.randf() * 2.0 - 1.0
+		var hp: float = noise - prev
+		prev = noise
+		lp = lp * 0.7 + noise * 0.3
+		var env: float = exp(-22.0 * t) * (0.4 + 0.6 * minf(1.0, t / 0.01))
+		samples[i] = (hp * grit + lp * (1.0 - grit)) * env * amp
+	return _make_wav(samples)
+
+
+## Papan dermaga: thump rendah + derit pendek yang naik nada.
+func _plank(alt: bool) -> AudioStreamWAV:
+	var n: int = int(MIX_RATE * 0.16)
+	var samples := PackedFloat32Array()
+	samples.resize(n)
+	var f0: float = 620.0 if alt else 540.0
+	for i in n:
+		var t: float = float(i) / MIX_RATE
+		var v: float = sin(TAU * 110.0 * t) * exp(-28.0 * t) * 0.35
+		if t > 0.03:
+			var ts: float = t - 0.03
+			v += sin(TAU * (f0 + 300.0 * ts) * ts) * exp(-18.0 * ts) * 0.12
+		samples[i] = v
 	return _make_wav(samples)
 
 

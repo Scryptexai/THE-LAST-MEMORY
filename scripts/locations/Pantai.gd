@@ -15,6 +15,8 @@ func _build_layout() -> void:
 	layout["obj:mercusuar"] = {"pos": Vector3(9.0, 0, -4.0)}
 	layout["obj:dermaga"] = {"pos": Vector3(7.5, 0, -1.0)}
 	layout["obj:vista_senja"] = {"pos": Vector3(7.5, 0, 0.5)}
+	default_surface = "sand"
+	surface_zones = [{"rect": Rect2(6.7, -8.0, 1.6, 8.0), "surface": "plank"}]  # dermaga
 
 
 func _build_visuals() -> void:
