@@ -91,6 +91,10 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## 🎞 Filter Mode Foto
+
+- Tekan **F** (Shift+F mundur) di Mode Foto untuk memutar filter: Normal, **Film 1983** (sepia + butir + vignette), **Hitam Putih**, **Senja Hangat**. Filter dirender di `CanvasLayer` layer 5 (di bawah UI) sehingga ikut tertangkap saat jepret; nama file foto diberi akhiran tag filter (`_1983`, `_bw`, `_senja`).
+
 ## 📋 Tab Tugas di Jurnal
 
 - `assets/data/quests.json` — tugas sampingan data-driven (`start_flag`, `done_flag`, `steps[]` dengan flag per langkah, `count: moments` untuk penghitung). `GameManager.quest_status()` mengembalikan hidden/active/done + progres.

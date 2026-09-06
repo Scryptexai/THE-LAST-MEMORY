@@ -33,6 +33,9 @@ func photo_path(filename: String) -> String:
 
 
 ## Jepret layar (UI disembunyikan sesaat) lalu simpan PNG berstempel waktu.
+var current_filter: String = ""  # tag filter aktif dari PhotoModeUI ("", "1983", "bw", "senja")
+
+
 func capture() -> void:
 	if capturing:
 		return
@@ -52,7 +55,7 @@ func capture() -> void:
 		return
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(PHOTO_DIR))
 	var stamp := Time.get_datetime_string_from_system().replace(":", "").replace("-", "").replace(" ", "_")
-	var fname := "foto_" + stamp + ".png"
+	var fname := "foto_" + stamp + ("_" + current_filter if current_filter != "" else "") + ".png"
 	if img.save_png(PHOTO_DIR + "/" + fname) != OK:
 		Logger.warn("PhotoManager: gagal menyimpan foto.")
 		capturing = false

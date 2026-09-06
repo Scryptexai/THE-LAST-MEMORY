@@ -14,6 +14,18 @@ var _bottom_bar: ColorRect
 var _hint_label: Label
 var _zoom_label: Label
 var _grid: Array = []
+var _filter_layer: CanvasLayer
+var _filter_rect: ColorRect
+var _filter_label: Label
+var _filter_idx: int = 0
+
+## Filter foto: nama kunci ui_strings + mode shader.
+const FILTERS := [
+	{"key": "photo_filter_normal", "mode": 0, "tag": ""},
+	{"key": "photo_filter_1983", "mode": 1, "tag": "1983"},
+	{"key": "photo_filter_bw", "mode": 2, "tag": "bw"},
+	{"key": "photo_filter_senja", "mode": 3, "tag": "senja"},
+]
 
 
 func _ready() -> void:
@@ -48,6 +60,50 @@ func _ready() -> void:
 	_hint_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	ThemeFactory.style_label(_hint_label, 17, Color(0.92, 0.92, 0.95))
 	add_child(_hint_label)
+	_filter_label = Label.new()
+	_filter_label.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	_filter_label.offset_top = 54.0
+	_filter_label.offset_bottom = 84.0
+	_filter_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	ThemeFactory.style_label(_filter_label, 16, Color(0.95, 0.88, 0.7))
+	add_child(_filter_label)
+	# Lapisan filter di bawah UI (layer 5) agar ikut tertangkap saat PhotoManager
+	# menyembunyikan lapisan UI utama.
+	_filter_layer = CanvasLayer.new()
+	_filter_layer.layer = 5
+	_filter_layer.visible = false
+	add_child(_filter_layer)
+	_filter_rect = ColorRect.new()
+	_filter_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_filter_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var sh := Shader.new()
+	sh.code = """
+shader_type canvas_item;
+uniform sampler2D screen_tex : hint_screen_texture, filter_linear;
+uniform int mode = 0;
+void fragment() {
+	vec3 c = texture(screen_tex, SCREEN_UV).rgb;
+	float l = dot(c, vec3(0.299, 0.587, 0.114));
+	vec2 d = SCREEN_UV - vec2(0.5);
+	float vig = 1.0 - smoothstep(0.35, 0.95, length(d) * 1.35);
+	if (mode == 1) {
+		vec3 sep = vec3(l) * vec3(1.15, 0.98, 0.78);
+		c = mix(c, sep, 0.85) * (0.9 + 0.1 * vig);
+		c += (fract(sin(dot(SCREEN_UV * vec2(431.0, 297.0) + TIME, vec2(12.9898, 78.233))) * 43758.5453) - 0.5) * 0.05;
+	} else if (mode == 2) {
+		float k = smoothstep(0.05, 0.95, l);
+		c = vec3(k) * (0.85 + 0.15 * vig);
+	} else if (mode == 3) {
+		vec3 warm = c * vec3(1.12, 0.96, 0.82) + vec3(0.06, 0.02, 0.0);
+		c = mix(warm, vec3(l) * vec3(1.0, 0.8, 0.6), 0.2) * (0.88 + 0.12 * vig);
+	}
+	COLOR = vec4(c, 1.0);
+}
+"""
+	var m := ShaderMaterial.new()
+	m.shader = sh
+	_filter_rect.material = m
+	_filter_layer.add_child(_filter_rect)
 	visibility_changed.connect(_on_visibility_changed)
 	call_deferred("_layout")
 
@@ -90,11 +146,28 @@ func _on_visibility_changed() -> void:
 			_orig_fov = _cam.fov
 		_hint_label.text = DataManager.tr_key("photo_hint")
 		_update_zoom_label()
+		_apply_filter()
+		_filter_layer.visible = true
 		_layout()
 	else:
 		if _cam and is_instance_valid(_cam):
 			_cam.fov = _orig_fov
 		_cam = null
+		_filter_layer.visible = false
+		PhotoManager.current_filter = ""
+
+
+func _apply_filter() -> void:
+	var f: Dictionary = FILTERS[_filter_idx]
+	(_filter_rect.material as ShaderMaterial).set_shader_parameter("mode", int(f["mode"]))
+	_filter_label.text = "🎞 " + DataManager.tr_key(str(f["key"])) + "  (F)"
+	PhotoManager.current_filter = str(f["tag"])
+
+
+func _cycle_filter(dir: int) -> void:
+	_filter_idx = posmod(_filter_idx + dir, FILTERS.size())
+	_apply_filter()
+	SignalBus.sfx_requested.emit("sfx_dialogue_click")
 
 
 func _update_zoom_label() -> void:
@@ -132,3 +205,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_accept"):
 		PhotoManager.capture()
 		get_viewport().set_input_as_handled()
+	elif event is InputEventKey and (event as InputEventKey).pressed and not (event as InputEventKey).echo:
+		var k := event as InputEventKey
+		if k.physical_keycode == KEY_F:
+			_cycle_filter(-1 if k.shift_pressed else 1)
+			get_viewport().set_input_as_handled()
