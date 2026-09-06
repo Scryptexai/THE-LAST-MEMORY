@@ -233,11 +233,13 @@ func has_any_save() -> bool:
 func load_global() -> Dictionary:
 	var data: Dictionary = SaveUtils.from_json(SaveUtils.read_text_file(GLOBAL_PATH))
 	if data.is_empty():
-		return {"endings": [], "achievements": []}
+		return {"endings": [], "achievements": [], "choices": []}
 	if not data.has("endings"):
 		data["endings"] = []
 	if not data.has("achievements"):
 		data["achievements"] = []
+	if not data.has("choices"):
+		data["choices"] = []
 	if not data.has("stats"):
 		data["stats"] = {}
 	return data
@@ -266,7 +268,7 @@ func global_stat(key: String) -> float:
 
 
 func record_global(kind: String, id: String) -> void:
-	if kind != "endings" and kind != "achievements":
+	if kind != "endings" and kind != "achievements" and kind != "choices":
 		return
 	var g := load_global()
 	var arr: Array = (g.get(kind, []) as Array).duplicate()
@@ -274,6 +276,27 @@ func record_global(kind: String, id: String) -> void:
 		arr.append(id)
 	g[kind] = arr
 	SaveUtils.write_text_file(GLOBAL_PATH, SaveUtils.to_json(g))
+
+
+## Pilihan dialog yang pernah diambil di permainan mana pun ("node#index").
+var _global_choices: Dictionary = {}
+var _global_choices_loaded: bool = false
+
+
+func choice_taken_before(node_id: String, index: int) -> bool:
+	if not _global_choices_loaded:
+		for c in (load_global().get("choices", []) as Array):
+			_global_choices[str(c)] = true
+		_global_choices_loaded = true
+	return _global_choices.has("%s#%d" % [node_id, index])
+
+
+func record_choice(node_id: String, index: int) -> void:
+	var key: String = "%s#%d" % [node_id, index]
+	if choice_taken_before(node_id, index):
+		return
+	_global_choices[key] = true
+	record_global("choices", key)
 
 
 func delete_slot(slot: int) -> void:

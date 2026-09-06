@@ -104,6 +104,7 @@ func choose(index: int) -> bool:
 	history.append({"node": str(current_node.get("id", "")), "choice": index,
 		"text": dm.localized(choice), "time": SaveManager.playtime})
 	bus2.dialogue_choice_made.emit(str(current_node.get("id", "")), index, dm.localized(choice))
+	SaveManager.record_choice(str(current_node.get("id", "")), index)
 	bus2.sfx_requested.emit("sfx_dialogue_click")
 	var next_id: String = str(choice.get("next", ""))
 	# Efek yang melekat pada choice (sekali saja per pilihan).

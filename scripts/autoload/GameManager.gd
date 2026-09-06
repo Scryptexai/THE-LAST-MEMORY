@@ -299,10 +299,12 @@ func new_game(plus: bool = false, hard: bool = false) -> void:
 	SaveManager.reset_playtime()
 	SaveManager.start_tracking()
 	var im := InvestigationManager
+	new_game_plus = plus
 	if plus:
 		im.moments_taken = kept_moments
 		im.hints_left = 5
 		set_flag("ng_plus", true)
+		im.add_item("kelereng_kaca")  # kenang-kenangan dari perjalanan sebelumnya
 		im.add_journal_note("ngplus", "Perjalanan Baru+: foto kenangan dan pengalaman terbawa.", DataManager.tr_key("journal_src_story"))
 	if hard:
 		im.hints_left = 0

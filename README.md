@@ -91,6 +91,11 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## ◇ Perjalanan Baru+ — Jejak Pilihan
+
+- Setiap pilihan dialog dicatat lintas-sesi di `user://memory.json` (`choices`: `node#index`). Di **Baru+**, pilihan yang pernah diambil di permainan mana pun ditandai **◇** sehingga mudah mencari cabang yang belum dijelajahi.
+- Baru+ juga membawa `kelereng_kaca` dan membuka pilihan pembuka khusus (`dlg_intro_ngplus`, déjà vu).
+
 ## ♿ Aksesibilitas
 
 - Pengaturan baru (tersimpan di `settings.json`): **Ukuran Antarmuka** 85–140 % (`Window.content_scale_factor`), **Kontras tinggi** (kotak dialog hitam pekat, bingkai putih, teks putih 21 px), **Kurangi gerakan** (tanpa goyangan jalan dan tanpa kamera sinematik kilas balik). Sinyal `accessibility_changed` untuk UI lain.

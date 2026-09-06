@@ -190,6 +190,8 @@ func _rebuild_choices(node: Dictionary, dlgm: Node, dm: Node) -> void:
 				label_text = "🔒 " + label_text + "\n   ↳ " + str(avail.get("reason", ""))
 			elif rel_preview != "":
 				label_text += "\n   ↳ " + rel_preview
+			if GameManager.new_game_plus and SaveManager.choice_taken_before(str(node.get("id", "")), i):
+				label_text = "◇ " + label_text  # NG+: pernah dipilih di perjalanan sebelumnya
 			b.text = "%d. %s" % [i + 1, label_text]
 			b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 			ThemeFactory.style_button(b, 16)
