@@ -1,0 +1,97 @@
+{
+  "decisions": [
+    {
+      "id": "d_rara_surat",
+      "node": "dlg_rara_intro_q",
+      "icon": "☕",
+      "label": "Surat nenek pada Rara",
+      "label_en": "Grandma's letters and Rara",
+      "options": {
+        "0": {
+          "text": "Menceritakan semuanya",
+          "text_en": "Told her everything"
+        },
+        "1": {
+          "text": "Merahasiakan dulu",
+          "text_en": "Kept it secret"
+        }
+      }
+    },
+    {
+      "id": "d_harto_sapa",
+      "node": "dlg_harto_intro",
+      "icon": "🎩",
+      "label": "Pertemuan pertama dengan Pak Harto",
+      "label_en": "First meeting with Mr. Harto",
+      "options": {
+        "0": {
+          "text": "Sopan memperkenalkan diri",
+          "text_en": "Introduced yourself politely"
+        },
+        "1": {
+          "text": "Langsung menodong soal 1983",
+          "text_en": "Pressed about 1983 at once"
+        }
+      }
+    },
+    {
+      "id": "d_mira_percaya",
+      "node": "dlg_mira_intro",
+      "icon": "📰",
+      "label": "Kepercayaan pada Mira",
+      "label_en": "Trusting Mira",
+      "options": {
+        "0": {
+          "text": "Berbagi penyelidikan",
+          "text_en": "Shared the investigation"
+        },
+        "1": {
+          "text": "Menjaga jarak",
+          "text_en": "Kept your distance"
+        }
+      }
+    },
+    {
+      "id": "d_intro",
+      "node": "dlg_intro_01",
+      "icon": "🏠",
+      "label": "Langkah pertama di rumah nenek",
+      "label_en": "First steps in grandma's house",
+      "options": {
+        "0": {
+          "text": "Melihat sekeliling dulu",
+          "text_en": "Looked around first"
+        },
+        "1": {
+          "text": "Langsung ke loteng",
+          "text_en": "Straight to the attic"
+        },
+        "2": {
+          "text": "Déjà vu (Baru+)",
+          "text_en": "Déjà vu (New+)"
+        }
+      }
+    },
+    {
+      "id": "d_final",
+      "node": "dlg_final_pilih",
+      "icon": "⚖️",
+      "label": "Keputusan akhir",
+      "label_en": "The final decision",
+      "options": {
+        "0": {
+          "text": "Mengungkap seluruh kebenaran",
+          "text_en": "Revealed the whole truth"
+        },
+        "1": {
+          "text": "Melindungi keluarga Rara",
+          "text_en": "Protected Rara's family"
+        },
+        "2": {
+          "text": "Mengubur rahasia",
+          "text_en": "Buried the secret"
+        }
+      }
+    }
+  ]
+}

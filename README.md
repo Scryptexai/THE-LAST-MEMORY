@@ -91,6 +91,10 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## ⚖️ Jejak Keputusan di Layar Ending
+
+- `assets/data/decisions.json` mendefinisikan keputusan kunci (node + label opsi). Layar ending menampilkan pilihanmu untuk setiap keputusan, plus persentase **"X % dari perjalananmu memilih ini"** dari hitungan lintas-sesi (`memory.json choice_tally`), dan pengingat jumlah ending yang belum dibuka.
+
 ## 🗺️ Peta Kota
 
 - `scripts/ui/TownMap.gd` — peta prosedural (`_draw`): kertas tua, laut, bukit, rel, jalan antar lokasi (putus-putus bila terkunci), node lokasi dari `scenes.json map_pos` (biru = belum dikunjungi, jingga = sudah, abu = terkunci), cincin hijau = posisi kini, cincin kuning berdenyut = tujuan aktif (mati di Mode Detektif). Hover menyorot; klik node = bepergian. Tampil di kolom kiri panel Perjalanan (M).

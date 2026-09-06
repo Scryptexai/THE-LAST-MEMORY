@@ -97,6 +97,7 @@ func _on_ending(ending_id: String) -> void:
 		for ln in lines:
 			var l: Dictionary = ln
 			_desc.text += "\n%s [b]%s[/b] — %s" % [str(l["icon"]), str(l["name"]), str(l["text"])]
+	_desc.text += _decision_trail(dm)
 	var prog: Dictionary = im.clue_progress()
 	_stats.text = "Petunjuk %d/%d   ·   Deduksi %d/4   ·   Rara 💛%d   Harto 💛%d   Mira 💛%d\nWaktu %s   ·   Pilihan %d   ·   Ending %d/4   \u00b7   \u2605 %d%%" % [
 		prog["found"], prog["total"], (im.deductions_solved as Array).size(),
@@ -104,6 +105,43 @@ func _on_ending(ending_id: String) -> void:
 		MathUtils.format_playtime(sm.playtime), (DialogueManager.history as Array).size(),
 		(gm.endings_seen as Array).size(), gm.completion_percent()]
 	SignalBus.music_requested.emit(str(e.get("music", "music_ending")))
+
+
+## Jejak keputusan kunci perjalanan ini + perbandingan dengan perjalanan sebelumnya.
+func _decision_trail(dm: Node) -> String:
+	var sm := SaveManager
+	var gm := GameManager
+	var picked: Dictionary = {}
+	for h in DialogueManager.history:
+		var hd: Dictionary = h
+		picked[str(hd.get("node", ""))] = int(hd.get("choice", -1))
+	var out: String = ""
+	for d in dm.decisions:
+		var dd: Dictionary = d
+		var node: String = str(dd.get("node", ""))
+		if not picked.has(node):
+			continue
+		var idx: String = str(picked[node])
+		var opts: Dictionary = dd.get("options", {})
+		var o: Dictionary = opts.get(idx, {})
+		var label: String = str(dd.get("label_en", dd.get("label", ""))) if dm.language == "en" else str(dd.get("label", ""))
+		var otext: String = str(o.get("text_en", o.get("text", "?"))) if dm.language == "en" else str(o.get("text", "?"))
+		var tally: Dictionary = sm.choice_tally(node)
+		var total: int = 0
+		for k in tally.keys():
+			total += int(tally[k])
+		var pct: String = ""
+		if total >= 2:
+			pct = "  [color=#93C5FD](%d%% %s)[/color]" % [int(round(100.0 * float(tally.get(idx, 0)) / float(total))), dm.tr_key("ending_trail_pct")]
+		out += "\n%s [b]%s[/b] — %s%s" % [str(dd.get("icon", "•")), label, otext, pct]
+	if out == "":
+		return ""
+	var head: String = "\n\n[color=#FBBF24][b]— %s —[/b][/color]" % dm.tr_key("ending_trail")
+	# Petunjuk ending yang belum dibuka.
+	var missing: int = dm.endings.size() - (gm.endings_seen as Array).size()
+	if missing > 0:
+		out += "\n\n[i]%s[/i]" % dm.tr_key("ending_trail_more").format({"n": missing})
+	return head + out
 
 
 func _on_explore() -> void:

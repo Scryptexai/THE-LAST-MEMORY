@@ -294,10 +294,29 @@ func choice_taken_before(node_id: String, index: int) -> bool:
 
 func record_choice(node_id: String, index: int) -> void:
 	var key: String = "%s#%d" % [node_id, index]
+	_bump_choice_tally(key)
 	if choice_taken_before(node_id, index):
 		return
 	_global_choices[key] = true
 	record_global("choices", key)
+
+
+## Hitungan pilihan lintas-sesi (untuk "di perjalananmu yang lain, X% memilih ...").
+func _bump_choice_tally(key: String) -> void:
+	var g := load_global()
+	var tally: Dictionary = (g.get("choice_tally", {}) as Dictionary).duplicate()
+	tally[key] = int(tally.get(key, 0)) + 1
+	g["choice_tally"] = tally
+	SaveUtils.write_text_file(GLOBAL_PATH, SaveUtils.to_json(g))
+
+
+func choice_tally(node_id: String) -> Dictionary:
+	var out: Dictionary = {}
+	var tally: Dictionary = load_global().get("choice_tally", {})
+	for k in tally.keys():
+		if str(k).begins_with(node_id + "#"):
+			out[str(k).get_slice("#", 1)] = int(tally[k])
+	return out
 
 
 func delete_slot(slot: int) -> void:
