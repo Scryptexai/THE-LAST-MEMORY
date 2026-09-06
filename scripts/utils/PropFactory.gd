@@ -347,6 +347,37 @@ func make_rug(parent: Node3D, pos: Vector3, size: Vector2, color: Color) -> void
 
 
 ## Partikel debu melayang (untuk loteng / ruangan bernostalgia).
+## Gerimis: partikel garis jatuh miring di atas area (stasiun suram).
+func make_rain(parent: Node3D, center: Vector3, extents: Vector3, amount: int = 420) -> GPUParticles3D:
+	var p := GPUParticles3D.new()
+	p.amount = amount
+	p.lifetime = 1.6
+	p.preprocess = 1.6
+	p.position = center
+	var m := ParticleProcessMaterial.new()
+	m.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_BOX
+	m.emission_box_extents = extents
+	m.direction = Vector3(0.15, -1.0, 0.05)
+	m.spread = 2.0
+	m.gravity = Vector3(0, -9.0, 0)
+	m.initial_velocity_min = 7.0
+	m.initial_velocity_max = 9.5
+	m.scale_min = 0.8
+	m.scale_max = 1.2
+	p.process_material = m
+	var quad := QuadMesh.new()
+	quad.size = Vector2(0.02, 0.38)
+	var qm := StandardMaterial3D.new()
+	qm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	qm.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	qm.albedo_color = Color(0.8, 0.86, 0.95, 0.32)
+	qm.billboard_mode = BaseMaterial3D.BILLBOARD_FIXED_Y
+	quad.material = qm
+	p.draw_pass_1 = quad
+	parent.add_child(p)
+	return p
+
+
 func make_dust_motes(parent: Node3D, center: Vector3, extents: Vector3, tint: Color = Color(1.0, 0.92, 0.75, 0.45)) -> GPUParticles3D:
 	var p := GPUParticles3D.new()
 	p.amount = 48

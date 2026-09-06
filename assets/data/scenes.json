@@ -110,7 +110,7 @@
         "ground_bottom": "#14161c", "ground_horizon": "#5a4a3d",
         "fog_color": "#9a8a76", "fog_density": 0.014,
         "sun_color": "#d8b090", "sun_energy": 0.7,
-        "sun_rotation": [-1.1, -1.2], "exposure": 0.9, "ambient_energy": 0.45
+        "sun_rotation": [-1.1, -1.2], "exposure": 0.9, "ambient_energy": 0.45, "weather": "drizzle"
       },
       "npcs": [
         {"character_id": "warga", "slot": "penjaga", "display_name": "Penjaga Stasiun", "dialogue_id": "dlg_penjaga", "variants": {"chseen_bab4": "dlg_penjaga_bab4"}}
@@ -138,7 +138,7 @@
         "ground_bottom": "#1c1a2e", "ground_horizon": "#e0703f",
         "fog_color": "#e89878", "fog_density": 0.005,
         "sun_color": "#ffb070", "sun_energy": 1.0,
-        "sun_rotation": [-0.35, 1.2], "exposure": 1.05, "ambient_energy": 0.65
+        "sun_rotation": [-0.35, 1.2], "exposure": 1.05, "ambient_energy": 0.65, "weather": "gulls"
       },
       "npcs": [
         {"character_id": "rara", "slot": "rara_pantai", "display_name": "Rara", "dialogue_id": "dlg_rara_pantai_small",

@@ -15,6 +15,7 @@ const TIPS := [
 	"TIPS: Tekan M untuk membuka peta perjalanan antarlokasi.",
 	"TIPS: Penanda emas berarti Momen - abadikan 5 kenangan kota.",
 	"TIPS: Persahabatan membuka pintu yang terkunci bagi orang asing.",
+	"TIPS: Stasiun selalu gerimis. Dengarkan guntur di kejauhan.",
 ]
 
 

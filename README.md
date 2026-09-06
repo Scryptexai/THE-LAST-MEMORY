@@ -91,6 +91,11 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## 🌦 Cuaca & Langit Hidup
+
+- `scenes.json` → `env.weather`: `"drizzle"` (gerimis partikel + kilat & guntur acak, layer hujan di ambient) atau `"gulls"` (kawanan camar `GullFlock` berputar di langit).
+- Semua lokasi: matahari "bernapas" (awan berlalu) lewat `LocationBase._update_sky()`.
+
 ## 📝 Catatan Teknis
 
 - Bahasa: Indonesia (default) & Inggris (dialog + UI). Ganti di Pengaturan.

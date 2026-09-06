@@ -12,12 +12,21 @@ var layout: Dictionary = {}   # id -> {"pos": Vector3, "yaw": float}
 var pf := PropFactory.new()
 var _npcs: Array = []
 var _objs: Array = []
+# Cuaca & langit hidup (dari scenes.json env.weather: "", "drizzle", "gulls").
+var _weather: String = ""
+var _sun: DirectionalLight3D = null
+var _sun_base_energy: float = 0.0
+var _sky_t: float = 0.0
+var _flash_timer: float = 9.0
+var _flash_left: float = 0.0
+var _thunder_delay: float = 0.0
 
 
 func _ready() -> void:
 	_build_layout()
 	_build_visuals()
 	_apply_env()
+	_apply_weather()
 	_spawn_from_data()
 
 
@@ -43,7 +52,8 @@ func enter(spawn_tag: String) -> void:
 	GameManager.notify_location_loaded(location_id)
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
+	_update_sky(delta)
 	# Batasi pemain di dalam area lokasi (radius 28).
 	var player := get_tree().get_first_node_in_group("player") as Node3D
 	if player:
@@ -92,6 +102,44 @@ func _apply_env() -> void:
 		sun.light_energy = float(env_data.get("sun_energy", 1.1))
 		var rot: Array = env_data.get("sun_rotation", [-0.9, -0.6])
 		sun.rotation = Vector3(float(rot[0]), float(rot[1]), 0)
+		_sun = sun
+		_sun_base_energy = sun.light_energy
+	_weather = str(env_data.get("weather", ""))
+
+
+# ---------- Cuaca & langit hidup ----------
+
+## Efek cuaca per lokasi: gerimis (partikel + kilat/guntur) atau kawanan camar.
+func _apply_weather() -> void:
+	match _weather:
+		"drizzle":
+			pf.make_rain(self, Vector3(0, 11.0, 0), Vector3(26.0, 0.5, 26.0))
+		"gulls":
+			var flock := GullFlock.new()
+			flock.position = Vector3(0, 0, -6.0)
+			add_child(flock)
+
+
+## Awan berlalu (energi matahari bernapas) + kilat sesekali saat gerimis.
+func _update_sky(delta: float) -> void:
+	_sky_t += delta
+	if _sun and is_instance_valid(_sun) and _sun_base_energy > 0.0:
+		var cloud: float = 1.0 + 0.06 * sin(_sky_t * 0.17) + 0.03 * sin(_sky_t * 0.41 + 1.3)
+		if _flash_left > 0.0:
+			_flash_left -= delta
+			cloud *= 2.4
+		_sun.light_energy = _sun_base_energy * cloud
+	if _weather != "drizzle":
+		return
+	_flash_timer -= delta
+	if _flash_timer <= 0.0:
+		_flash_timer = randf_range(14.0, 28.0)
+		_flash_left = 0.14
+		_thunder_delay = 0.9
+	if _thunder_delay > 0.0:
+		_thunder_delay -= delta
+		if _thunder_delay <= 0.0:
+			SignalBus.sfx_requested.emit("sfx_thunder")
 
 
 func _color(v: Variant) -> Color:
