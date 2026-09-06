@@ -14,6 +14,7 @@ const PATH_OBJECTIVES := "res://assets/data/objectives.json"
 const PATH_MOMENTS := "res://assets/data/moments.json"
 const PATH_ACHIEVEMENTS := "res://assets/data/achievements.json"
 const PATH_EPILOGUES := "res://assets/data/epilogues.json"
+const PATH_QUESTS := "res://assets/data/quests.json"
 
 var dialogues: Dictionary = {}      # id -> node
 var characters: Dictionary = {}     # id -> data
@@ -27,6 +28,7 @@ var objectives: Dictionary = {}     # objective_id -> {text, text_en}
 var moments: Dictionary = {}        # moment_id -> data
 var achievements: Dictionary = {}   # ach_id -> data
 var epilogues: Array = []           # Array[Dictionary] {id, character, icon, tiers[]}
+var quests: Array = []              # Array[Dictionary] tugas sampingan (quests.json)
 
 var language: String = "id"
 
@@ -50,6 +52,7 @@ func load_all() -> void:
 	moments = _index(_load_array(PATH_MOMENTS, "moments"))
 	achievements = _index(_load_array(PATH_ACHIEVEMENTS, "achievements"))
 	epilogues = _load_array(PATH_EPILOGUES, "epilogues")
+	quests = _load_array(PATH_QUESTS, "quests")
 	Logger.info("DataManager: %d dialog, %d karakter, %d clue, %d deduksi dimuat." % [
 		dialogues.size(), characters.size(), clues.size(), deductions.size()])
 

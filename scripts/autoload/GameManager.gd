@@ -92,8 +92,23 @@ func toggle_pause() -> void:
 # ---------- Flags / chapter / objektif ----------
 
 func set_flag(flag_name: String, value: Variant) -> void:
+	var was: Variant = flags.get(flag_name, null)
 	flags[flag_name] = value
 	SignalBus.flag_changed.emit(flag_name, value)
+	if bool(value) and not bool(was):
+		_announce_quest_flag(flag_name)
+
+
+## Toast saat flag memulai/menyelesaikan tugas sampingan (quests.json).
+func _announce_quest_flag(flag_name: String) -> void:
+	var dm := DataManager
+	for q in dm.quests:
+		var qd: Dictionary = q
+		var qname: String = str(qd.get("name_en", qd.get("name", ""))) if dm.language == "en" else str(qd.get("name", ""))
+		if str(qd.get("done_flag", "")) == flag_name:
+			SignalBus.toast_requested.emit(dm.tr_key("toast_quest_done").format({"name": qname}), "achievement")
+		elif str(qd.get("start_flag", "")) == flag_name and str(qd.get("start_flag", "")).begins_with("quest_"):
+			SignalBus.toast_requested.emit(dm.tr_key("toast_quest_start").format({"name": qname}), "system")
 
 
 func get_flag(flag_name: String, default: Variant = null) -> Variant:
@@ -108,6 +123,33 @@ func set_chapter(chapter_id: String) -> void:
 	SignalBus.chapter_changed.emit(chapter_id)
 	Logger.info("GameManager: chapter -> %s" % chapter_id)
 	_announce_unlocked_locations(chapter_id)
+
+
+## Status tugas sampingan: "hidden" | "active" | "done" (+ progres langkah).
+func quest_status(q: Dictionary) -> Dictionary:
+	var im := InvestigationManager
+	var start_flag: String = str(q.get("start_flag", ""))
+	var done_flag: String = str(q.get("done_flag", ""))
+	var steps: Array = q.get("steps", [])
+	var out: Dictionary = {"state": "hidden", "step_done": 0, "step_total": steps.size(), "count": -1, "count_total": -1}
+	if start_flag != "" and not bool(get_flag(start_flag, false)):
+		return out
+	out["state"] = "active"
+	if str(q.get("count", "")) == "moments":
+		out["count"] = (im.moments_taken as Array).size()
+		out["count_total"] = DataManager.moments.size()
+		if int(out["count_total"]) > 0 and int(out["count"]) >= int(out["count_total"]):
+			out["state"] = "done"
+	var n: int = 0
+	for s in steps:
+		var f: String = str((s as Dictionary).get("flag", ""))
+		if f != "" and bool(get_flag(f, false)):
+			n += 1
+	out["step_done"] = n
+	if done_flag != "" and bool(get_flag(done_flag, false)):
+		out["state"] = "done"
+		out["step_done"] = steps.size()
+	return out
 
 
 ## Toast bila bab ini membuka lokasi baru (scenes.json "unlock_flag").

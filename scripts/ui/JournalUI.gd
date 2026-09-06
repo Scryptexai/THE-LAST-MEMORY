@@ -10,6 +10,7 @@ var _ach_list: VBoxContainer
 var _photos_box: VBoxContainer
 var _choices_list: VBoxContainer
 var _memories_list: VBoxContainer
+var _quests_list: VBoxContainer
 var _tabs: TabContainer
 var _stats_label: Label
 
@@ -59,6 +60,7 @@ func _build() -> void:
 	_photos_box = _make_tab("Foto")
 	_choices_list = _make_tab("Pilihan")
 	_memories_list = _make_tab("Kenangan")
+	_quests_list = _make_tab("Tugas")
 
 
 func _make_tab(tab_name: String) -> VBoxContainer:
@@ -84,6 +86,64 @@ func refresh() -> void:
 	_refresh_photos()
 	_refresh_choices()
 	_refresh_memories()
+	_refresh_quests()
+
+
+## Tab Tugas: tujuan utama + tugas sampingan (quests.json) dengan progres langkah.
+func _refresh_quests() -> void:
+	for c in _quests_list.get_children():
+		c.queue_free()
+	var dm := DataManager
+	var gm := GameManager
+	var main_box := PanelContainer.new()
+	main_box.add_theme_stylebox_override("panel", ThemeFactory.panel_style(Color(0.16, 0.2, 0.12, 0.85), ThemeFactory.PASTEL_YELLOW, 1, 8))
+	_quests_list.add_child(main_box)
+	var mv := VBoxContainer.new()
+	main_box.add_child(mv)
+	var mt := Label.new()
+	ThemeFactory.style_label(mt, 16, ThemeFactory.PASTEL_YELLOW, true)
+	mt.text = "🎯 " + dm.tr_key("quests_main")
+	mv.add_child(mt)
+	var mb := Label.new()
+	ThemeFactory.style_label(mb, 14, Color(0.92, 0.92, 0.92))
+	mb.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	mb.text = gm.objective_text()
+	mv.add_child(mb)
+	var shown: int = 0
+	for q in dm.quests:
+		var qd: Dictionary = q
+		var st: Dictionary = gm.quest_status(qd)
+		if str(st["state"]) == "hidden":
+			continue
+		shown += 1
+		var done: bool = str(st["state"]) == "done"
+		var card := PanelContainer.new()
+		card.add_theme_stylebox_override("panel", ThemeFactory.panel_style(
+			Color(0.08, 0.12, 0.2, 0.75), Color(0.45, 0.75, 0.45, 0.8) if done else Color(0.3, 0.35, 0.45, 0.6), 1, 8))
+		_quests_list.add_child(card)
+		var v := VBoxContainer.new()
+		card.add_child(v)
+		var t := Label.new()
+		ThemeFactory.style_label(t, 16, Color(0.6, 0.9, 0.6) if done else Color(0.95, 0.95, 0.95), true)
+		var qname: String = str(qd.get("name_en", qd.get("name", ""))) if dm.language == "en" else str(qd.get("name", ""))
+		var loc_name: String = str((dm.get_scene_data(str(qd.get("location", ""))) as Dictionary).get("name", ""))
+		t.text = "%s %s%s  %s" % [str(qd.get("icon", "•")), qname, ("  ✔" if done else ""), ("· " + loc_name if loc_name != "" else "")]
+		v.add_child(t)
+		var steps: Array = qd.get("steps", [])
+		for i in steps.size():
+			var s: Dictionary = steps[i]
+			var sl := Label.new()
+			var step_ok: bool = done or i < int(st["step_done"])
+			ThemeFactory.style_label(sl, 13, Color(0.55, 0.75, 0.55) if step_ok else Color(0.8, 0.8, 0.85))
+			sl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+			var stext: String = str(s.get("text_en", s.get("text", ""))) if dm.language == "en" else str(s.get("text", ""))
+			var extra: String = ""
+			if int(st["count_total"]) > 0:
+				extra = "  (%d/%d)" % [int(st["count"]), int(st["count_total"])]
+			sl.text = ("   ☑ " if step_ok else "   ☐ ") + stext + extra
+			v.add_child(sl)
+	if shown == 0:
+		_quests_list.add_child(_empty_label(dm.tr_key("quests_empty")))
 
 
 ## Album kilas balik 1983: kenangan yang sudah dialami bisa diputar ulang.

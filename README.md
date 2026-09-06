@@ -91,6 +91,11 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## 📋 Tab Tugas di Jurnal
+
+- `assets/data/quests.json` — tugas sampingan data-driven (`start_flag`, `done_flag`, `steps[]` dengan flag per langkah, `count: moments` untuk penghitung). `GameManager.quest_status()` mengembalikan hidden/active/done + progres.
+- Jurnal tab **Tugas**: tujuan utama + kartu tugas (☐/☑ per langkah, ✔ selesai, lokasi). Toast saat tugas dimulai/selesai. Empat tugas: Klepon untuk Bu RT, Lampu Loket, Tangan yang Tak Kosong (Makam Bukit), Kota dalam Bingkai (momen x/6).
+
 ## 👣 Langkah Kaki per Permukaan
 
 - `LocationBase.surface_zones` + `default_surface`; `Player` menanyakan `surface_at(pos)` tiap langkah. Enam permukaan prosedural: kayu, rumput, **pasir** & **kerikil** (`_crunch` derau ber-envelope), **batu**, **papan dermaga** (`_plank`: thump + derit). Langkah kiri/kanan berselang nada (`_b`).

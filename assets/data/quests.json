@@ -1,0 +1,84 @@
+{
+  "quests": [
+    {
+      "id": "q_klepon",
+      "icon": "🍡",
+      "name": "Klepon untuk Bu RT",
+      "name_en": "Klepon for Bu RT",
+      "start_flag": "quest_klepon",
+      "done_flag": "gift_burt_klepon",
+      "location": "rumah_nenek",
+      "steps": [
+        {
+          "flag": "quest_klepon",
+          "text": "Beli klepon hangat dari Pedagang Antik di Pasar Lama.",
+          "text_en": "Buy warm klepon from the Antique Vendor at the Old Market."
+        },
+        {
+          "flag": "gift_burt_klepon",
+          "text": "Serahkan klepon kepada Bu RT Sumi di depan rumah nenek.",
+          "text_en": "Give the klepon to Bu RT Sumi outside grandma's house."
+        }
+      ]
+    },
+    {
+      "id": "q_lampu",
+      "icon": "🕯️",
+      "name": "Lampu Loket",
+      "name_en": "The Booth Lamp",
+      "start_flag": "quest_lampu",
+      "done_flag": "quest_lampu_done",
+      "location": "stasiun",
+      "steps": [
+        {
+          "flag": "quest_lampu",
+          "text": "Terima lampu minyak dari Penjaga Stasiun.",
+          "text_en": "Take the oil lamp from the Station Keeper."
+        },
+        {
+          "flag": "quest_lampu_done",
+          "text": "Gantung dan nyalakan lampu di Kait Lampu Loket.",
+          "text_en": "Hang and light the lamp on the booth hook."
+        }
+      ]
+    },
+    {
+      "id": "q_pamit",
+      "icon": "⛰️",
+      "name": "Tangan yang Tak Kosong",
+      "name_en": "Hands Not Empty",
+      "start_flag": "chseen_bab3",
+      "done_flag": "makam_pamit",
+      "location": "makam_bukit",
+      "steps": [
+        {
+          "flag": "makam_cerita_done",
+          "text": "Dengarkan cerita Juru Kunci di Makam Bukit.",
+          "text_en": "Hear the Keeper's story at the Hill Cemetery."
+        },
+        {
+          "flag": "makam_pamit",
+          "text": "Petik kamboja dan letakkan di nisan Nenek.",
+          "text_en": "Pick a frangipani and lay it on Grandma's grave."
+        }
+      ]
+    },
+    {
+      "id": "q_momen",
+      "icon": "📷",
+      "name": "Kota dalam Bingkai",
+      "name_en": "Town in Frames",
+      "start_flag": "chseen_prolog",
+      "done_flag": "",
+      "count": "moments",
+      "location": "",
+      "steps": [
+        {
+          "flag": "",
+          "text": "Abadikan semua Sudut Pandang (penanda emas) di tiap lokasi.",
+          "text_en": "Capture every Viewpoint (gold marker) in each location."
+        }
+      ]
+    }
+  ]
+}
