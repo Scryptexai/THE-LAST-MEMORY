@@ -143,6 +143,16 @@ def main() -> int:
         if q.get("location") and q["location"] not in scene_ids:
             errs.append(f"quest {q['id']} lokasi {q['location']} tidak ada")
 
+    for d in load("assets/data/decisions.json")["decisions"]:
+        node = dlg.get(d.get("node", ""))
+        if node is None:
+            errs.append(f"decision {d['id']}: node {d.get('node')} tidak ada")
+            continue
+        n_choices = len(node.get("choices", []))
+        for idx in d.get("options", {}):
+            if not idx.isdigit() or int(idx) >= n_choices:
+                errs.append(f"decision {d['id']}: opsi {idx} di luar jangkauan ({n_choices} pilihan)")
+
     def effect_lists(n, key):
         out = list(n.get("effects", {}).get(key, []))
         for ch in n.get("choices", []):
