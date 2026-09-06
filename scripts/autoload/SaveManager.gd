@@ -73,14 +73,14 @@ func start_tracking() -> void:
 
 func stop_tracking() -> void:
 	if _tracking:
-		record_global_stat("total_playtime", playtime - _tracked_since)
+		record_global_stat("total_playtime", maxf(playtime - _tracked_since, 0.0))
 		_tracked_since = playtime
 	_tracking = false
 
 
 func reset_playtime() -> void:
 	if _tracking:
-		record_global_stat("total_playtime", playtime - _tracked_since)
+		record_global_stat("total_playtime", maxf(playtime - _tracked_since, 0.0))
 	playtime = 0.0
 	_tracked_since = 0.0
 
@@ -138,7 +138,10 @@ func apply(data: Dictionary) -> bool:
 	var rm := RelationshipManager
 	var dm := DialogueManager
 	var am := AudioManager
+	if _tracking:
+		record_global_stat("total_playtime", maxf(playtime - _tracked_since, 0.0))
 	playtime = float(data.get("playtime", 0.0))
+	_tracked_since = playtime
 	gm.current_chapter = str(data.get("chapter", "prolog"))
 	gm.current_location = str(data.get("location", "rumah_nenek"))
 	gm.last_spawn_tag = str(data.get("spawn_tag", "default"))
