@@ -53,6 +53,7 @@ func _show_node(node_id: String) -> void:
 		bus.music_requested.emit("music_memory")
 	elif not is_memory and _memory_open:
 		_memory_open = false
+		bus.sfx_requested.emit("sfx_memory_exit")
 		bus.memory_flashback_ended.emit(node_id)
 		GameManager.restore_location_audio()
 	bus.dialogue_node_shown.emit(node_id)
@@ -176,6 +177,7 @@ func finish() -> void:
 	current_node = {}
 	if _memory_open:
 		_memory_open = false
+		SignalBus.sfx_requested.emit("sfx_memory_exit")
 		SignalBus.memory_flashback_ended.emit(last)
 		GameManager.restore_location_audio()
 	SignalBus.dialogue_finished.emit(dialogue_id, last)

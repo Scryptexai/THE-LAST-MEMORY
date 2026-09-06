@@ -27,6 +27,8 @@ var _recap_body: RichTextLabel
 var _recap_title: Label
 var _recap_close: Button
 var _recap_tween: Tween
+var _memory_bars: Array = []  # 2 ColorRect letterbox
+var _memory_tween: Tween
 
 
 func _ready() -> void:
@@ -207,10 +209,46 @@ func _build() -> void:
 	# --- Overlay memori (sepia + label 1983) ---
 	_memory_overlay = ColorRect.new()
 	_memory_overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
-	_memory_overlay.color = Color(0.85, 0.65, 0.3, 0.18)
+	_memory_overlay.color = Color(1, 1, 1, 1)
 	_memory_overlay.visible = false
 	_memory_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var mem_sh := Shader.new()
+	mem_sh.code = """
+shader_type canvas_item;
+uniform sampler2D screen_tex : hint_screen_texture, filter_linear;
+uniform float strength : hint_range(0.0, 1.0) = 0.0;
+float rnd(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
+void fragment() {
+	vec4 src = texture(screen_tex, SCREEN_UV);
+	float g = dot(src.rgb, vec3(0.3, 0.59, 0.11));
+	vec3 sepia = vec3(g * 1.08, g * 0.9, g * 0.62);
+	vec2 uv = UV - vec2(0.5);
+	float vig = smoothstep(0.35, 0.95, length(uv) * 1.45);
+	float grain = (rnd(UV * 900.0 + vec2(TIME * 7.0, TIME * 3.0)) - 0.5) * 0.09;
+	vec3 col = mix(src.rgb, sepia + grain, strength);
+	col = mix(col, col * (1.0 - vig * 0.75), strength);
+	COLOR = vec4(col, 1.0);
+}
+"""
+	var mem_mat := ShaderMaterial.new()
+	mem_mat.shader = mem_sh
+	mem_mat.set_shader_parameter("strength", 0.0)
+	_memory_overlay.material = mem_mat
 	add_child(_memory_overlay)
+	# Letterbox sinematik (atas & bawah), meluncur masuk saat kilas balik.
+	for i in 2:
+		var bar := ColorRect.new()
+		bar.color = Color(0.02, 0.02, 0.03, 1.0)
+		bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		if i == 0:
+			bar.set_anchors_preset(Control.PRESET_TOP_WIDE)
+			bar.offset_bottom = 0
+		else:
+			bar.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+			bar.offset_top = 0
+		bar.visible = false
+		add_child(bar)
+		_memory_bars.append(bar)
 	_memory_label = Label.new()
 	ThemeFactory.style_label(_memory_label, 40, Color(1.0, 0.9, 0.6, 0.9), true)
 	_memory_label.text = "— 1983 —"
@@ -441,10 +479,39 @@ func _on_relationship(char_id: String, _old: int, new_value: int) -> void:
 func _on_memory_start(_node_id: String) -> void:
 	_memory_overlay.visible = true
 	_memory_label.visible = true
+	_memory_label.modulate.a = 0.0
+	for b in _memory_bars:
+		(b as ColorRect).visible = true
+	if _memory_tween and _memory_tween.is_valid():
+		_memory_tween.kill()
+	_memory_tween = create_tween().set_parallel(true)
+	_memory_tween.tween_method(_set_memory_strength, 0.0, 1.0, 1.1).set_trans(Tween.TRANS_SINE)
+	_memory_tween.tween_property(_memory_bars[0], "offset_bottom", 70.0, 0.9).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	_memory_tween.tween_property(_memory_bars[1], "offset_top", -70.0, 0.9).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	_memory_tween.tween_property(_memory_label, "modulate:a", 1.0, 1.4).set_delay(0.4)
+
+
+func _set_memory_strength(v: float) -> void:
+	var m := _memory_overlay.material as ShaderMaterial
+	if m:
+		m.set_shader_parameter("strength", v)
 
 
 func _on_memory_end(_node_id: String) -> void:
+	if _memory_tween and _memory_tween.is_valid():
+		_memory_tween.kill()
+	_memory_tween = create_tween().set_parallel(true)
+	_memory_tween.tween_method(_set_memory_strength, 1.0, 0.0, 0.8).set_trans(Tween.TRANS_SINE)
+	_memory_tween.tween_property(_memory_bars[0], "offset_bottom", 0.0, 0.7)
+	_memory_tween.tween_property(_memory_bars[1], "offset_top", 0.0, 0.7)
+	_memory_tween.tween_property(_memory_label, "modulate:a", 0.0, 0.4)
+	_memory_tween.chain().tween_callback(_finish_memory_end)
+
+
+func _finish_memory_end() -> void:
 	_memory_overlay.visible = false
+	for b in _memory_bars:
+		(b as ColorRect).visible = false
 	_memory_label.visible = false
 
 

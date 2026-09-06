@@ -20,6 +20,12 @@ var _spring: SpringArm3D
 var _anim: AnimationPlayer
 var _moving: bool = false
 var _running: bool = false
+# Kamera sinematik kilas balik: dolly pelan + FOV menyempit, dipulihkan saat selesai.
+var _memory_cam: bool = false
+var _mem_t: float = 0.0
+var _base_fov: float = 62.0
+var _base_spring: float = 4.2
+var _mem_yaw_start: float = 0.0
 
 
 func _ready() -> void:
@@ -28,6 +34,28 @@ func _ready() -> void:
 	# Bangun avatar Ardi (stylized low-poly).
 	var factory := CharacterFactory.new()
 	_mesh_root.add_child(factory.build_character("ardi"))
+	SignalBus.memory_flashback_started.connect(_on_memory_start)
+	SignalBus.memory_flashback_ended.connect(_on_memory_end)
+
+
+func _on_memory_start(_node_id: String) -> void:
+	if _memory_cam:
+		return
+	_memory_cam = true
+	_mem_t = 0.0
+	_base_fov = _cam.fov
+	_base_spring = _spring.spring_length
+	_mem_yaw_start = cam_yaw
+
+
+func _on_memory_end(_node_id: String) -> void:
+	if not _memory_cam:
+		return
+	_memory_cam = false
+	var tw := create_tween().set_parallel(true)
+	tw.tween_property(_cam, "fov", _base_fov, 0.8).set_trans(Tween.TRANS_SINE)
+	tw.tween_property(_spring, "spring_length", _base_spring, 0.8).set_trans(Tween.TRANS_SINE)
+	tw.tween_property(self, "cam_yaw", _mem_yaw_start, 0.8).set_trans(Tween.TRANS_SINE)
 
 
 func _build_nodes() -> void:
@@ -147,7 +175,15 @@ func _physics_process(delta: float) -> void:
 	_update_body_bob(delta)
 
 
-func _update_camera(_delta: float) -> void:
+func _update_camera(delta: float) -> void:
+	if _memory_cam:
+		# Dolly-in sangat pelan + orbit halus + FOV menyempit (nuansa "tersedot" ke 1983).
+		_mem_t += delta
+		var k: float = clampf(_mem_t / 2.5, 0.0, 1.0)
+		var ease_k: float = 1.0 - pow(1.0 - k, 3.0)
+		_cam.fov = lerpf(_base_fov, _base_fov - 14.0, ease_k)
+		_spring.spring_length = lerpf(_base_spring, _base_spring * 0.72, ease_k)
+		cam_yaw = _mem_yaw_start + sin(_mem_t * 0.35) * 0.12
 	_cam_pivot.rotation.y = cam_yaw
 	_cam_pivot.rotation.x = cam_pitch
 

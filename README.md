@@ -91,6 +91,10 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## 🎬 Kamera Sinematik Kilas Balik
+
+- Saat node `memory` aktif: kamera dolly-in pelan + FOV menyempit 14° + orbit halus (Player), letterbox meluncur masuk, shader layar sepia + vignette + grain film (HUD), label "— 1983 —" memudar masuk; semua dipulihkan dengan tween saat kilas balik berakhir (+ `sfx_memory_exit`).
+
 ## 📊 Statistik Lintas-Sesi
 
 - `user://memory.json` → `stats`: jumlah permainan, total waktu bermain (diakumulasi saat berhenti melacak/keluar), penyelesaian terbaik, ending tercepat, jumlah ending dicapai. Ditampilkan di Ruang Memori.
