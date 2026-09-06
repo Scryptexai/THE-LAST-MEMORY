@@ -16,6 +16,7 @@
     {"id": "ach_hardboiled", "name": "Detektif Sejati", "name_en": "Hard-Boiled", "desc": "Saksikan ending mana pun dalam Mode Detektif.", "desc_en": "Reach any ending in Detective Mode."},
     {"id": "ach_archivist", "name": "Penjaga Kenangan", "name_en": "Keeper of Memories", "desc": "Alami semua kilas balik 1983.", "desc_en": "Experience every 1983 flashback."},
     {"id": "ach_farewell", "name": "Pamit", "name_en": "Farewell", "desc": "Letakkan kamboja di nisan Nenek di Makam Bukit.", "desc_en": "Lay a frangipani on Grandma's grave at Hill Cemetery."},
+    {"id": "ach_cat", "name": "Teman Berbulu", "name_en": "Furry Friend", "desc": "Dapatkan kepercayaan Kunyit, kucing nenek.", "desc_en": "Earn the trust of Kunyit, grandma's cat."},
     {"id": "ach_neighbour", "name": "Tetangga Baik", "name_en": "Good Neighbour", "desc": "Selesaikan kedua permintaan warga (klepon & lampu loket).", "desc_en": "Complete both townsfolk requests (klepon & booth lamp)."},
     {"id": "ach_completionist", "name": "Sempurna", "name_en": "Completionist", "desc": "Capai 100% penyelesaian.", "desc_en": "Reach 100% completion."}
   ]

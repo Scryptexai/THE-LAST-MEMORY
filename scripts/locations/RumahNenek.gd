@@ -10,6 +10,8 @@ func _ready() -> void:
 	super()
 	SignalBus.flag_changed.connect(_on_flag)
 	_refresh_radio()
+	# Kunyit menunggu di teras; sejak bab 1 ia mengikuti Ardi di dalam rumah.
+	add_cat(Vector3(1.6, 0.3, 7.0), bool(GameManager.get_flag("chseen_bab1", false)))
 
 
 func _on_flag(flag_name: String, _v: Variant) -> void:

@@ -415,6 +415,10 @@ func _synth_sfx(sfx_id: String) -> AudioStreamWAV:
 			return _sweep(900.0, 180.0, 0.7, 0.25)
 		"sfx_thunder":
 			return _thump(46.0, 1.7, 0.5)
+		"sfx_meow":
+			return _meow()
+		"sfx_purr":
+			return _purr()
 		"sfx_achievement":
 			return _chime([523.25, 659.25, 783.99, 1046.5, 1318.5], 1.0, 0.4)
 		"sfx_footstep_wood":
@@ -513,6 +517,43 @@ func _plank(alt: bool) -> AudioStreamWAV:
 			var ts: float = t - 0.03
 			v += sin(TAU * (f0 + 300.0 * ts) * ts) * exp(-18.0 * ts) * 0.12
 		samples[i] = v
+	return _make_wav(samples)
+
+
+## Meong: sweep naik lalu turun dengan sedikit vibrato & harmonik.
+func _meow() -> AudioStreamWAV:
+	var seconds: float = 0.55
+	var n: int = int(MIX_RATE * seconds)
+	var samples := PackedFloat32Array()
+	samples.resize(n)
+	var phase: float = 0.0
+	for i in n:
+		var t: float = float(i) / MIX_RATE
+		var u: float = t / seconds
+		var f: float = 520.0 + 380.0 * sin(u * PI) + 18.0 * sin(TAU * 28.0 * t)
+		phase += TAU * f / MIX_RATE
+		var env: float = sin(u * PI) * (1.0 if u < 0.85 else (1.0 - u) / 0.15)
+		var v: float = sin(phase) * 0.6 + sin(phase * 2.0) * 0.25 + sin(phase * 3.0) * 0.1
+		samples[i] = v * env * 0.28
+	return _make_wav(samples)
+
+
+## Dengkuran: getaran rendah termodulasi ~25 Hz, 1.4 detik.
+func _purr() -> AudioStreamWAV:
+	var seconds: float = 1.4
+	var n: int = int(MIX_RATE * seconds)
+	var samples := PackedFloat32Array()
+	samples.resize(n)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 99
+	var lp: float = 0.0
+	for i in n:
+		var t: float = float(i) / MIX_RATE
+		lp = lp * 0.9 + (rng.randf() * 2.0 - 1.0) * 0.1
+		var gate: float = 0.55 + 0.45 * sin(TAU * 25.0 * t)
+		var breath: float = 0.6 + 0.4 * sin(TAU * 0.7 * t)
+		var env: float = minf(1.0, t / 0.15) * minf(1.0, (seconds - t) / 0.3)
+		samples[i] = (sin(TAU * 62.0 * t) * 0.5 + lp * 1.2) * gate * breath * env * 0.35
 	return _make_wav(samples)
 
 

@@ -17,6 +17,13 @@ func _build_layout() -> void:
 	surface_zones = [{"rect": Rect2(-1.5, -12.0, 3.0, 30.0), "surface": "gravel"}]  # jalan setapak
 
 
+func _ready() -> void:
+	super()
+	# Di bab final, Kunyit ikut ke bukit dan duduk di antara dua nisan.
+	if bool(GameManager.get_flag("chseen_final", false)) and bool(GameManager.get_flag("kunyit_jinak", false)):
+		add_cat(Vector3(0.0, 0.3, -1.2), false)
+
+
 func _build_visuals() -> void:
 	# Lereng: tanah rumput dengan teras rendah.
 	pf.plane_ground(self, Vector2(60, 60), Vector3.ZERO, pf.mat(Color(0.32, 0.42, 0.26)))

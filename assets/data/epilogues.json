@@ -151,6 +151,27 @@
           "text_en": "The hill cemetery is quiet as ever. Two stones side by side stay clean — the keeper knows who never made it up."
         }
       ]
+    },
+    {
+      "id": "kunyit",
+      "icon": "🐈",
+      "name_key": "epilogue_cat",
+      "tiers": [
+        {
+          "flags": [
+            "kunyit_jinak"
+          ],
+          "text": "Kunyit ikut pulang ke Jakarta — atau lebih tepatnya, Ardi yang ikut tinggal di rumah nenek. Kucing itu tidur di kursi rotan yang sama setiap sore.",
+          "text_en": "Kunyit goes home to Jakarta — or rather, Ardi ends up staying in grandma's house. The cat sleeps in the same rattan chair every evening."
+        },
+        {
+          "flags": [
+            "kunyit_pets"
+          ],
+          "text": "Kunyit masih berkeliaran di sekitar rumah nenek. Bu RT memberinya makan; kadang ia menunggu di teras, seperti masih menanti seseorang.",
+          "text_en": "Kunyit still roams around grandma's house. Bu RT feeds it; sometimes it waits on the porch, as if still expecting someone."
+        }
+      ]
     }
   ]
 }

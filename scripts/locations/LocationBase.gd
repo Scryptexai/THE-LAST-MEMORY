@@ -254,6 +254,15 @@ func add_interactable(cfg: Dictionary, pos: Vector3) -> Node:
 	return obj
 
 
+## Kunyit, kucing nenek (companion kecil). Dipanggil lokasi yang mengizinkan.
+func add_cat(pos: Vector3, follow: bool = true) -> Node:
+	var cat: CharacterBody3D = load("res://scripts/entities/Cat.gd").new()
+	cat.set("follow", follow)
+	add_child(cat)
+	cat.global_position = pos
+	return cat
+
+
 ## Sumber suara 3D posisional (loop prosedural dari AudioManager.spatial_stream).
 func add_sound_source(pos: Vector3, sound_id: String, max_dist: float = 12.0, base_db: float = 0.0) -> AudioStreamPlayer3D:
 	var p := AudioStreamPlayer3D.new()

@@ -62,6 +62,8 @@ func evaluate() -> void:
 		unlock("ach_explorer")
 	if bool(gm.get_flag("makam_pamit", false)):
 		unlock("ach_farewell")
+	if bool(gm.get_flag("kunyit_jinak", false)):
+		unlock("ach_cat")
 	if bool(gm.get_flag("ng_plus", false)):
 		unlock("ach_ngplus")
 	if gm.hard_mode and ne >= 1:

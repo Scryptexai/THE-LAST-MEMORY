@@ -91,6 +91,10 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## 🐈 Kunyit, Kucing Nenek
+
+- `scripts/entities/Cat.gd` — companion kecil: menunggu di teras rumah nenek, mengikuti Ardi (sejak bab 1) dari jarak sopan, duduk & mengibas ekor saat diam, mengeong sesekali (`sfx_meow`), bisa **dielus [E]** (`sfx_purr` dengkuran prosedural). 5 elusan → `kunyit_jinak`: dialog, pencapaian **Teman Berbulu**, epilog Kunyit, dan Kunyit muncul di antara dua nisan di Makam Bukit pada bab final.
+
 ## 🧵 Papan Benang Merah
 
 - `scripts/ui/EvidenceBoard.gd` (`_draw`) di layar Investigasi: petunjuk yang ditemukan menjadi kartu di papan gabus (kolom per lokasi penemuan), **benang merah** menghubungkan petunjuk yang berbagi tema `related_to` (makin tebal makin banyak kesamaan), **benang emas berdenyut** untuk deduksi yang sudah terpecahkan. Klik kartu = memilih petunjuk (sinkron dengan daftar & papan deduksi).
