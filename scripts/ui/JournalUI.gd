@@ -137,6 +137,13 @@ func _refresh_characters() -> void:
 			rel.text = "💛 %s (%d/%d)" % [rm.level_label(str(char_id)), rm.get_value(str(char_id)), rm.get_max(str(char_id))]
 			ThemeFactory.style_label(rel, 14, ThemeFactory.PASTEL_PINK)
 			vb.add_child(rel)
+			var likes: String = str(cdata.get("likes", ""))
+			if likes != "":
+				var gl := Label.new()
+				gl.text = "Hadiah kesukaan: " + likes
+				gl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+				ThemeFactory.style_label(gl, 14, ThemeFactory.PASTEL_BLUE)
+				vb.add_child(gl)
 		_chars_list.add_child(p)
 
 

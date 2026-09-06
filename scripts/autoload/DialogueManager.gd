@@ -178,6 +178,7 @@ func finish() -> void:
 		GameManager.restore_location_audio()
 	SignalBus.dialogue_finished.emit(dialogue_id, last)
 	dialogue_id = ""
+	AchievementManager.evaluate()
 	GameManager.change_state("gameplay")
 	SaveManager.autosave()
 

@@ -47,12 +47,12 @@
         {
           "character_id": "rara", "display_name": "Rara", "dialogue_id": "dlg_rara_intro",
           "variants": {"rara_pengakuan_done": "dlg_rara_v4", "rara_v3": "dlg_rara_v3", "rara_v2": "dlg_rara_v2"},
-          "gifts": {"bunga_liar": {"dialogue": "dlg_rara_bunga", "relationship": {"rara": 3}, "flag": "gift_rara_bunga"}}
+          "gifts": {"bunga_liar": {"dialogue": "dlg_rara_bunga", "relationship": {"rara": 3}, "flag": "gift_rara_bunga"}, "kelereng_kaca": {"dialogue": "dlg_rara_kelereng", "relationship": {"rara": 3}, "flag": "gift_rara_kelereng"}}
         },
         {
           "character_id": "pak_harto", "display_name": "Pak Harto", "dialogue_id": "dlg_harto_intro",
           "variants": {"ded4": "dlg_harto_v4", "harto_bersaksi": "dlg_harto_after", "harto_terbuka": "dlg_harto_v3", "harto_v2": "dlg_harto_v2"},
-          "gifts": {"teh_melati": {"dialogue": "dlg_harto_teh", "relationship": {"pak_harto": 3}, "flag": "gift_harto_teh"}}
+          "gifts": {"teh_melati": {"dialogue": "dlg_harto_teh", "relationship": {"pak_harto": 3}, "flag": "gift_harto_teh"}, "buku_catatan": {"dialogue": "dlg_harto_buku", "relationship": {"pak_harto": 3}, "flag": "gift_harto_buku"}}
         }
       ],
       "interactables": [
@@ -82,7 +82,7 @@
       },
       "npcs": [
         {"character_id": "mira", "display_name": "Mira", "dialogue_id": "dlg_mira_intro",
-         "variants": {"ded4": "dlg_mira_v4", "mira_v2": "dlg_mira_v2"}},
+         "variants": {"ded4": "dlg_mira_v4", "mira_v2": "dlg_mira_v2"}, "gifts": {"pita_merah": {"dialogue": "dlg_mira_pita", "relationship": {"mira": 3}, "flag": "gift_mira_pita"}}},
         {"character_id": "warga", "slot": "pedagang", "display_name": "Pedagang Antik", "dialogue_id": "dlg_pedagang",
          "variants": {"chseen_bab3": "dlg_pedagang_bab3", "pedagang_bicara": "dlg_pedagang_after"}},
         {"character_id": "warga", "slot": "warga_pasar", "display_name": "Warga Pasar", "dialogue_id": "dlg_warga_pasar", "variants": {"chseen_bab2": "dlg_warga_bab2"}}
@@ -94,7 +94,7 @@
         {"object_id": "karcis_jatuh", "display_name": "Karcis Kusam", "prompt_key": "prompt_pickup", "clue_id": "karcis_kereta", "dialogue_id": "dlg_karcis"},
         {"object_id": "peti_senter", "display_name": "Peti Tua", "prompt_key": "prompt_open", "item_id": "senter_tua", "dialogue_id": "dlg_peti", "one_shot": true},
         {"object_id": "papan_pasar", "display_name": "Papan Pengumuman", "prompt_key": "prompt_read", "journal_text": "Pengumuman pasar tahun 80-an yang tak pernah dilepas: 'DILARANG MEMBAHAS KECELAKAAN KERETA DI AREA PASAR. — Lurah.' Astaga."},
-        {"object_id": "gerobak", "display_name": "Gerobak Tua", "prompt_key": "prompt_examine", "journal_text": "Gerobak penjual jamu. Bau beras kencur mengingatkan Ardi pada masa kecilnya."},
+        {"object_id": "gerobak", "display_name": "Gerobak Tua", "prompt_key": "prompt_pickup", "item_id": "pita_merah", "dialogue_id": "dlg_gerobak", "one_shot": true, "journal_text": "Gerobak penjual jamu. Bau beras kencur mengingatkan Ardi pada masa kecilnya."},
         {"object_id": "vista_gapura", "display_name": "Sudut Pandang: Gapura", "prompt_key": "prompt_moment", "moment_id": "m_gapura", "dialogue_id": "dlg_moment_gapura"}
       ]
     },
@@ -122,7 +122,7 @@
         {"object_id": "gerbong_gelap", "display_name": "Gerbong Tua", "prompt_key": "prompt_open", "required_item": "senter_tua", "consume_dialogue": "dlg_gerbong_kunci", "dialogue_id": "dlg_gerbong", "variants": {"gerbong_dibuka": "dlg_gerbong_kosong"}},
         {"object_id": "peluit_rel", "display_name": "Benda di Rel", "prompt_key": "prompt_pickup", "clue_id": "peluit_masinis", "dialogue_id": "dlg_peluit"},
         {"object_id": "plakat", "display_name": "Plakat Peringatan", "prompt_key": "prompt_read", "dialogue_id": "dlg_plakat", "variants": {"ng_plus": "dlg_ng_plakat"}},
-        {"object_id": "bangku_peron", "display_name": "Bangku Peron", "prompt_key": "prompt_examine", "journal_text": "Bangku peron yang catnya mengelupas. Diukir di sandarannya: 'Kami menunggu. — Keluarga korban 1983.'"},
+        {"object_id": "bangku_peron", "display_name": "Bangku Peron", "prompt_key": "prompt_pickup", "item_id": "buku_catatan", "dialogue_id": "dlg_bangku", "one_shot": true, "journal_text": "Bangku peron yang catnya mengelupas. Diukir di sandarannya: 'Kami menunggu. — Keluarga korban 1983.'"},
         {"object_id": "vista_peron", "display_name": "Sudut Pandang: Peron", "prompt_key": "prompt_moment", "moment_id": "m_peron", "dialogue_id": "dlg_moment_peron"}
       ]
     },
@@ -151,7 +151,7 @@
         {"object_id": "batu_foto", "display_name": "Foto Terselip", "prompt_key": "prompt_pickup", "clue_id": "foto_pantai", "dialogue_id": "dlg_batu_foto"},
         {"object_id": "bunga_liar", "display_name": "Bunga Liar", "prompt_key": "prompt_pickup", "item_id": "bunga_liar", "dialogue_id": "dlg_bunga", "one_shot": true},
         {"object_id": "mercusuar", "display_name": "Mercusuar Mini", "prompt_key": "prompt_examine", "journal_text": "Mercusuar hias yang dibangun warga setelah 1983 — 'agar tak ada lagi yang tersesat dalam gelap.'"},
-        {"object_id": "dermaga", "display_name": "Dermaga", "prompt_key": "prompt_examine", "journal_text": "Papan dermaga berderit. Dulu, dari sinilah Ardi dan Rara melempar karangan bunga untuk para korban."},
+        {"object_id": "dermaga", "display_name": "Dermaga", "prompt_key": "prompt_pickup", "item_id": "kelereng_kaca", "dialogue_id": "dlg_dermaga", "one_shot": true, "journal_text": "Papan dermaga berderit. Dulu, dari sinilah Ardi dan Rara melempar karangan bunga untuk para korban."},
         {"object_id": "vista_senja", "display_name": "Sudut Pandang: Senja", "prompt_key": "prompt_moment", "moment_id": "m_senja", "dialogue_id": "dlg_moment_senja"}
       ]
     }

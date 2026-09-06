@@ -11,6 +11,7 @@
     {"id": "ach_one_ending", "name": "Salah Satu Akhir", "name_en": "One Ending", "desc": "Saksikan satu ending.", "desc_en": "Witness one ending."},
     {"id": "ach_all_endings", "name": "Segala Kemungkinan", "name_en": "Every Possibility", "desc": "Saksikan semua ending.", "desc_en": "Witness every ending."},
     {"id": "ach_ngplus", "name": "Putaran Kedua", "name_en": "Second Round", "desc": "Mulai New Game+.", "desc_en": "Start New Game+."},
-    {"id": "ach_photographer", "name": "Fotografer Bebas", "name_en": "Free Photographer", "desc": "Jepret satu foto bebas di mode foto.", "desc_en": "Take one free photo in photo mode."}
+    {"id": "ach_photographer", "name": "Fotografer Bebas", "name_en": "Free Photographer", "desc": "Jepret satu foto bebas di mode foto.", "desc_en": "Take one free photo in photo mode."},
+    {"id": "ach_generous", "name": "Murah Hati", "name_en": "Big Heart", "desc": "Berikan semua hadiah kepada pemiliknya.", "desc_en": "Give every gift to its owner."}
   ]
 }

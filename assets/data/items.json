@@ -31,6 +31,9 @@
       "description": "Rumpun bunga liar kuning dari Pantai. Dulu Rara dan Ardi sering memetiknya sepulang sekolah.",
       "usable_on": ["rara"],
       "consumable": true
-    }
+    },
+    {"id": "pita_merah", "name": "Pita Merah", "kind": "gift", "description": "Seutas pita merah yang masih bagus, ditemukan di gerobak jamu Pasar Lama.", "usable_on": ["mira"], "consumable": true},
+    {"id": "kelereng_kaca", "name": "Kelereng Kaca", "kind": "gift", "description": "Kelereng kaca bening dari celah dermaga. Simpanan masa kecil Ardi dan Rara.", "usable_on": ["rara"], "consumable": true},
+    {"id": "buku_catatan", "name": "Buku Catatan", "kind": "gift", "description": "Buku catatan kecil bersampul kulit dari bangku peron. Halaman depannya kosong, menunggu ditulis.", "usable_on": ["pak_harto"], "consumable": true}
   ]
 }

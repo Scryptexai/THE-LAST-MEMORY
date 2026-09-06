@@ -12,21 +12,24 @@
       "name": "Rara",
       "description": "Pemilik Kafe Rara, teman masa kecil Ardi. Selalu ceria di depan pelanggan, tetapi menyembunyikan rahasia keluarganya tentang tahun 1983.",
       "relationship_start": 5,
-      "relationship_max": 20
+      "relationship_max": 20,
+      "likes": "Bunga Pantai, Kelereng Kaca"
     },
     {
       "id": "pak_harto",
       "name": "Pak Harto",
       "description": "Detektif pensiun 68 tahun. Dulu penyidik kasus kecelakaan kereta 1983. Sekarang menghabiskan hari di sudut Kafe Rara bersama teh dan penyesalan.",
       "relationship_start": 0,
-      "relationship_max": 15
+      "relationship_max": 15,
+      "likes": "Teh Melati, Buku Catatan"
     },
     {
       "id": "mira",
       "name": "Mira",
       "description": "Jurnalis lepas 26 tahun yang sedang menulis sejarah Kota Tua Pesisir. Tajam, gigih, dan haus kebenaran — apa pun harganya.",
       "relationship_start": 0,
-      "relationship_max": 15
+      "relationship_max": 15,
+      "likes": "Pita Merah"
     },
     {
       "id": "nenek",

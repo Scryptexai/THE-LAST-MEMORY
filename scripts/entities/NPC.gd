@@ -7,6 +7,8 @@ extends CharacterBody3D
 @export var dialogue_id: String = ""
 @export var dialogue_flag_variants: Dictionary = {}
 ## Contoh: {"bab2": "dlg_rara_bab2"} + flag "rara_variant" = "bab2" -> pakai varian itu.
+## Hadiah: {item_id: {"dialogue", "relationship", "flag"}} — diisi LocationBase dari scenes.json.
+var gift_options: Dictionary = {}
 
 var _mesh_root: Node3D
 var _label: Label3D
@@ -106,6 +108,29 @@ func interact(_from: Node = null) -> void:
 		bus.toast_requested.emit(display_name + " ...", "system")
 		return
 	DialogueManager.start_dialogue(dlg)
+
+
+## Serahkan hadiah bila pemain membawa item kesukaan NPC (sekali saja per hadiah).
+## Mengembalikan dialogue_id reaksi hadiah, atau "" bila tidak ada yang diserahkan.
+func _check_gift() -> String:
+	if gift_options.is_empty():
+		return ""
+	var im := InvestigationManager
+	var gm := GameManager
+	for item_id in gift_options.keys():
+		var g: Dictionary = gift_options[item_id]
+		var flag: String = str(g.get("flag", ""))
+		if flag != "" and bool(gm.get_flag(flag, false)):
+			continue
+		if im.has_item(str(item_id)):
+			if flag != "":
+				gm.set_flag(flag, true)
+			var rel: Dictionary = g.get("relationship", {})
+			for cid in rel.keys():
+				RelationshipManager.add(str(cid), int(rel[cid]))
+			im.remove_item(str(item_id))
+			return str(g.get("dialogue", ""))
+	return ""
 
 
 ## Pilih varian dialog berdasarkan flag (progres cerita).
