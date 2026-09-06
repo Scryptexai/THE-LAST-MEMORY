@@ -439,10 +439,10 @@ func _rebuild_travel() -> void:
 						found += 1
 			var m_found: int = 0
 			var m_total: int = 0
-			for m in dm.moments:
-				if str((m as Dictionary).get("location", "")) == scene_id:
+			for mid in dm.moments.keys():
+				if str((dm.moments[mid] as Dictionary).get("location", "")) == scene_id:
 					m_total += 1
-					if str((m as Dictionary).get("id", "")) in im.moments_taken:
+					if str(mid) in im.moments_taken:
 						m_found += 1
 			var prog: String = dm.tr_key("travel_progress").format({"c": found, "ct": total, "m": m_found, "mt": m_total})
 			var visited: bool = scene_id in gm.visited_locations
