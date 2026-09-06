@@ -91,6 +91,26 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## 🧪 Validasi Otomatis
+
+- `tools/validate.sh` — parse semua GDScript (`gdparse` dari gdtoolkit, opsional) lalu `tools/validate_data.py`.
+- `tools/validate_data.py` — invarian data tanpa Godot: JSON valid, **semua dialog terjangkau** dari titik masuk, pencapaian dirujuk dua arah, paritas `ui_strings` id/en + semua `tr_key()` ada, referensi clue/item/momen/objective/scene/quest konsisten.
+- Untuk CI, tambahkan workflow berikut sebagai `.github/workflows/validate.yml` (tidak disertakan otomatis karena butuh izin `workflows` saat push):
+
+```yaml
+name: validate
+on: [push, pull_request]
+jobs:
+  data:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install gdtoolkit==4.*
+      - run: tools/validate.sh
+```
+
 ## 🎞 Filter Mode Foto
 
 - Tekan **F** (Shift+F mundur) di Mode Foto untuk memutar filter: Normal, **Film 1983** (sepia + butir + vignette), **Hitam Putih**, **Senja Hangat**. Filter dirender di `CanvasLayer` layer 5 (di bawah UI) sehingga ikut tertangkap saat jepret; nama file foto diberi akhiran tag filter (`_1983`, `_bw`, `_senja`).
