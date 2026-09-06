@@ -145,10 +145,29 @@ func epilogue_lines() -> Array:
 	var rm := RelationshipManager
 	var im := InvestigationManager
 	var out: Array = []
+	var gm := GameManager
 	for ep in epilogues:
 		var e: Dictionary = ep
 		var cid: String = str(e.get("character", ""))
-		if cid == "" or not (cid in (im.characters_met as Array)):
+		# Epilog berbasis flag (kota/warga): tier pertama yang semua flag-nya terpenuhi.
+		if cid == "":
+			for tier in e.get("tiers", []):
+				var ft: Dictionary = tier
+				var ok: bool = true
+				var met_req: String = str(ft.get("met", ""))
+				if met_req != "" and not (met_req in (im.characters_met as Array)):
+					ok = false
+				for f in ft.get("flags", []):
+					if not bool(gm.get_flag(str(f), false)):
+						ok = false
+						break
+				if ok:
+					var ftxt: String = str(ft.get("text_en", "")) if language == "en" and str(ft.get("text_en", "")) != "" else str(ft.get("text", ""))
+					if ftxt != "":
+						out.append({"icon": str(e.get("icon", "•")), "name": tr_key(str(e.get("name_key", "epilogue_town"))), "text": ftxt})
+					break
+			continue
+		if not (cid in (im.characters_met as Array)):
 			continue
 		var val: int = rm.get_value(cid)
 		for tier in e.get("tiers", []):

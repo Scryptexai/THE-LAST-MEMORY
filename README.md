@@ -91,6 +91,11 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## 📜 Epilog Kota (berbasis flag)
+
+- `epilogues.json` kini mendukung entri **tanpa karakter**: tier dipilih dari `flags` (semua harus true) + opsional `met`. Nama entri via `name_key` (ui_strings).
+- Tiga entri baru: **Stasiun** (lampu loket menyala / tetap gelap), **Para Tetangga** (Bu RT kembali ke pasar), **Makam Bukit** (kamboja & Kamis sore). Hasil side-quest dan kunjungan makam ikut mewarnai layar ending.
+
 ## 🧭 Menu Perjalanan Informatif
 
 - Setiap lokasi tampil sebagai kartu: nama + lencana (📍 di sini, 🎯 tujuan aktif, 🔒 terkunci, 🕯️ loket menyala), progres **petunjuk & momen per lokasi**, penanda "belum dikunjungi"; lokasi terkunci ditampilkan sebagai `???`.

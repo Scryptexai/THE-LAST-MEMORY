@@ -77,9 +77,78 @@
           "text_en": "Bu RT Sumi proposes grandma's name for the little lane in front of the house. The neighbours agree unanimously: Lastri Lane."
         },
         {
-          "min": 0,
+          "met": "bu_rt",
+          "flags": [],
           "text": "Bu RT Sumi tetap menyapu teras rumah nenek setiap pagi. Kebiasaan, katanya. Tapi semua tahu itu doa.",
           "text_en": "Bu RT Sumi still sweeps grandma's porch every morning. Habit, she says. But everyone knows it's a prayer."
+        }
+      ]
+    },
+    {
+      "id": "stasiun",
+      "icon": "🕯️",
+      "name_key": "epilogue_station",
+      "tiers": [
+        {
+          "flags": [
+            "quest_lampu_done"
+          ],
+          "text": "Lampu loket Stasiun Kota Tua tak pernah padam lagi. Penjaga tua itu mengganti minyaknya tiap Kamis — hari yang sama dengan Nenek dulu.",
+          "text_en": "The ticket booth lamp at Kota Tua Station never goes out again. The old keeper refills its oil every Thursday — the same day Grandma used to."
+        },
+        {
+          "flags": [],
+          "text": "Stasiun Kota Tua tetap gelap setelah senja. Penjaga tua itu masih duduk di peron, menunggu entah apa.",
+          "text_en": "Kota Tua Station stays dark after dusk. The old keeper still sits on the platform, waiting for who knows what."
+        }
+      ]
+    },
+    {
+      "id": "bu_rt",
+      "icon": "🏘️",
+      "name_key": "epilogue_neighbours",
+      "tiers": [
+        {
+          "flags": [
+            "gift_burt_klepon"
+          ],
+          "text": "Bu RT Sumi kembali ke pasar tiap pagi. Pak Karta menyisihkan sebungkus klepon di sudut gerobak — 'yang hangat, untuk Bu Sumi.'",
+          "text_en": "Bu RT Sumi returns to the market every morning. Pak Karta sets aside a pack of klepon in the cart's corner — 'the warm ones, for Bu Sumi.'"
+        },
+        {
+          "met": "bu_rt",
+          "flags": [],
+          "text": "Bu RT Sumi tetap mengurus rumah nenek sesekali. Kuncinya masih di bawah pot bunga, seperti dulu.",
+          "text_en": "Bu RT Sumi still tends grandma's house now and then. The key stays under the flowerpot, as it always did."
+        }
+      ]
+    },
+    {
+      "id": "makam",
+      "icon": "⛰️",
+      "name_key": "epilogue_hill",
+      "tiers": [
+        {
+          "flags": [
+            "makam_pamit",
+            "mem_makam_seen"
+          ],
+          "text": "Setiap Kamis sore, seseorang membersihkan dua nisan di Makam Bukit. Juru kunci tak pernah menyebut namanya — tapi selalu ada setangkai kamboja baru.",
+          "text_en": "Every Thursday evening, someone cleans two gravestones on the hill. The keeper never says who — but there is always a fresh frangipani."
+        },
+        {
+          "flags": [
+            "makam_pamit"
+          ],
+          "text": "Di Makam Bukit, kamboja putih tergeletak di nisan Lastri. Juru kunci membiarkannya sampai layu, lalu menggantinya sendiri.",
+          "text_en": "On the hill, a white frangipani lies on Lastri's stone. The keeper lets it wilt, then replaces it himself."
+        },
+        {
+          "flags": [
+            "chseen_bab3"
+          ],
+          "text": "Makam Bukit sepi seperti biasa. Dua nisan berdampingan tetap bersih — juru kunci tahu siapa yang tak sempat datang.",
+          "text_en": "The hill cemetery is quiet as ever. Two stones side by side stay clean — the keeper knows who never made it up."
         }
       ]
     }
