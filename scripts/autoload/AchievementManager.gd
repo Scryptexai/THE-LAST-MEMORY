@@ -27,7 +27,7 @@ func unlock(ach_id: String) -> bool:
 	SignalBus.sfx_requested.emit("sfx_achievement")
 	SignalBus.toast_requested.emit("🏆 " + nm, "achievement")
 	InvestigationManager.add_journal_note("ach:" + ach_id, "Pencapaian: " + str(a.get("name", ach_id)), dm.tr_key("journal_src_story"))
-	Logger.info("AchievementManager: terbuka %s" % ach_id)
+	GameLog.info("AchievementManager: terbuka %s" % ach_id)
 	return true
 
 

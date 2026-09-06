@@ -21,11 +21,11 @@ static func from_json(text: String) -> Dictionary:
 ## Baca seluruh isi file teks; "" bila gagal.
 static func read_text_file(path: String) -> String:
 	if not FileAccess.file_exists(path):
-		Logger.warn("SaveUtils: file tidak ditemukan: %s" % path)
+		GameLog.warn("SaveUtils: file tidak ditemukan: %s" % path)
 		return ""
 	var f: FileAccess = FileAccess.open(path, FileAccess.READ)
 	if f == null:
-		Logger.warn("SaveUtils: gagal membuka: %s" % path)
+		GameLog.warn("SaveUtils: gagal membuka: %s" % path)
 		return ""
 	var content: String = f.get_as_text()
 	f.close()
@@ -39,10 +39,10 @@ static func write_text_file(path: String, content: String) -> bool:
 		# Untuk user://, pastikan folder ada.
 		var err_make: Error = DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(dir_path))
 		if err_make != OK:
-			Logger.warn("SaveUtils: gagal membuat folder: %s" % dir_path)
+			GameLog.warn("SaveUtils: gagal membuat folder: %s" % dir_path)
 	var f: FileAccess = FileAccess.open(path, FileAccess.WRITE)
 	if f == null:
-		Logger.error("SaveUtils: gagal menulis: %s" % path)
+		GameLog.error("SaveUtils: gagal menulis: %s" % path)
 		return false
 	f.store_string(content)
 	f.close()

@@ -27,7 +27,7 @@ static func parse(raw: Array) -> Dictionary:
 			continue
 		var node: Dictionary = (entry as Dictionary).duplicate(true)
 		if not node.has("id") or str(node["id"]).is_empty():
-			Logger.warn("DialogueParser: node tanpa id dilewati.")
+			GameLog.warn("DialogueParser: node tanpa id dilewati.")
 			continue
 		node["speaker"] = str(node.get("speaker", "???"))
 		node["text"] = str(node.get("text", "..."))

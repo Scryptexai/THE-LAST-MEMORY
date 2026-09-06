@@ -76,7 +76,7 @@ THE-LAST-MEMORY/
 │   ├── systems/   DialogueParser, ClueSystem, DeductionSystem, RelationshipSystem
 │   ├── ui/        UIManager, HUD, MainMenuUI, DialogueUI, InvestigationUI,
 │   │              InventoryUI, JournalUI, SettingUI, LoadingUI, EndingUI
-│   └── utils/     Logger, MathUtils, SaveUtils, PropFactory, CharacterFactory, ThemeFactory
+│   └── utils/     GameLog, MathUtils, SaveUtils, PropFactory, CharacterFactory, ThemeFactory
 ├── scripts/Main.gd               # orkestrasi scene & perjalanan
 └── scenes/                       # Main, entities, locations, ui (.tscn)
 ```
@@ -138,7 +138,8 @@ THE-LAST-MEMORY/
 
 ## 🧪 Validasi Otomatis
 
-- `tools/validate.sh` — parse semua GDScript (`gdparse` dari gdtoolkit, opsional) lalu `tools/validate_data.py`.
+- `tools/validate.sh` — parse semua GDScript (`gdparse` dari gdtoolkit, opsional), analisis statis Godot 4 (`tools/analyze_gd.mjs`, opsional), lalu `tools/validate_data.py`.
+- `tools/analyze_gd.mjs` — analisis statis GDScript **setara compiler Godot 4** tanpa editor (`npm i` sekali; memakai `@gdscript-analyzer/core`): parse error, identifier/anggota yang tidak ada (`dialogue_variants`, `Environment.TONE_MAPPER_*`, `SystemFont.font_size`, …), ketidakcocokan tipe, tabrakan `class_name` dengan kelas engine (mis. `Logger` → kini `GameLog`). `--strict` juga menampilkan peringatan `UNSAFE_*`.
 - `tools/validate_data.py` — invarian data tanpa Godot: JSON valid, **semua dialog terjangkau** dari titik masuk, pencapaian dirujuk dua arah, paritas `ui_strings` id/en + semua `tr_key()` ada, referensi clue/item/momen/objective/scene/quest konsisten.
 - Untuk CI, tambahkan workflow berikut sebagai `.github/workflows/validate.yml` (tidak disertakan otomatis karena butuh izin `workflows` saat push):
 
@@ -152,7 +153,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
       - run: pip install gdtoolkit==4.*
+      - run: npm i
       - run: tools/validate.sh
 ```
 
@@ -248,7 +252,7 @@ jobs:
 
 - Bahasa: Indonesia (default) & Inggris (dialog + UI). Ganti di Pengaturan.
 - Save tersimpan di `user://save_slot_*.json` + `user://autosave.json`.
-- Semua error penting dicatat via `Logger` (matikan `Logger.enabled` untuk production).
+- Semua error penting dicatat via `GameLog` (matikan `GameLog.enabled` untuk production).
 - Efek dialog sekali-pakai (anti-farming hubungan), token anti-ending-basi, precache audio saat loading.
 - Dibangun & diuji sintaks dengan `gdparse` (gdtoolkit) + validasi silang data JSON.
 

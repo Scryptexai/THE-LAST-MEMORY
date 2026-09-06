@@ -214,8 +214,8 @@ func _build() -> void:
 	_recap_body.fit_content = true
 	_recap_body.scroll_active = false
 	_recap_body.custom_minimum_size = Vector2(380, 0)
-	_recap_body.add_theme_font_override("normal_font", ThemeFactory.body_font(14))
-	_recap_body.add_theme_font_override("bold_font", ThemeFactory.body_font(14))
+	ThemeFactory.apply_font(_recap_body, "normal_font", 14)
+	ThemeFactory.apply_font(_recap_body, "bold_font", 14)
 	_recap_body.add_theme_color_override("default_color", ThemeFactory.CREAM)
 	rv.add_child(_recap_body)
 	_recap_close = Button.new()
@@ -513,7 +513,7 @@ func show_toast(text: String, kind: String) -> void:
 	if _toast_box.get_child_count() > 4:
 		(_toast_box.get_child(0) as Node).queue_free()
 	var panel := PanelContainer.new()
-	var border := ThemeFactory.ACCENT
+	var border: Color = ThemeFactory.ACCENT
 	match kind:
 		"clue":
 			border = ThemeFactory.PASTEL_YELLOW

@@ -83,14 +83,14 @@ func _add_key_action(action: String, keys: Array) -> void:
 
 func change_state(new_state: String) -> void:
 	if not (new_state in STATES):
-		Logger.warn("GameManager: state tak dikenal: %s" % new_state)
+		GameLog.warn("GameManager: state tak dikenal: %s" % new_state)
 		return
 	if state == new_state:
 		return
 	if state == "gameplay" and new_state != "gameplay":
 		previous_gameplay_state = state
 	state = new_state
-	Logger.debug("GameManager: state -> %s" % state)
+	GameLog.debug("GameManager: state -> %s" % state)
 	# Kontrol mouse per state.
 	if state == "gameplay":
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -142,7 +142,7 @@ func set_chapter(chapter_id: String) -> void:
 	current_chapter = chapter_id
 	flags["chseen_" + chapter_id] = true
 	SignalBus.chapter_changed.emit(chapter_id)
-	Logger.info("GameManager: chapter -> %s" % chapter_id)
+	GameLog.info("GameManager: chapter -> %s" % chapter_id)
 	_announce_unlocked_locations(chapter_id)
 
 
@@ -315,7 +315,7 @@ func new_game(plus: bool = false, hard: bool = false) -> void:
 	im.mark_character_met("ardi")
 	AchievementManager.evaluate()
 	SaveManager.record_global_stat("runs", 1.0)
-	Logger.info("GameManager: permainan baru dimulai.")
+	GameLog.info("GameManager: permainan baru dimulai.")
 
 
 func continue_from_data(data: Dictionary) -> bool:
@@ -387,7 +387,7 @@ func register_final_choice(choice_id: String) -> void:
 		pre_ending_snapshot["final_choice"] = ""
 	_ending_token += 1
 	final_choice = choice_id
-	Logger.info("GameManager: pilihan akhir = %s" % choice_id)
+	GameLog.info("GameManager: pilihan akhir = %s" % choice_id)
 	# Tunda evaluasi hingga dialog selesai (dijaga token agar tak basi).
 	call_deferred("_deferred_ending", _ending_token)
 
@@ -447,4 +447,4 @@ func trigger_ending(ending_id: String) -> void:
 	change_state("ending")
 	SignalBus.ending_triggered.emit(ending_id)
 	SaveManager.autosave()
-	Logger.info("GameManager: ENDING -> %s" % ending_id)
+	GameLog.info("GameManager: ENDING -> %s" % ending_id)

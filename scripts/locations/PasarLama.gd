@@ -72,5 +72,5 @@ func _make_stall(pos: Vector3, canopy: Color) -> void:
 	for sx in [-1.2, 1.2]:
 		for sz in [-0.7, 0.7]:
 			pf.cyl(stall, 0.05, 2.2, Vector3(sx, 1.1, sz), pf.mat(Color(0.4, 0.3, 0.18), 0.85), false, 8)
-	var roof := pf.box(stall, Vector3(3.0, 0.08, 2.2), Vector3(0, 2.3, 0), pf.mat(canopy, 0.9))
+	var roof: MeshInstance3D = pf.box(stall, Vector3(3.0, 0.08, 2.2), Vector3(0, 2.3, 0), pf.mat(canopy, 0.9))
 	roof.rotation.x = 0.12

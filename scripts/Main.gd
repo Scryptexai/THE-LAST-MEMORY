@@ -48,7 +48,7 @@ func continue_game(data: Dictionary) -> void:
 	# Kartu "Sebelumnya..." agar pemain ingat konteks.
 	var ui := $UI as Node
 	if ui.has_method("get_screen"):
-		var hud := ui.call("get_screen", "hud")
+		var hud: Node = ui.call("get_screen", "hud")
 		if hud and hud.has_method("show_recap"):
 			hud.show_recap()
 
@@ -66,7 +66,7 @@ func travel_to(location_id: String, spawn_tag: String = "default") -> void:
 	if location_id == "__travel__":
 		var ui := $UI as CanvasLayer
 		if ui.has_method("get_screen"):
-			var hud := (ui as Node).call("get_screen", "hud")
+			var hud: Node = (ui as Node).call("get_screen", "hud")
 			if hud and hud.has_method("toggle_travel"):
 				hud.toggle_travel()
 		return
@@ -75,7 +75,7 @@ func travel_to(location_id: String, spawn_tag: String = "default") -> void:
 	var bus := SignalBus
 	var sdata: Dictionary = dm.get_scene_data(location_id)
 	if sdata.is_empty():
-		Logger.warn("Main: lokasi tak dikenal: %s" % location_id)
+		GameLog.warn("Main: lokasi tak dikenal: %s" % location_id)
 		return
 	# Bangun musik/ambient selagi layar loading tampil (hindari jeda).
 	AudioManager.precache_music(str(sdata.get("music", "")))
@@ -89,7 +89,7 @@ func travel_to(location_id: String, spawn_tag: String = "default") -> void:
 	await get_tree().process_frame
 	var packed: PackedScene = load(str(sdata.get("scene_path", "")))
 	if packed == null:
-		Logger.error("Main: gagal memuat scene lokasi: %s" % location_id)
+		GameLog.error("Main: gagal memuat scene lokasi: %s" % location_id)
 		gm.change_state("gameplay")
 		return
 	_current_location = packed.instantiate() as Node3D

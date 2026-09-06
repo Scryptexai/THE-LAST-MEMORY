@@ -70,12 +70,12 @@ func _build() -> void:
 	# Mute.
 	_mute_check = CheckBox.new()
 	_mute_check.text = "🔇 Bisukan semua suara"
-	_mute_check.add_theme_font_override("font", ThemeFactory.body_font(16))
+	ThemeFactory.apply_font(_mute_check, "font", 16)
 	_mute_check.add_theme_color_override("font_color", ThemeFactory.CREAM)
 	_mute_check.toggled.connect(func(on: bool) -> void: AudioManager.set_muted(on))
 	root.add_child(_mute_check)
 	_auto_check = CheckBox.new()
-	_auto_check.add_theme_font_override("font", ThemeFactory.body_font(16))
+	ThemeFactory.apply_font(_auto_check, "font", 16)
 	_auto_check.add_theme_color_override("font_color", ThemeFactory.CREAM)
 	_auto_check.toggled.connect(func(on: bool) -> void: GameManager.auto_advance = on)
 	root.add_child(_auto_check)
@@ -86,12 +86,12 @@ func _build() -> void:
 	_scale_slider = _add_slider(root, "🔍 Ukuran Antarmuka", 85.0, 140.0)
 	_scale_slider.value_changed.connect(func(v: float) -> void: GameManager.set_ui_scale(v / 100.0))
 	_contrast_check = CheckBox.new()
-	_contrast_check.add_theme_font_override("font", ThemeFactory.body_font(16))
+	ThemeFactory.apply_font(_contrast_check, "font", 16)
 	_contrast_check.add_theme_color_override("font_color", ThemeFactory.CREAM)
 	_contrast_check.toggled.connect(func(on: bool) -> void: GameManager.set_high_contrast(on))
 	root.add_child(_contrast_check)
 	_motion_check = CheckBox.new()
-	_motion_check.add_theme_font_override("font", ThemeFactory.body_font(16))
+	ThemeFactory.apply_font(_motion_check, "font", 16)
 	_motion_check.add_theme_color_override("font_color", ThemeFactory.CREAM)
 	_motion_check.toggled.connect(func(on: bool) -> void: GameManager.set_reduce_motion(on))
 	root.add_child(_motion_check)
@@ -163,7 +163,6 @@ func refresh() -> void:
 	_resume_btn.visible = in_game
 	for c in _slot_row.get_children():
 		c.queue_free()
-	var sm := SignalBus
 	if in_game:
 		for i in range(1, 4):
 			var b := Button.new()

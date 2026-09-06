@@ -191,7 +191,7 @@ func _on_visibility_refresh() -> void:
 
 
 ## Galeri 4 ending: yang sudah ditemukan tampil, sisanya "???".
-func _build_gallery(dm, gm) -> void:
+func _build_gallery(dm, _gm) -> void:
 	var title := Label.new()
 	title.text = dm.tr_key("menu_endings_seen").format({"n": _seen_endings().size()})
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -233,7 +233,7 @@ func _build_credits_overlay() -> void:
 	body.fit_content = true
 	body.scroll_active = false
 	body.custom_minimum_size = Vector2(520, 0)
-	body.add_theme_font_override("normal_font", ThemeFactory.body_font(16))
+	ThemeFactory.apply_font(body, "normal_font", 16)
 	body.add_theme_color_override("default_color", ThemeFactory.CREAM)
 	vb.add_child(body)
 	body.set_meta("credits_body", true)

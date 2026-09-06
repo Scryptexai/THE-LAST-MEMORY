@@ -1,0 +1,12 @@
+{
+  "name": "the-last-memory-tools",
+  "private": true,
+  "description": "Alat bantu validasi (bukan bagian game). npm i lalu tools/validate.sh",
+  "scripts": {
+    "analyze": "node tools/analyze_gd.mjs",
+    "analyze:strict": "node tools/analyze_gd.mjs --strict"
+  },
+  "devDependencies": {
+    "@gdscript-analyzer/core": "^0.6.1"
+  }
+}

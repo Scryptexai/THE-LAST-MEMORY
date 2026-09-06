@@ -56,7 +56,7 @@ func load_all() -> void:
 	epilogues = _load_array(PATH_EPILOGUES, "epilogues")
 	quests = _load_array(PATH_QUESTS, "quests")
 	decisions = _load_array(PATH_DECISIONS, "decisions")
-	Logger.info("DataManager: %d dialog, %d karakter, %d clue, %d deduksi dimuat." % [
+	GameLog.info("DataManager: %d dialog, %d karakter, %d clue, %d deduksi dimuat." % [
 		dialogues.size(), characters.size(), clues.size(), deductions.size()])
 
 
@@ -66,7 +66,7 @@ func _load_array(path: String, key: String) -> Array:
 	if data.has(key) and data[key] is Array:
 		return data[key]
 	if data.is_empty():
-		Logger.warn("DataManager: gagal memuat %s" % path)
+		GameLog.warn("DataManager: gagal memuat %s" % path)
 	return []
 
 

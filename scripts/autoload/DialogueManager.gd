@@ -19,7 +19,7 @@ func is_active() -> bool:
 func start_dialogue(node_id: String) -> bool:
 	var dm := DataManager
 	if not dm.has_dialogue(node_id):
-		Logger.warn("DialogueManager: node tidak ada: %s" % node_id)
+		GameLog.warn("DialogueManager: node tidak ada: %s" % node_id)
 		return false
 	active = true
 	dialogue_id = node_id

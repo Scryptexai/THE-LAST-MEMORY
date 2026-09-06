@@ -50,19 +50,19 @@ func capture() -> void:
 	if ui and is_instance_valid(ui):
 		ui.show()
 	if img == null or img.is_empty():
-		Logger.warn("PhotoManager: tangkapan layar gagal.")
+		GameLog.warn("PhotoManager: tangkapan layar gagal.")
 		capturing = false
 		return
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(PHOTO_DIR))
 	var stamp := Time.get_datetime_string_from_system().replace(":", "").replace("-", "").replace(" ", "_")
 	var fname := "foto_" + stamp + ("_" + current_filter if current_filter != "" else "") + ".png"
 	if img.save_png(PHOTO_DIR + "/" + fname) != OK:
-		Logger.warn("PhotoManager: gagal menyimpan foto.")
+		GameLog.warn("PhotoManager: gagal menyimpan foto.")
 		capturing = false
 		return
 	photos.push_front(fname)
 	bus.sfx_requested.emit("sfx_shutter")
 	bus.toast_requested.emit(DataManager.tr_key("photo_saved"), "item")
 	AchievementManager.unlock("ach_photographer")
-	Logger.info("PhotoManager: tersimpan %s" % fname)
+	GameLog.info("PhotoManager: tersimpan %s" % fname)
 	capturing = false

@@ -60,8 +60,8 @@ func _build() -> void:
 	_text_label.bbcode_enabled = true
 	_text_label.scroll_active = false
 	_text_label.custom_minimum_size = Vector2(0, 96)
-	_text_label.add_theme_font_override("normal_font", ThemeFactory.body_font(19))
-	_text_label.add_theme_font_override("bold_font", ThemeFactory.body_font(19))
+	ThemeFactory.apply_font(_text_label, "normal_font", 19)
+	ThemeFactory.apply_font(_text_label, "bold_font", 19)
 	_text_label.add_theme_color_override("default_color", ThemeFactory.CREAM)
 	margin.add_child(_text_label)
 	_choice_box = VBoxContainer.new()
@@ -103,8 +103,8 @@ func _build() -> void:
 	_backlog_text.fit_content = true
 	_backlog_text.scroll_active = false
 	_backlog_text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_backlog_text.add_theme_font_override("normal_font", ThemeFactory.body_font(15))
-	_backlog_text.add_theme_font_override("bold_font", ThemeFactory.body_font(15))
+	ThemeFactory.apply_font(_backlog_text, "normal_font", 15)
+	ThemeFactory.apply_font(_backlog_text, "bold_font", 15)
 	_backlog_text.add_theme_color_override("default_color", ThemeFactory.CREAM)
 	scroll.add_child(_backlog_text)
 	_make_click_through(_panel)
@@ -158,7 +158,7 @@ func _on_node_shown(node_id: String) -> void:
 			Color(0.0, 0.0, 0.0, 1.0) if hc else Color(0.05, 0.1, 0.19, 0.94), Color.WHITE if hc else ThemeFactory.ACCENT, 3 if hc else 2, 12))
 		_name_label.text = str(node.get("speaker", "???"))
 	_text_label.add_theme_color_override("default_color", Color.WHITE if hc else ThemeFactory.CREAM)
-	_text_label.add_theme_font_override("normal_font", ThemeFactory.body_font(21 if hc else 19))
+	ThemeFactory.apply_font(_text_label, "normal_font", 21 if hc else 19)
 	_full_text = dm.localized(node)
 	_backlog.append("[b]%s[/b]: %s" % [str(node.get("speaker", "???")), _full_text])
 	if _backlog.size() > 40:

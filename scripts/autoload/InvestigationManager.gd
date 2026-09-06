@@ -38,7 +38,7 @@ func add_clue(clue_id: String) -> bool:
 	var dm := DataManager
 	var bus := SignalBus
 	if (dm.get_clue(clue_id) as Dictionary).is_empty():
-		Logger.warn("InvestigationManager: clue tak dikenal: %s" % clue_id)
+		GameLog.warn("InvestigationManager: clue tak dikenal: %s" % clue_id)
 		return false
 	if clue_id in clues_found:
 		return false
@@ -68,7 +68,7 @@ func add_item(item_id: String) -> bool:
 	var dm := DataManager
 	var bus := SignalBus
 	if (dm.get_item(item_id) as Dictionary).is_empty():
-		Logger.warn("InvestigationManager: item tak dikenal: %s" % item_id)
+		GameLog.warn("InvestigationManager: item tak dikenal: %s" % item_id)
 		return false
 	if item_id in inventory:
 		return false
@@ -229,11 +229,11 @@ func capture_moment(moment_id: String) -> void:
 	if ui and is_instance_valid(ui):
 		ui.show()
 	if img == null or img.is_empty():
-		Logger.warn("InvestigationManager: gagal mengabadikan momen.")
+		GameLog.warn("InvestigationManager: gagal mengabadikan momen.")
 		return
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("user://moments"))
 	if img.save_png("user://moments/%s.png" % moment_id) != OK:
-		Logger.warn("InvestigationManager: gagal menyimpan momen.")
+		GameLog.warn("InvestigationManager: gagal menyimpan momen.")
 		return
 	moments_taken.append(moment_id)
 	bus.sfx_requested.emit("sfx_photo_taken")

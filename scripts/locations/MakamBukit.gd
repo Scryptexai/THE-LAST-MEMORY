@@ -30,7 +30,7 @@ func _build_visuals() -> void:
 	pf.box(self, Vector3(22, 0.3, 16), Vector3(0, 0.15, -1.0), pf.mat(Color(0.36, 0.44, 0.28), 0.95))
 	pf.box(self, Vector3(3.0, 0.02, 30), Vector3(0, 0.31, 3.0), pf.mat(Color(0.55, 0.5, 0.42), 0.95))
 	# Gapura & pagar.
-	var gm := pf.mat(Color(0.75, 0.74, 0.7), 0.85)
+	var gm: StandardMaterial3D = pf.mat(Color(0.75, 0.74, 0.7), 0.85)
 	pf.box(self, Vector3(0.35, 2.6, 0.35), Vector3(-1.6, 1.3, 8.5), gm, true)
 	pf.box(self, Vector3(0.35, 2.6, 0.35), Vector3(1.6, 1.3, 8.5), gm, true)
 	pf.box(self, Vector3(3.9, 0.35, 0.4), Vector3(0, 2.7, 8.5), gm)
@@ -51,7 +51,7 @@ func _build_visuals() -> void:
 	for i in 7:
 		var gx: float = -4.0 - float(i % 3) * 1.3
 		var gz: float = 1.5 - float(i / 3) * 1.7
-		var stone := pf.box(self, Vector3(0.45, 0.7, 0.12), Vector3(gx, 0.65, gz), pf.mat(Color(0.5, 0.52, 0.48), 0.95), true)
+		var stone: MeshInstance3D = pf.box(self, Vector3(0.45, 0.7, 0.12), Vector3(gx, 0.65, gz), pf.mat(Color(0.5, 0.52, 0.48), 0.95), true)
 		stone.rotation.z = 0.06 * float((i % 3) - 1)
 	# Pohon kamboja & pinus.
 	pf.make_tree(self, Vector3(-5.0, 0.3, -4.0), 1.1)

@@ -16,19 +16,26 @@ const GOOD := Color("#34D399")
 const BAD := Color("#F87171")
 
 
-static func title_font(size: int = 34) -> SystemFont:
+## Font judul (ukuran diatur lewat add_theme_font_size_override; lihat apply_font).
+static func title_font(_size: int = 34) -> SystemFont:
 	var f := SystemFont.new()
 	f.font_names = ["Playfair Display", "Georgia", "Times New Roman", "serif"]
 	f.font_weight = 700
-	f.font_size = size
 	return f
 
 
-static func body_font(size: int = 18) -> SystemFont:
+## Font isi (ukuran diatur lewat add_theme_font_size_override; lihat apply_font).
+static func body_font(_size: int = 18) -> SystemFont:
 	var f := SystemFont.new()
 	f.font_names = ["Inter", "Segoe UI", "Helvetica", "Arial", "sans-serif"]
-	f.font_size = size
 	return f
+
+
+## Pasang font + ukurannya pada Control. `theme_name` = "font", "normal_font",
+## "bold_font", dst.; ukuran memakai nama "<theme_name>_size".
+static func apply_font(ctrl: Control, theme_name: String, size: int, title: bool = false) -> void:
+	ctrl.add_theme_font_override(theme_name, title_font(size) if title else body_font(size))
+	ctrl.add_theme_font_size_override(theme_name + "_size", size)
 
 
 static func panel_style(bg: Color = Color(0.06, 0.12, 0.22, 0.92), border: Color = ACCENT, bw: int = 2, radius: int = 12) -> StyleBoxFlat:
@@ -77,12 +84,12 @@ static func style_button(b: Button, font_size: int = 18) -> Button:
 	b.add_theme_color_override("font_color", CREAM)
 	b.add_theme_color_override("font_hover_color", Color.WHITE)
 	b.add_theme_color_override("font_disabled_color", Color(0.6, 0.6, 0.62))
-	b.add_theme_font_override("font", body_font(font_size))
+	apply_font(b, "font", font_size)
 	return b
 
 
 static func style_label(l: Label, size: int = 18, color: Color = CREAM, title: bool = false) -> Label:
-	l.add_theme_font_override("font", title_font(size) if title else body_font(size))
+	apply_font(l, "font", size, title)
 	l.add_theme_color_override("font_color", color)
 	return l
 

@@ -51,7 +51,7 @@ func _build() -> void:
 	_desc.fit_content = true
 	_desc.scroll_active = false
 	_desc.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_desc.add_theme_font_override("normal_font", ThemeFactory.body_font(17))
+	ThemeFactory.apply_font(_desc, "normal_font", 17)
 	_desc.add_theme_color_override("default_color", ThemeFactory.CREAM)
 	scroll.add_child(_desc)
 	_stats = Label.new()

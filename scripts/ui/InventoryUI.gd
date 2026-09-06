@@ -69,7 +69,7 @@ func _build() -> void:
 	_detail_body = RichTextLabel.new()
 	_detail_body.bbcode_enabled = true
 	_detail_body.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_detail_body.add_theme_font_override("normal_font", ThemeFactory.body_font(15))
+	ThemeFactory.apply_font(_detail_body, "normal_font", 15)
 	_detail_body.add_theme_color_override("default_color", ThemeFactory.CREAM)
 	detail.add_child(_detail_body)
 

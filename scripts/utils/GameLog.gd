@@ -1,4 +1,4 @@
-class_name Logger
+class_name GameLog
 extends RefCounted
 ## Sistem logging terpusat. Matikan `enabled` untuk build production.
 

@@ -18,6 +18,7 @@ extends StaticBody3D
 @export var gives_flag: String = ""          # "flag=value" setelah dipakai
 @export var journal_text: String = ""
 @export var moment_id: String = ""
+var dialogue_variants: Dictionary = {}       # {flag: dialogue_id} varian dialog per flag
 
 var _used: bool = false
 var _marker: MeshInstance3D
@@ -38,6 +39,7 @@ func setup(cfg: Dictionary) -> void:
 		if cfg.has(k):
 			set(k, str(cfg[k]))
 	one_shot = bool(cfg.get("one_shot", one_shot))
+	dialogue_variants = cfg.get("variants", {})
 	if _marker:
 		_marker.visible = _is_active()
 

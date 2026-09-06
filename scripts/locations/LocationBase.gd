@@ -114,7 +114,7 @@ func _apply_env() -> void:
 		env.fog_light_color = _color(env_data.get("fog_color", "#d8b48f"))
 		env.fog_density = float(env_data.get("fog_density", 0.008))
 		env.fog_sky_affect = 0.5
-		env.tonemap_mode = Environment.TONE_MAP_FILMIC
+		env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 		env.tonemap_exposure = float(env_data.get("exposure", 1.0))
 		env.glow_enabled = true
 		env.glow_intensity = 0.25
@@ -189,6 +189,10 @@ func _spawn_from_data() -> void:
 				info = layout["npc:" + str(spots[f])]
 				break
 		add_npc(ncfg, info["pos"], float(info.get("yaw", 0.0)))
+	for obj_cfg in data.get("interactables", []):
+		var oid: String = str((obj_cfg as Dictionary).get("object_id", "obj"))
+		var oinfo: Dictionary = layout.get("obj:" + oid, {"pos": Vector3(-2, 0, 2), "yaw": 0.0})
+		add_interactable(obj_cfg, oinfo["pos"])
 
 
 ## Kehadiran NPC menurut jadwal flag: "present_if": [...] (semua harus terpenuhi)
@@ -217,10 +221,6 @@ func _cond_ok(cond: String) -> bool:
 		var parts: PackedStringArray = c.split("=", true, 1)
 		return str(GameManager.get_flag(parts[0].strip_edges(), "")) == parts[1].strip_edges()
 	return bool(GameManager.get_flag(c, false))
-	for obj_cfg in data.get("interactables", []):
-		var oid: String = str((obj_cfg as Dictionary).get("object_id", "obj"))
-		var oinfo: Dictionary = layout.get("obj:" + oid, {"pos": Vector3(-2, 0, 2), "yaw": 0.0})
-		add_interactable(obj_cfg, oinfo["pos"])
 
 
 func add_npc(cfg: Dictionary, pos: Vector3, yaw: float) -> Node:

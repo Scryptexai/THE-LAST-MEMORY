@@ -25,7 +25,7 @@ func _ready() -> void:
 	for key in SCREENS.keys():
 		var packed: PackedScene = load(SCREENS[key])
 		if packed == null:
-			Logger.error("UIManager: gagal memuat " + str(SCREENS[key]))
+			GameLog.error("UIManager: gagal memuat " + str(SCREENS[key]))
 			continue
 		var inst := packed.instantiate() as Control
 		inst.name = "UI_" + key

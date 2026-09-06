@@ -69,7 +69,7 @@ func load_settings() -> void:
 	gm.set_ui_scale(float(s.get("ui_scale", 1.0)))
 	gm.set_high_contrast(bool(s.get("high_contrast", false)))
 	gm.set_reduce_motion(bool(s.get("reduce_motion", false)))
-	Logger.info("SaveManager: pengaturan dimuat.")
+	GameLog.info("SaveManager: pengaturan dimuat.")
 
 
 func start_tracking() -> void:
@@ -137,7 +137,7 @@ func collect() -> Dictionary:
 ## Terapkan Dictionary save ke seluruh manager.
 func apply(data: Dictionary) -> bool:
 	if data.is_empty() or int(data.get("version", 0)) > SAVE_VERSION:
-		Logger.warn("SaveManager: versi save tidak dikenali.")
+		GameLog.warn("SaveManager: versi save tidak dikenali.")
 		return false
 	var gm := GameManager
 	var im := InvestigationManager
@@ -180,7 +180,7 @@ func apply(data: Dictionary) -> bool:
 		DataManager.set_language(str(settings.get("language", "id")))
 	gm.text_speed = float(settings.get("text_speed", 1.0))
 	gm.cam_sensitivity = float(settings.get("cam_sensitivity", 1.0))
-	Logger.info("SaveManager: save diterapkan (chapter=%s, lokasi=%s)." % [gm.current_chapter, gm.current_location])
+	GameLog.info("SaveManager: save diterapkan (chapter=%s, lokasi=%s)." % [gm.current_chapter, gm.current_location])
 	return true
 
 
