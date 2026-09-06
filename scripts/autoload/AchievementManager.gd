@@ -22,6 +22,7 @@ func unlock(ach_id: String) -> bool:
 	if a.is_empty():
 		return false
 	unlocked.append(ach_id)
+	SaveManager.record_global("achievements", ach_id)
 	var nm: String = str(a.get("name_en", "")) if dm.language == "en" and str(a.get("name_en", "")) != "" else str(a.get("name", ach_id))
 	SignalBus.sfx_requested.emit("sfx_achievement")
 	SignalBus.toast_requested.emit("🏆 " + nm, "achievement")
@@ -67,3 +68,5 @@ func evaluate() -> void:
 			ng += 1
 	if ng >= 5:
 		unlock("ach_generous")
+	if GameManager.completion_percent() >= 100:
+		unlock("ach_completionist")

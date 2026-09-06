@@ -10,6 +10,8 @@ var _bg: ColorRect
 var _t: float = 0.0
 var _credits_dim: ColorRect
 var _credits_panel: PanelContainer
+var _memory_dim: ColorRect
+var _memory_box: VBoxContainer
 
 
 func _ready() -> void:
@@ -66,6 +68,7 @@ func _build() -> void:
 	_slot_box.add_theme_constant_override("separation", 6)
 	main.add_child(_slot_box)
 	_build_credits_overlay()
+	_build_memory_overlay()
 
 
 func _process(delta: float) -> void:
@@ -86,7 +89,7 @@ func refresh() -> void:
 		c.queue_free()
 	var sm := SignalBus
 	_add_button(dm.tr_key("menu_new"), _on_new_game)
-	if not (GameManager.endings_seen as Array).is_empty():
+	if not _seen_endings().is_empty():
 		_add_button(dm.tr_key("menu_ngplus"), _on_new_game_plus)
 	if SaveManager.has_any_save():
 		_add_button(dm.tr_key("menu_continue"), _on_continue)
@@ -94,6 +97,7 @@ func refresh() -> void:
 	_add_button(dm.tr_key("menu_settings"), func() -> void: sm.ui_screen_requested.emit("settings"))
 	_add_button(dm.tr_key("menu_quit"), _on_quit)
 	_add_button(dm.tr_key("menu_credits"), _on_credits)
+	_add_button(dm.tr_key("menu_memory"), open_memory)
 	# Galeri ending.
 	_build_gallery(dm, GameManager)
 
@@ -181,7 +185,7 @@ func _on_visibility_refresh() -> void:
 ## Galeri 4 ending: yang sudah ditemukan tampil, sisanya "???".
 func _build_gallery(dm, gm) -> void:
 	var title := Label.new()
-	title.text = dm.tr_key("menu_endings_seen").format({"n": (gm.endings_seen as Array).size()})
+	title.text = dm.tr_key("menu_endings_seen").format({"n": _seen_endings().size()})
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	ThemeFactory.style_label(title, 14, ThemeFactory.PASTEL_PINK)
 	_slot_box.add_child(title)
@@ -192,7 +196,7 @@ func _build_gallery(dm, gm) -> void:
 	for eid in ["ending_kebenaranutuh", "ending_pengorbanan", "ending_rahasiaterkubur", "ending_lukalama"]:
 		var e: Dictionary = dm.get_ending(eid)
 		var chip := Label.new()
-		if eid in (gm.endings_seen as Array):
+		if eid in _seen_endings():
 			var t: String = str(e.get("title", eid)) if dm.language == "id" else str(e.get("title_en", eid))
 			chip.text = "%s %s" % [str(e.get("art", "\u2726")), t]
 			ThemeFactory.style_label(chip, 13, ThemeFactory.PASTEL_YELLOW)
@@ -242,3 +246,107 @@ func _on_credits() -> void:
 
 func _on_credits_close() -> void:
 	_credits_dim.visible = false
+
+
+## Gabungan sesi + memori global lintas-sesi.
+func _seen_endings() -> Array:
+	var out: Array = (GameManager.endings_seen as Array).duplicate()
+	for e in (SaveManager.load_global().get("endings", []) as Array):
+		if not (e in out):
+			out.append(e)
+	return out
+
+
+func _seen_achievements() -> Array:
+	var out: Array = (AchievementManager.unlocked as Array).duplicate()
+	for a in (SaveManager.load_global().get("achievements", []) as Array):
+		if not (a in out):
+			out.append(a)
+	return out
+
+
+func _build_memory_overlay() -> void:
+	_memory_dim = ThemeFactory.dim_layer(0.8)
+	_memory_dim.visible = false
+	add_child(_memory_dim)
+	var center := CenterContainer.new()
+	center.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_memory_dim.add_child(center)
+	var panel := PanelContainer.new()
+	panel.custom_minimum_size = Vector2(620, 0)
+	panel.add_theme_stylebox_override("panel", ThemeFactory.panel_style())
+	center.add_child(panel)
+	var scroll := ScrollContainer.new()
+	scroll.custom_minimum_size = Vector2(580, 440)
+	panel.add_child(scroll)
+	_memory_box = VBoxContainer.new()
+	_memory_box.add_theme_constant_override("separation", 10)
+	_memory_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(_memory_box)
+
+
+func open_memory() -> void:
+	_refresh_memory()
+	_memory_dim.visible = true
+
+
+func _on_memory_close() -> void:
+	_memory_dim.visible = false
+
+
+func _refresh_memory() -> void:
+	var dm := DataManager
+	for c in _memory_box.get_children():
+		c.queue_free()
+	var seen := _seen_endings()
+	var ach := _seen_achievements()
+	var title := Label.new()
+	title.text = dm.tr_key("menu_memory")
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	ThemeFactory.style_label(title, 28, ThemeFactory.PASTEL_YELLOW, true)
+	_memory_box.add_child(title)
+	var stats := Label.new()
+	stats.text = dm.tr_key("memory_stats").format({"n": seen.size(), "a": ach.size(), "t": dm.achievements.size()})
+	stats.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	ThemeFactory.style_label(stats, 15, ThemeFactory.PASTEL_BLUE)
+	_memory_box.add_child(stats)
+	for eid in ["ending_kebenaranutuh", "ending_pengorbanan", "ending_rahasiaterkubur", "ending_lukalama"]:
+		_memory_box.add_child(_memory_card(dm, str(eid), eid in seen))
+	var hint := Label.new()
+	hint.text = dm.tr_key("memory_hint")
+	hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	ThemeFactory.style_label(hint, 14, Color(0.7, 0.7, 0.75))
+	_memory_box.add_child(hint)
+	var close_btn := Button.new()
+	close_btn.text = "✕ Tutup"
+	ThemeFactory.style_button(close_btn, 16)
+	close_btn.pressed.connect(_on_memory_close)
+	_memory_box.add_child(close_btn)
+
+
+func _memory_card(dm, eid: String, seen: bool) -> PanelContainer:
+	var p := PanelContainer.new()
+	p.add_theme_stylebox_override("panel", ThemeFactory.panel_style(Color(0.1, 0.15, 0.26, 0.9), Color(0.5, 0.55, 0.65, 0.5), 1, 6))
+	var vb := VBoxContainer.new()
+	vb.add_theme_constant_override("separation", 4)
+	p.add_child(vb)
+	var head := Label.new()
+	var body := Label.new()
+	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	if seen:
+		var e: Dictionary = dm.get_ending(eid)
+		var t: String = str(e.get("title", eid)) if dm.language == "id" else str(e.get("title_en", eid))
+		var d: String = str(e.get("description", "")) if dm.language == "id" else str(e.get("description_en", ""))
+		head.text = "%s %s" % [str(e.get("art", "✦")), t]
+		ThemeFactory.style_label(head, 18, ThemeFactory.PASTEL_YELLOW, true)
+		body.text = d
+		ThemeFactory.style_label(body, 14, ThemeFactory.CREAM)
+	else:
+		head.text = "🔒 ???"
+		ThemeFactory.style_label(head, 18, Color(0.5, 0.5, 0.55), true)
+		body.text = dm.tr_key("memory_locked")
+		ThemeFactory.style_label(body, 14, Color(0.6, 0.6, 0.65))
+	vb.add_child(head)
+	vb.add_child(body)
+	return p

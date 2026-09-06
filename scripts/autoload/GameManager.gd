@@ -355,6 +355,8 @@ func evaluate_ending() -> String:
 func trigger_ending(ending_id: String) -> void:
 	if not (ending_id in endings_seen):
 		endings_seen.append(ending_id)
+	for e in endings_seen:
+		SaveManager.record_global("endings", str(e))
 	AchievementManager.evaluate()
 	change_state("ending")
 	SignalBus.ending_triggered.emit(ending_id)

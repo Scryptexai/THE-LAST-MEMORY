@@ -23,6 +23,7 @@ sepertinya *mengingat* sesuatu. Ungkap kebenaran, jaga hubunganmu, dan pilih end
 - 🏆 **11 pencapaian** (toast + fanfare + tab jurnal), 2 memori rahasia NG+, SFX achievement
 - 📷 **Mode foto bebas** (tombol P): letterbox + grid sepertiga + zoom + galeri jurnal + pencapaian Fotografer
 - 🎁 **5 hadiah untuk 3 tokoh** (reaksi spesial + petunjuk kesukaan di jurnal + pencapaian Murah Hati); perbaiki `_check_gift` NPC yang hilang
+- 🕯 **Ruang Memori**: galeri 4 ending + statistik lintas-sesi (memori global), tombol dari menu & layar tamat, pencapaian Sempurna (100%)
 - 💾 **3 slot save + autosave**, pengaturan audio & bahasa (ID/EN)
 - 🎵 **Musik & SFX prosedural** (synth runtime — tanpa file audio eksternal, bisa di-override dengan `.ogg` di `assets/audio/`)
 

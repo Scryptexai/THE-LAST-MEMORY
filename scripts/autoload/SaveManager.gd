@@ -11,6 +11,7 @@ const SAVE_VERSION := 5
 const SLOT_COUNT := 3
 const SAVE_PATH := "user://save_slot_%d.json"
 const AUTOSAVE_PATH := "user://autosave.json"
+const GLOBAL_PATH := "user://memory.json"
 
 var playtime: float = 0.0
 var _tracking: bool = false
@@ -93,6 +94,8 @@ func apply(data: Dictionary) -> bool:
 	gm.flags = (data.get("flags", {}) as Dictionary).duplicate(true)
 	gm.final_choice = str(data.get("final_choice", ""))
 	gm.endings_seen = (data.get("endings_seen", []) as Array).duplicate(true)
+	for e in gm.endings_seen:
+		record_global("endings", str(e))
 	dm.history = (data.get("choices_made", []) as Array).duplicate(true)
 	dm.effects_applied = (data.get("effects_applied", []) as Array).duplicate(true)
 	im.moments_taken = (data.get("moments_taken", []) as Array).duplicate(true)
@@ -162,6 +165,29 @@ func has_any_save() -> bool:
 		if not load_from_slot(i).is_empty():
 			return true
 	return false
+
+
+## Memori global lintas-sesi: gabungan ending & pencapaian semua permainan.
+func load_global() -> Dictionary:
+	var data: Dictionary = SaveUtils.from_json(SaveUtils.read_text_file(GLOBAL_PATH))
+	if data.is_empty():
+		return {"endings": [], "achievements": []}
+	if not data.has("endings"):
+		data["endings"] = []
+	if not data.has("achievements"):
+		data["achievements"] = []
+	return data
+
+
+func record_global(kind: String, id: String) -> void:
+	if kind != "endings" and kind != "achievements":
+		return
+	var g := load_global()
+	var arr: Array = (g.get(kind, []) as Array).duplicate()
+	if id != "" and not (id in arr):
+		arr.append(id)
+	g[kind] = arr
+	SaveUtils.write_text_file(GLOBAL_PATH, SaveUtils.to_json(g))
 
 
 func delete_slot(slot: int) -> void:

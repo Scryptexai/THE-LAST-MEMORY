@@ -65,6 +65,7 @@ func _build() -> void:
 	_add_btn(row, "🔄 Jelajahi Lagi", _on_explore)
 	_add_btn(row, "🏠 Menu Utama", _on_menu)
 	_add_btn(row, "✨ Cerita Baru", _on_new)
+	_add_btn(row, "🕯 Ruang Memori", _on_memory)
 
 
 func _add_btn(parent: Container, text: String, cb: Callable) -> void:
@@ -116,3 +117,15 @@ func _on_new() -> void:
 	var main := get_tree().current_scene
 	if main and main.has_method("start_new_game"):
 		main.start_new_game()
+
+
+func _on_memory() -> void:
+	var main := get_tree().current_scene
+	if main and main.has_method("quit_to_menu"):
+		main.quit_to_menu()
+	await get_tree().process_frame
+	var ui := get_tree().get_first_node_in_group("ui_layer")
+	if ui and (ui as Node).has_method("get_screen"):
+		var menu := (ui as Node).call("get_screen", "main_menu") as Control
+		if menu and menu.has_method("open_memory"):
+			menu.call("open_memory")

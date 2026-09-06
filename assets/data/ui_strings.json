@@ -66,7 +66,11 @@
     "menu_ngplus": "Baru+ (foto terbawa)",
     "photo_hint": "Klik / Spasi: jepret · Roda mouse: zoom · P / Esc: keluar",
     "photo_saved": "Foto tersimpan di galeri.",
-    "photo_empty": "Belum ada foto. Tekan P saat bermain untuk memotret."
+    "photo_empty": "Belum ada foto. Tekan P saat bermain untuk memotret.",
+    "menu_memory": "Ruang Memori",
+    "memory_locked": "Terkunci — selesaikan cerita untuk membuka kenangan ini.",
+    "memory_stats": "Ending: {n}/4 · Pencapaian: {a}/{t}",
+    "memory_hint": "Muat simpanan atau mulai permainan baru untuk menambah koleksi."
   },
   "en": {
     "menu_subtitle": "A Life is Strange mystery in Kota Tua Pesisir",
@@ -135,6 +139,10 @@
     "menu_ngplus": "New+ (photos kept)",
     "photo_hint": "Click / Space: snap · Mouse wheel: zoom · P / Esc: exit",
     "photo_saved": "Photo saved to gallery.",
-    "photo_empty": "No photos yet. Press P while playing to snap one."
+    "photo_empty": "No photos yet. Press P while playing to snap one.",
+    "menu_memory": "Memory Room",
+    "memory_locked": "Locked — finish the story to unlock this memory.",
+    "memory_stats": "Endings: {n}/4 · Achievements: {a}/{t}",
+    "memory_hint": "Load a save or start a new game to grow the collection."
   }
 }
