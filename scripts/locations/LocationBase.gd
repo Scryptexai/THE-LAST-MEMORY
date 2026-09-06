@@ -254,6 +254,21 @@ func add_interactable(cfg: Dictionary, pos: Vector3) -> Node:
 	return obj
 
 
+## Sumber suara 3D posisional (loop prosedural dari AudioManager.spatial_stream).
+func add_sound_source(pos: Vector3, sound_id: String, max_dist: float = 12.0, base_db: float = 0.0) -> AudioStreamPlayer3D:
+	var p := AudioStreamPlayer3D.new()
+	p.stream = AudioManager.spatial_stream(sound_id)
+	p.position = pos
+	p.max_distance = max_dist
+	p.unit_size = 3.0
+	p.attenuation_model = AudioStreamPlayer3D.ATTENUATION_INVERSE_DISTANCE
+	p.autoplay = true
+	add_child(p)
+	AudioManager.register_spatial(p, base_db)
+	p.play(randf_range(0.0, 3.0))
+	return p
+
+
 func spawn_wanderer(display_name: String, pos: Vector3, dialogue_id: String) -> Node:
 	return add_npc({"character_id": "warga", "display_name": display_name, "dialogue_id": dialogue_id}, pos, 0.0)
 

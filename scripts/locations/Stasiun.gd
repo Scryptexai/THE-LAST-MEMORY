@@ -47,6 +47,7 @@ func _refresh_loket_lamp() -> void:
 		_loket_lamp.omni_range = 9.0
 		_loket_lamp.flicker_amount = 0.2
 		add_child(_loket_lamp)
+		add_sound_source(Vector3(-5.0, 1.9, -2.6), "snd_lamp", 6.0, -10.0)
 
 
 func _build_visuals() -> void:

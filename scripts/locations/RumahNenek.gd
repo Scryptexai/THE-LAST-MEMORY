@@ -3,6 +3,26 @@ extends "res://scripts/locations/LocationBase.gd"
 ## Tanpa langit-langit agar kamera third-person leluasa (gaya diorama).
 
 
+var _radio_src: AudioStreamPlayer3D = null
+
+
+func _ready() -> void:
+	super()
+	SignalBus.flag_changed.connect(_on_flag)
+	_refresh_radio()
+
+
+func _on_flag(flag_name: String, _v: Variant) -> void:
+	if flag_name == "radio_nyala":
+		_refresh_radio()
+
+
+## Radio tua mengalunkan keroncong samar setelah dinyalakan (flag radio_nyala).
+func _refresh_radio() -> void:
+	if _radio_src == null and bool(GameManager.get_flag("radio_nyala", false)):
+		_radio_src = add_sound_source(Vector3(0.5, 1.0, -4.8), "snd_radio", 9.0, -8.0)
+
+
 func _build_layout() -> void:
 	layout["spawn:default"] = {"pos": Vector3(0, 0, 9), "yaw": 0.0}
 	layout["spawn:intro"] = {"pos": Vector3(0, 0, 12), "yaw": 0.0}

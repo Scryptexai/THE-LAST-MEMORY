@@ -91,6 +91,11 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## 🔊 Suara Posisional 3D
+
+- `AudioManager.spatial_stream(id)` mensintesis loop prosedural untuk `AudioStreamPlayer3D` (`register_spatial` → ikut slider Suasana & mute); `LocationBase.add_sound_source(pos, id, jarak, dB)`.
+- Sumber: api unggun & debur laut di Pantai, lonceng angin gubuk juru kunci (Makam Bukit), desis lampu loket setelah menyala, dan **radio tua** di rumah nenek yang mengalunkan keroncong samar setelah diperiksa (flag `radio_nyala`, dialog lanjutan).
+
 ## ⚖️ Jejak Keputusan di Layar Ending
 
 - `assets/data/decisions.json` mendefinisikan keputusan kunci (node + label opsi). Layar ending menampilkan pilihanmu untuk setiap keputusan, plus persentase **"X % dari perjalananmu memilih ini"** dari hitungan lintas-sesi (`memory.json choice_tally`), dan pengingat jumlah ending yang belum dibuka.

@@ -58,6 +58,7 @@ func _build_visuals() -> void:
 	pf.box(self, Vector3(2.6, 2.0, 2.2), Vector3(5.5, 1.3, 5.0), pf.mat(Color(0.45, 0.35, 0.22), 0.9), true)
 	pf.box(self, Vector3(3.0, 0.15, 2.6), Vector3(5.5, 2.35, 5.0), pf.mat(Color(0.3, 0.18, 0.12), 0.9))
 	pf.make_lamp(self, Vector3(4.0, 0.3, 6.2))
+	add_sound_source(Vector3(4.2, 2.2, 5.0), "snd_bell", 14.0, -8.0)
 	# Bangku pandang di tepi bukit + lampu kecil.
 	pf.box(self, Vector3(1.8, 0.1, 0.4), Vector3(0, 0.75, -7.8), pf.mat(Color(0.5, 0.38, 0.22), 0.9))
 	pf.box(self, Vector3(0.1, 0.45, 0.4), Vector3(-0.8, 0.5, -7.8), pf.mat(Color(0.35, 0.26, 0.15), 0.9))

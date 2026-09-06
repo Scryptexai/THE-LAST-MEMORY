@@ -29,7 +29,7 @@
         {"object_id": "foto_kamar", "display_name": "Foto Kamar", "prompt_key": "prompt_examine", "clue_id": "foto_keluarga", "dialogue_id": "dlg_foto_kamar"},
         {"object_id": "laci_tulis", "display_name": "Laci Meja Tulis", "prompt_key": "prompt_open", "required_flag": "ded3=true", "consume_dialogue": "dlg_laci_macet", "dialogue_id": "dlg_laci", "variants": {"laci_dibuka": "dlg_laci_kosong"}},
         {"object_id": "rak_buku", "display_name": "Rak Buku", "prompt_key": "prompt_examine", "dialogue_id": "dlg_rak_buku"},
-        {"object_id": "radio_tua", "display_name": "Radio Tua", "prompt_key": "prompt_examine", "dialogue_id": "dlg_radio"},
+        {"object_id": "radio_tua", "display_name": "Radio Tua", "prompt_key": "prompt_examine", "dialogue_id": "dlg_radio", "gives_flag": "radio_nyala", "variants": {"radio_nyala": "dlg_radio_matikan"}},
         {"object_id": "tempat_tidur", "display_name": "Tempat Tidur Nenek", "prompt_key": "prompt_examine", "journal_text": "Selimutnya masih terlipat rapi, seolah nenek hanya pergi sebentar ke dapur."},
         {"object_id": "vista_teras", "display_name": "Sudut Pandang: Teras", "prompt_key": "prompt_moment", "moment_id": "m_teras", "dialogue_id": "dlg_moment_teras"}
       ]

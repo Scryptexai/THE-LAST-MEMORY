@@ -97,6 +97,8 @@ void fragment() {
 	fire.light_energy = 1.0
 	fire.omni_range = 8.0
 	add_child(fire)
+	add_sound_source(fire.position, "snd_fire", 10.0, -4.0)
+	add_sound_source(Vector3(0, 0.5, -9.0), "snd_sea", 26.0, -6.0)
 	# Kunang-kunang senja di antara palem.
 	pf.make_dust_motes(self, Vector3(-6.0, 1.0, 3.0), Vector3(3.0, 0.8, 2.0), Color(0.75, 1.0, 0.4, 0.6))
 	pf.make_dust_motes(self, Vector3(3.0, 1.0, 6.0), Vector3(3.0, 0.8, 2.0), Color(0.75, 1.0, 0.4, 0.6))

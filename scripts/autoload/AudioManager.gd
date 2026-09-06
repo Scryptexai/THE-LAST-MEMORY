@@ -16,6 +16,7 @@ var _music_player: AudioStreamPlayer
 var _music_player_b: AudioStreamPlayer
 var _ambient_player: AudioStreamPlayer
 var _sfx_players: Array = []
+var _spatial_players: Array = []  # AudioStreamPlayer3D di dunia (volume = suasana)
 var _sfx_index: int = 0
 var _current_music: String = ""
 var _current_ambient: String = ""
@@ -69,6 +70,8 @@ func _apply_volumes() -> void:
 	_ambient_player.volume_db = linear_to_db(maxf(a * 0.35, 0.0001))
 	for p in _sfx_players:
 		(p as AudioStreamPlayer).volume_db = linear_to_db(maxf(s, 0.0001))
+	for sp in _spatial_players:
+		_apply_spatial_volume(sp as AudioStreamPlayer3D)
 
 
 func set_music_volume(v: float) -> void:
@@ -79,6 +82,82 @@ func set_music_volume(v: float) -> void:
 func set_sfx_volume(v: float) -> void:
 	sfx_volume = clampf(v, 0.0, 1.0)
 	_apply_volumes()
+
+
+## Stream loop prosedural untuk sumber suara 3D di dunia (AudioStreamPlayer3D).
+func spatial_stream(sound_id: String) -> AudioStreamWAV:
+	if _cache.has("p:" + sound_id):
+		return _cache["p:" + sound_id]
+	var stream: AudioStreamWAV = _synth_spatial(sound_id)
+	_cache["p:" + sound_id] = stream
+	return stream
+
+
+## Daftarkan pemutar 3D agar volumenya mengikuti slider suasana.
+func register_spatial(p: AudioStreamPlayer3D, base_db: float = 0.0) -> void:
+	p.set_meta("base_db", base_db)
+	_spatial_players.append(p)
+	p.tree_exited.connect(func() -> void: _spatial_players.erase(p))
+	_apply_spatial_volume(p)
+
+
+func _apply_spatial_volume(p: AudioStreamPlayer3D) -> void:
+	if not is_instance_valid(p):
+		return
+	var a: float = 0.0 if muted else ambient_volume
+	p.volume_db = linear_to_db(maxf(a, 0.0001)) + float(p.get_meta("base_db", 0.0))
+
+
+func _synth_spatial(sound_id: String) -> AudioStreamWAV:
+	var seconds: float = 4.0
+	var n: int = int(MIX_RATE * seconds)
+	var samples := PackedFloat32Array()
+	samples.resize(n)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = abs(hash(sound_id))
+	var prev: float = 0.0
+	var lp: float = 0.0
+	var pop_t: float = 0.0
+	for i in n:
+		var t: float = float(i) / MIX_RATE
+		var noise: float = rng.randf() * 2.0 - 1.0
+		var v: float = 0.0
+		match sound_id:
+			"snd_fire":
+				# Derak api: derau low-pass + letupan acak.
+				lp = lp * 0.93 + noise * 0.07
+				v = lp * 0.5 * (0.7 + 0.3 * sin(TAU * 0.6 * t))
+				if rng.randf() < 0.0006:
+					pop_t = t
+				if t - pop_t < 0.03:
+					v += (noise - prev) * 0.6 * (1.0 - (t - pop_t) / 0.03)
+			"snd_radio":
+				# Keroncong samar: melodi pentatonik lambat + statis.
+				var notes: Array = [392.0, 440.0, 523.25, 587.33, 659.25, 587.33, 523.25, 440.0]
+				var idx: int = int(t * 2.0) % notes.size()
+				var f: float = float(notes[idx])
+				var env: float = sin(fmod(t * 2.0, 1.0) * PI)
+				v = (sin(TAU * f * t) * 0.5 + sin(TAU * f * 2.0 * t) * 0.15) * env * 0.25
+				v += (noise - prev) * 0.12 + noise * 0.02
+			"snd_lamp":
+				# Lampu minyak: desis halus + kedip nada rendah.
+				v = (noise - prev) * 0.05 + sin(TAU * 96.0 * t) * 0.02 * (0.5 + 0.5 * sin(TAU * 3.3 * t))
+			"snd_bell":
+				# Lonceng angin: 2–3 denting acak per loop, meluruh panjang.
+				for b in [0.4, 1.9, 3.1]:
+					var lb: float = t - float(b)
+					if lb >= 0.0:
+						v += (sin(TAU * 1318.5 * lb) * 0.5 + sin(TAU * 1975.5 * lb) * 0.25) * exp(-lb * 2.2) * 0.12
+			"snd_sea":
+				lp = lp * 0.985 + noise * 0.015
+				v = lp * 6.0 * (0.55 + 0.45 * sin(TAU * 0.11 * t + 0.5))
+			_:
+				lp = lp * 0.98 + noise * 0.02
+				v = lp * 2.0
+		prev = noise
+		samples[i] = clampf(v, -1.0, 1.0)
+	_blend_loop_edge(samples, MIX_RATE / 4)
+	return _make_wav(samples, true)
 
 
 func set_ambient_volume(v: float) -> void:
