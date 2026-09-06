@@ -43,7 +43,8 @@
       "name": "Bu RT Sumi",
       "description": "Ketua RT sekaligus tetangga sebelah. Selama enam bulan diam-diam menyapu dan merawat rumah nenek. Tahu banyak, tapi hanya bicara pada yang ia percaya.",
       "relationship_start": 3,
-      "relationship_max": 10
+      "relationship_max": 10,
+      "likes": "Klepon Hangat"
     },
     {
       "id": "darmo",

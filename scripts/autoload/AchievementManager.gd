@@ -70,6 +70,8 @@ func evaluate() -> void:
 			ng += 1
 	if ng >= 5:
 		unlock("ach_generous")
+	if bool(gm.get_flag("gift_burt_klepon", false)) and bool(gm.get_flag("quest_lampu_done", false)):
+		unlock("ach_neighbour")
 	var roots: Array = dm.memory_roots()
 	var nmem: int = 0
 	for nid in roots:

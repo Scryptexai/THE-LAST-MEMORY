@@ -131,6 +131,7 @@ func _choice_effects(choice: Dictionary) -> Dictionary:
 		"flags": choice.get("flags", {}),
 		"add_clues": choice.get("add_clues", []),
 		"add_items": choice.get("add_items", []),
+		"remove_items": choice.get("remove_items", []),
 		"relationship": choice.get("relationship", {}),
 		"journal": str(choice.get("journal", "")),
 		"timeline": choice.get("timeline", {}),

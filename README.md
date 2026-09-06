@@ -91,6 +91,12 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## 🤝 Side-Quest Warga
+
+- **Klepon untuk Bu RT** — beli jajan di Pedagang Antik (dapat `klepon`), serahkan ke Bu RT (hadiah otomatis, +3 relasi, linimasa).
+- **Lampu Loket** — setelah gerbong dibuka, Penjaga Stasiun meminta tolong (`lampu_minyak`); gantung di Kait Lampu Loket → lampu loket menyala permanen (flag `loket_terang`, `FlickerLight` dinamis), penjaga berterima kasih.
+- Pencapaian **Tetangga Baik** saat keduanya selesai. Pilihan dialog kini mendukung `remove_items`.
+
 ## 🎬 Kamera Sinematik Kilas Balik
 
 - Saat node `memory` aktif: kamera dolly-in pelan + FOV menyempit 14° + orbit halus (Player), letterbox meluncur masuk, shader layar sepia + vignette + grain film (HUD), label "— 1983 —" memudar masuk; semua dipulihkan dengan tween saat kilas balik berakhir (+ `sfx_memory_exit`).

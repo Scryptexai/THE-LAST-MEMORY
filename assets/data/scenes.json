@@ -15,7 +15,7 @@
         "sun_rotation": [-0.9, -0.6], "exposure": 1.0, "ambient_energy": 0.7
       },
       "npcs": [
-        {"character_id": "bu_rt", "slot": "bu_rt", "display_name": "Bu RT", "dialogue_id": "dlg_burt_intro", "wander": 1.8,
+        {"character_id": "bu_rt", "slot": "bu_rt", "display_name": "Bu RT", "dialogue_id": "dlg_burt_intro", "wander": 1.8, "gifts": {"klepon": {"dialogue": "dlg_burt_klepon", "relationship": {"bu_rt": 0}, "flag": "gift_burt_klepon"}},
          "variants": {"chseen_final": "dlg_burt_final", "chseen_bab3": "dlg_burt_bab3", "burt_bicara": "dlg_burt_after"}}
       ],
       "interactables": [
@@ -116,11 +116,12 @@
         "sun_rotation": [-1.1, -1.2], "exposure": 0.9, "ambient_energy": 0.45, "weather": "drizzle"
       },
       "npcs": [
-        {"character_id": "warga", "slot": "penjaga", "display_name": "Penjaga Stasiun", "dialogue_id": "dlg_penjaga", "variants": {"chseen_bab4": "dlg_penjaga_bab4"}}
+        {"character_id": "warga", "slot": "penjaga", "display_name": "Penjaga Stasiun", "dialogue_id": "dlg_penjaga", "variants": {"quest_lampu_done": "dlg_penjaga_terima", "quest_lampu": "dlg_penjaga_lampu2", "chseen_bab4": "dlg_penjaga_bab4", "gerbong_dibuka": "dlg_penjaga_lampu"}}
       ],
       "interactables": [
         {"object_id": "gerbang_stasiun", "display_name": "Gerbang Stasiun", "prompt_key": "prompt_travel", "target_location": "__travel__", "target_spawn": "default"},
         {"object_id": "loket", "display_name": "Loket Tua", "prompt_key": "prompt_open", "clue_id": "laporan_resmi", "dialogue_id": "dlg_loket"},
+        {"object_id": "kait_lampu", "display_name": "Kait Lampu Loket", "prompt_key": "prompt_examine", "required_flag": "quest_lampu", "required_item": "lampu_minyak", "consume_dialogue": "dlg_kait_kosong", "dialogue_id": "dlg_loket_lampu", "one_shot": true},
         {"object_id": "papan_jadwal", "display_name": "Papan Jadwal", "prompt_key": "prompt_read", "clue_id": "jadwal_1983", "dialogue_id": "dlg_jadwal"},
         {"object_id": "gerbong_gelap", "display_name": "Gerbong Tua", "prompt_key": "prompt_open", "required_item": "senter_tua", "consume_dialogue": "dlg_gerbong_kunci", "dialogue_id": "dlg_gerbong", "variants": {"gerbong_dibuka": "dlg_gerbong_kosong"}},
         {"object_id": "peluit_rel", "display_name": "Benda di Rel", "prompt_key": "prompt_pickup", "clue_id": "peluit_masinis", "dialogue_id": "dlg_peluit"},

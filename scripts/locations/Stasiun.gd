@@ -9,12 +9,42 @@ func _build_layout() -> void:
 	layout["npc:penjaga"] = {"pos": Vector3(-5.5, 0, 1.0), "yaw": PI / 2}
 	layout["obj:gerbang_stasiun"] = {"pos": Vector3(-6, 0, 7.5)}
 	layout["obj:loket"] = {"pos": Vector3(-6.5, 0, -2.0)}
+	layout["obj:kait_lampu"] = {"pos": Vector3(-5.0, 0, -2.6)}
 	layout["obj:papan_jadwal"] = {"pos": Vector3(5.5, 0, -1.5)}
 	layout["obj:gerbong_gelap"] = {"pos": Vector3(2.0, 0, -5.5)}
 	layout["obj:peluit_rel"] = {"pos": Vector3(-2.5, 0, -4.6)}
 	layout["obj:plakat"] = {"pos": Vector3(0, 0, -0.5)}
 	layout["obj:bangku_peron"] = {"pos": Vector3(-2.0, 0, 1.5)}
 	layout["obj:vista_peron"] = {"pos": Vector3(0, 0, 6.5)}
+
+
+var _loket_lamp: FlickerLight = null
+
+
+func _ready() -> void:
+	super()
+	SignalBus.flag_changed.connect(_on_flag)
+	_refresh_loket_lamp()
+
+
+func _on_flag(flag_name: String, _v: Variant) -> void:
+	if flag_name == "loket_terang":
+		_refresh_loket_lamp()
+
+
+## Lampu minyak loket menyala bila side-quest penjaga selesai.
+func _refresh_loket_lamp() -> void:
+	var on: bool = bool(GameManager.get_flag("loket_terang", false))
+	if on and _loket_lamp == null:
+		pf.cyl(self, 0.09, 0.22, Vector3(-5.0, 1.9, -2.6), pf.mat(Color(0.3, 0.25, 0.2), 0.7), false, 8)
+		pf.sphere(self, 0.07, Vector3(-5.0, 1.95, -2.6), pf.mat(Color(1.0, 0.75, 0.3), 0.4, Color(1.0, 0.75, 0.3), 3.0))
+		_loket_lamp = FlickerLight.new()
+		_loket_lamp.position = Vector3(-5.0, 2.0, -2.6)
+		_loket_lamp.light_color = Color(1.0, 0.72, 0.35)
+		_loket_lamp.light_energy = 1.6
+		_loket_lamp.omni_range = 9.0
+		_loket_lamp.flicker_amount = 0.2
+		add_child(_loket_lamp)
 
 
 func _build_visuals() -> void:
