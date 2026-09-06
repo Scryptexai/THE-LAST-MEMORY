@@ -91,6 +91,11 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## 🧭 Menu Perjalanan Informatif
+
+- Setiap lokasi tampil sebagai kartu: nama + lencana (📍 di sini, 🎯 tujuan aktif, 🔒 terkunci, 🕯️ loket menyala), progres **petunjuk & momen per lokasi**, penanda "belum dikunjungi"; lokasi terkunci ditampilkan sebagai `???`.
+- Mode Detektif menyembunyikan progres (hanya deskripsi lokasi). Judul/tombol kini via `ui_strings` (id/en); daftar dapat digulir.
+
 ## ⛰️ Lokasi ke-6: Makam Bukit
 
 - `scenes/locations/MakamBukit.tscn` + `MakamBukit.gd` — pemakaman di lereng bukit: nisan Nenek & Kakek berdampingan, 12 nisan korban 1983, pohon kamboja, gubuk juru kunci, bangku pandang ke stasiun & laut.

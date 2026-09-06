@@ -9,6 +9,8 @@ var _banner_label: Label
 var _objective_label: Label
 var _toast_box: VBoxContainer
 var _travel_panel: PanelContainer
+var _travel_title: Label
+var _travel_close: Button
 var _travel_list: VBoxContainer
 var _memory_overlay: ColorRect
 var _memory_label: Label
@@ -154,26 +156,30 @@ func _build() -> void:
 	# --- Panel perjalanan (tersembunyi) ---
 	_travel_panel = PanelContainer.new()
 	_travel_panel.set_anchors_preset(Control.PRESET_CENTER)
-	_travel_panel.offset_left = -220
-	_travel_panel.offset_right = 220
-	_travel_panel.offset_top = -260
-	_travel_panel.offset_bottom = 260
+	_travel_panel.offset_left = -260
+	_travel_panel.offset_right = 260
+	_travel_panel.offset_top = -280
+	_travel_panel.offset_bottom = 280
 	_travel_panel.add_theme_stylebox_override("panel", ThemeFactory.panel_style())
 	_travel_panel.visible = false
 	add_child(_travel_panel)
 	var tv := VBoxContainer.new()
 	tv.add_theme_constant_override("separation", 8)
 	_travel_panel.add_child(tv)
-	var title := Label.new()
-	ThemeFactory.style_label(title, 24, ThemeFactory.PASTEL_YELLOW, true)
-	title.text = "🧭 Perjalanan"
-	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	tv.add_child(title)
+	_travel_title = Label.new()
+	ThemeFactory.style_label(_travel_title, 24, ThemeFactory.PASTEL_YELLOW, true)
+	_travel_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	tv.add_child(_travel_title)
+	var scroll := ScrollContainer.new()
+	scroll.custom_minimum_size = Vector2(0, 380)
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	tv.add_child(scroll)
 	_travel_list = VBoxContainer.new()
+	_travel_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_travel_list.add_theme_constant_override("separation", 6)
-	tv.add_child(_travel_list)
-	var close_btn := Button.new()
-	close_btn.text = "Tutup"
+	scroll.add_child(_travel_list)
+	_travel_close = Button.new()
+	var close_btn := _travel_close
 	ThemeFactory.style_button(close_btn, 16)
 	close_btn.pressed.connect(func() -> void: _travel_panel.visible = false)
 	tv.add_child(close_btn)
@@ -385,18 +391,73 @@ func _rebuild_travel() -> void:
 		c.queue_free()
 	var dm := DataManager
 	var gm := GameManager
+	var im := InvestigationManager
+	_travel_title.text = dm.tr_key("travel_title")
+	_travel_close.text = dm.tr_key("travel_close")
+	var target_loc: String = dm.get_objective_location(gm.current_objective)
 	for scene_id in dm.scenes.keys():
 		var data: Dictionary = dm.scenes[scene_id]
 		var unlock_flag: String = str(data.get("unlock_flag", ""))
-		if unlock_flag != "" and not bool(gm.get_flag(unlock_flag, false)):
-			continue  # lokasi belum terbuka (mis. Makam Bukit setelah bab 3)
+		var locked: bool = unlock_flag != "" and not bool(gm.get_flag(unlock_flag, false))
+		var here: bool = scene_id == gm.current_location
+		var row := PanelContainer.new()
+		row.add_theme_stylebox_override("panel", ThemeFactory.panel_style(
+			Color(0.08, 0.12, 0.2, 0.75) if not here else Color(0.16, 0.2, 0.12, 0.85),
+			ThemeFactory.PASTEL_YELLOW if scene_id == target_loc and not here else Color(0.3, 0.35, 0.45, 0.6), 1, 8))
+		_travel_list.add_child(row)
+		var hb := HBoxContainer.new()
+		hb.add_theme_constant_override("separation", 10)
+		row.add_child(hb)
+		var info := VBoxContainer.new()
+		info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		hb.add_child(info)
+		var name_l := Label.new()
+		ThemeFactory.style_label(name_l, 17, Color(0.95, 0.95, 0.95) if not locked else Color(0.6, 0.6, 0.65), true)
+		var badges: String = ""
+		if here:
+			badges += " 📍"
+		if scene_id == target_loc and not here:
+			badges += " 🎯"
+		if locked:
+			badges += " 🔒"
+		if bool(gm.get_flag("loket_terang", false)) and scene_id == "stasiun":
+			badges += " 🕯️"
+		name_l.text = ("???" if locked else str(data.get("name", scene_id))) + badges
+		info.add_child(name_l)
+		var sub := Label.new()
+		ThemeFactory.style_label(sub, 12, Color(0.7, 0.75, 0.8))
+		sub.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		if locked:
+			sub.text = dm.tr_key("travel_locked")
+		else:
+			var found: int = 0
+			var total: int = 0
+			for cid in dm.clues.keys():
+				if str((dm.clues[cid] as Dictionary).get("found_in", "")) == scene_id:
+					total += 1
+					if im.has_clue(str(cid)):
+						found += 1
+			var m_found: int = 0
+			var m_total: int = 0
+			for m in dm.moments:
+				if str((m as Dictionary).get("location", "")) == scene_id:
+					m_total += 1
+					if str((m as Dictionary).get("id", "")) in im.moments_taken:
+						m_found += 1
+			var prog: String = dm.tr_key("travel_progress").format({"c": found, "ct": total, "m": m_found, "mt": m_total})
+			var visited: bool = scene_id in gm.visited_locations
+			sub.text = prog + ("" if visited else "  •  " + dm.tr_key("travel_unvisited"))
+			if gm.hard_mode:
+				sub.text = str(data.get("description", ""))
+		info.add_child(sub)
 		var b := Button.new()
-		var here: String = " 📍" if scene_id == gm.current_location else ""
-		b.text = str(data.get("name", scene_id)) + here
-		b.disabled = scene_id == gm.current_location
-		ThemeFactory.style_button(b, 16)
+		b.text = dm.tr_key("travel_go")
+		b.custom_minimum_size = Vector2(88, 0)
+		b.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		b.disabled = here or locked
+		ThemeFactory.style_button(b, 15)
 		b.pressed.connect(_on_travel_to.bind(str(scene_id)))
-		_travel_list.add_child(b)
+		hb.add_child(b)
 
 
 func _on_travel_to(scene_id: String) -> void:
