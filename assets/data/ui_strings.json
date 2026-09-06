@@ -81,7 +81,8 @@
     "journal_memory_locked": "Belum dialami. Sentuh benda-benda peninggalan 1983.",
     "journal_memory_replay": "▶ Putar ulang",
     "recap_title": "📖 Sebelumnya di Kota Tua Pesisir…",
-    "recap_close": "Lanjutkan ✓"
+    "recap_close": "Lanjutkan ✓",
+    "memory_gstats": "🎮 {runs} permainan · ⏱ total {time} · ★ terbaik {best}% · ⚡ ending tercepat {fast}"
   },
   "en": {
     "menu_subtitle": "A Life is Strange mystery in Kota Tua Pesisir",
@@ -165,6 +166,7 @@
     "journal_memory_locked": "Not yet experienced. Touch relics from 1983.",
     "journal_memory_replay": "▶ Replay",
     "recap_title": "📖 Previously in Kota Tua Pesisir…",
-    "recap_close": "Continue ✓"
+    "recap_close": "Continue ✓",
+    "memory_gstats": "🎮 {runs} playthroughs · ⏱ total {time} · ★ best {best}% · ⚡ fastest ending {fast}"
   }
 }

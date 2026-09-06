@@ -239,6 +239,7 @@ func new_game(plus: bool = false, hard: bool = false) -> void:
 	im.add_timeline_event("ev_now", "2026", "Ardi kembali ke Kota Tua Pesisir.")
 	im.mark_character_met("ardi")
 	AchievementManager.evaluate()
+	SaveManager.record_global_stat("runs", 1.0)
 	Logger.info("GameManager: permainan baru dimulai.")
 
 
@@ -364,6 +365,9 @@ func trigger_ending(ending_id: String) -> void:
 		endings_seen.append(ending_id)
 	for e in endings_seen:
 		SaveManager.record_global("endings", str(e))
+	SaveManager.record_global_stat("endings_reached", 1.0)
+	SaveManager.record_global_stat("best_completion", float(completion_percent()), "max")
+	SaveManager.record_global_stat("fastest_ending", SaveManager.playtime, "min")
 	AchievementManager.evaluate()
 	change_state("ending")
 	SignalBus.ending_triggered.emit(ending_id)

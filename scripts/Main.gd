@@ -8,6 +8,12 @@ var _location_container: Node3D
 var _current_location: Node3D = null
 
 
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		SaveManager.stop_tracking()
+		SaveManager.save_settings()
+
+
 func _ready() -> void:
 	_location_container = $World/LocationContainer
 	($World/Player as Node3D).hide()

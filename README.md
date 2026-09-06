@@ -91,6 +91,10 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## 📊 Statistik Lintas-Sesi
+
+- `user://memory.json` → `stats`: jumlah permainan, total waktu bermain (diakumulasi saat berhenti melacak/keluar), penyelesaian terbaik, ending tercepat, jumlah ending dicapai. Ditampilkan di Ruang Memori.
+
 ## 🚶 NPC Hidup
 
 - NPC melambai sekali saat pemain mendekat (< 4 m). Warga generik (dan NPC dengan `wander` di `scenes.json`) berjalan santai di sekitar posnya, berhenti saat pemain dekat/dialog aktif.

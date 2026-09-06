@@ -16,6 +16,7 @@ const SETTINGS_PATH := "user://settings.json"
 
 var playtime: float = 0.0
 var _tracking: bool = false
+var _tracked_since: float = 0.0  # playtime saat mulai dilacak (untuk akumulasi total global)
 
 
 func _ready() -> void:
@@ -66,15 +67,22 @@ func load_settings() -> void:
 
 
 func start_tracking() -> void:
+	_tracked_since = playtime
 	_tracking = true
 
 
 func stop_tracking() -> void:
+	if _tracking:
+		record_global_stat("total_playtime", playtime - _tracked_since)
+		_tracked_since = playtime
 	_tracking = false
 
 
 func reset_playtime() -> void:
+	if _tracking:
+		record_global_stat("total_playtime", playtime - _tracked_since)
 	playtime = 0.0
+	_tracked_since = 0.0
 
 
 ## Susun Dictionary save dari seluruh manager.
@@ -221,7 +229,31 @@ func load_global() -> Dictionary:
 		data["endings"] = []
 	if not data.has("achievements"):
 		data["achievements"] = []
+	if not data.has("stats"):
+		data["stats"] = {}
 	return data
+
+
+## Statistik lintas-sesi: jumlah permainan, total waktu, penyelesaian terbaik, waktu tercepat ke ending.
+func record_global_stat(key: String, value: float, mode: String = "add") -> void:
+	var g := load_global()
+	var stats: Dictionary = g.get("stats", {})
+	var cur: float = float(stats.get(key, 0.0))
+	match mode:
+		"add":
+			stats[key] = cur + value
+		"max":
+			stats[key] = maxf(cur, value)
+		"min":
+			stats[key] = value if cur <= 0.0 else minf(cur, value)
+		_:
+			stats[key] = value
+	g["stats"] = stats
+	SaveUtils.write_text_file(GLOBAL_PATH, SaveUtils.to_json(g))
+
+
+func global_stat(key: String) -> float:
+	return float((load_global().get("stats", {}) as Dictionary).get(key, 0.0))
 
 
 func record_global(kind: String, id: String) -> void:

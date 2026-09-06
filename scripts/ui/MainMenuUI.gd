@@ -318,6 +318,18 @@ func _refresh_memory() -> void:
 	stats.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	ThemeFactory.style_label(stats, 15, ThemeFactory.PASTEL_BLUE)
 	_memory_box.add_child(stats)
+	var sm := SaveManager
+	var gstats := Label.new()
+	var fastest: float = sm.global_stat("fastest_ending")
+	gstats.text = dm.tr_key("memory_gstats").format({
+		"runs": int(sm.global_stat("runs")),
+		"time": MathUtils.format_playtime(sm.global_stat("total_playtime")),
+		"best": int(sm.global_stat("best_completion")),
+		"fast": MathUtils.format_playtime(fastest) if fastest > 0.0 else "—"})
+	gstats.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	gstats.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	ThemeFactory.style_label(gstats, 14, ThemeFactory.PASTEL_PINK)
+	_memory_box.add_child(gstats)
 	for eid in ["ending_kebenaranutuh", "ending_pengorbanan", "ending_rahasiaterkubur", "ending_lukalama"]:
 		_memory_box.add_child(_memory_card(dm, str(eid), eid in seen))
 	var hint := Label.new()
