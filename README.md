@@ -91,6 +91,10 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## 🌗 Suasana Berubah per Bab
+
+- `scenes.json` → `chapter_env: {bab: {override env}}` (bab terbaru yang sudah dilihat menang). Rumah Nenek: senja di bab 3, **malam berbintang** di bab final; Pantai: gerimis muram di bab 4; Kafe: jingga sore di bab 4; Stasiun: gerimis reda di bab final. Termasuk override `weather`.
+
 ## 🤝 Side-Quest Warga
 
 - **Klepon untuk Bu RT** — beli jajan di Pedagang Antik (dapat `klepon`), serahkan ke Bu RT (hadiah otomatis, +3 relasi, linimasa).

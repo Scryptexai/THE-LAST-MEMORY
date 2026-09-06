@@ -69,7 +69,13 @@ func _process(delta: float) -> void:
 func _apply_env() -> void:
 	var dm := DataManager
 	var data: Dictionary = dm.get_scene_data(location_id)
-	var env_data: Dictionary = data.get("env", {})
+	var env_data: Dictionary = (data.get("env", {}) as Dictionary).duplicate(true)
+	# Override suasana per bab (scenes.json "chapter_env": {bab: {...}}); bab terbaru menang.
+	var overrides: Dictionary = data.get("chapter_env", {})
+	for ch in ["prolog", "bab1", "bab2", "bab3", "bab4", "final"]:
+		if overrides.has(ch) and bool(GameManager.get_flag("chseen_" + ch, false)):
+			for k in (overrides[ch] as Dictionary).keys():
+				env_data[k] = (overrides[ch] as Dictionary)[k]
 	var world_env := get_tree().get_first_node_in_group("world_env") as WorldEnvironment
 	var sun := get_tree().get_first_node_in_group("sun") as DirectionalLight3D
 	if world_env and world_env.environment:

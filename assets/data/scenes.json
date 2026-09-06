@@ -14,6 +14,7 @@
         "sun_color": "#ffdcb0", "sun_energy": 1.1,
         "sun_rotation": [-0.9, -0.6], "exposure": 1.0, "ambient_energy": 0.7
       },
+      "chapter_env": {"bab3": {"sky_top": "#1d2f4a", "sky_horizon": "#d9905e", "sun_color": "#ffc88a", "sun_energy": 0.85, "sun_rotation": [-0.45, -0.9], "fog_color": "#c9986e", "exposure": 0.95}, "final": {"sky_top": "#0b1226", "sky_horizon": "#3a2f55", "ground_bottom": "#05070d", "ground_horizon": "#1f1a33", "sun_color": "#8fa4ff", "sun_energy": 0.35, "sun_rotation": [-0.5, 2.4], "fog_color": "#2a2540", "fog_density": 0.012, "exposure": 0.85, "ambient_energy": 0.45}},
       "npcs": [
         {"character_id": "bu_rt", "slot": "bu_rt", "display_name": "Bu RT", "dialogue_id": "dlg_burt_intro", "wander": 1.8, "gifts": {"klepon": {"dialogue": "dlg_burt_klepon", "relationship": {"bu_rt": 0}, "flag": "gift_burt_klepon"}},
          "variants": {"chseen_final": "dlg_burt_final", "chseen_bab3": "dlg_burt_bab3", "burt_bicara": "dlg_burt_after"}}
@@ -46,6 +47,7 @@
         "sun_color": "#fff0c8", "sun_energy": 1.2,
         "sun_rotation": [-0.7, 0.4], "exposure": 1.05, "ambient_energy": 0.8
       },
+      "chapter_env": {"bab4": {"sky_top": "#2a3a5e", "sky_horizon": "#e9a06a", "sun_color": "#ffb884", "sun_energy": 0.9, "sun_rotation": [-0.4, -1.4], "exposure": 1.0}},
       "npcs": [
         {
           "character_id": "rara", "display_name": "Rara", "dialogue_id": "dlg_rara_intro",
@@ -115,6 +117,7 @@
         "sun_color": "#d8b090", "sun_energy": 0.7,
         "sun_rotation": [-1.1, -1.2], "exposure": 0.9, "ambient_energy": 0.45, "weather": "drizzle"
       },
+      "chapter_env": {"final": {"sky_top": "#1a2436", "sky_horizon": "#8a7a70", "fog_density": 0.009, "sun_color": "#e8c8a8", "sun_energy": 0.85, "exposure": 1.0, "weather": ""}},
       "npcs": [
         {"character_id": "warga", "slot": "penjaga", "display_name": "Penjaga Stasiun", "dialogue_id": "dlg_penjaga", "variants": {"quest_lampu_done": "dlg_penjaga_terima", "quest_lampu": "dlg_penjaga_lampu2", "chseen_bab4": "dlg_penjaga_bab4", "gerbong_dibuka": "dlg_penjaga_lampu"}}
       ],
@@ -144,6 +147,7 @@
         "sun_color": "#ffb070", "sun_energy": 1.0,
         "sun_rotation": [-0.35, 1.2], "exposure": 1.05, "ambient_energy": 0.65, "weather": "gulls"
       },
+      "chapter_env": {"bab4": {"sky_top": "#2d2c48", "sky_horizon": "#c86a4a", "fog_color": "#a0706a", "fog_density": 0.011, "sun_color": "#ff9a60", "sun_energy": 0.8, "exposure": 0.95, "weather": "drizzle"}},
       "npcs": [
         {"character_id": "rara", "slot": "rara_pantai", "display_name": "Rara", "dialogue_id": "dlg_rara_pantai_small",
          "variants": {"rara_pengakuan_done": "dlg_rara_after", "ded3": "dlg_rara_pengakuan"}},
