@@ -123,6 +123,31 @@ func _run() -> void:
 	InvestigationManager.use_hint()
 	_check(InvestigationManager.deductions_solved.size() == DataManager.deductions.size(), "%d clue, %d/%d deduksi, %d item" % [InvestigationManager.clues_found.size(), InvestigationManager.deductions_solved.size(), DataManager.deductions.size(), DataManager.items.size()])
 
+	# --- 5b) Avatar anime + potret ---
+	var cf = load("res://scripts/utils/CharacterFactory.gd").new()
+	var ca_script = load("res://scripts/utils/CharacterAnimator.gd")
+	var tf = load("res://scripts/utils/ThemeFactory.gd")
+	var rig_ok: int = 0
+	var portrait_ok: int = 0
+	for cid in ["ardi", "rara", "pak_harto", "mira", "nenek", "darmo", "bu_rt", "warga"]:
+		var av: Node3D = cf.build_character(str(cid))
+		root.add_child(av)  # look_at_point butuh transform dunia
+		var an = ca_script.new(av)
+		if av.has_meta("bones") and an.is_valid():
+			an.wave(1.0)
+			an.update(0.016, 1.0)
+			an.look_at_point(Vector3(1, 1.5, 1))
+			an.update(0.016, 0.0)
+			rig_ok += 1
+		root.remove_child(av)
+		av.free()
+		if tf.portrait(str(cid)) != null:
+			portrait_ok += 1
+	_check(rig_ok == 8, "rig avatar anime terbangun & teranimasi (%d/8)" % rig_ok)
+	_check(portrait_ok == 8, "potret tokoh termuat (%d/8)" % portrait_ok)
+	_check(tf.portrait("Pak Harto") != null and tf.portrait("Suara Peron") == null, "alias potret nama pembicara")
+	_check(tf.art_texture("res://assets/art/ui/keyart_menu.png") != null, "key art menu termuat")
+
 	# --- 6) Simpan/muat + ekspor jurnal ---
 	SaveManager.save_to_slot(1)
 	var data: Dictionary = SaveManager.load_from_slot(1)

@@ -13,12 +13,13 @@ var cam_pitch: float = -0.32
 var current_interactable: Node = null
 var footstep_timer: float = 0.0
 var _step_parity: bool = false  # kiri/kanan → variasi nada langkah
-var _walk_phase: float = 0.0
 var _mesh_root: Node3D
 var _cam_pivot: Node3D
 var _cam: Camera3D
 var _spring: SpringArm3D
 var _anim: AnimationPlayer
+var _animator: CharacterAnimator
+var _avatar: Node3D
 var _moving: bool = false
 var _running: bool = false
 # Kamera sinematik kilas balik: dolly pelan + FOV menyempit, dipulihkan saat selesai.
@@ -32,9 +33,11 @@ var _mem_yaw_start: float = 0.0
 func _ready() -> void:
 	add_to_group("player")
 	_build_nodes()
-	# Bangun avatar Ardi (stylized low-poly).
+	# Bangun avatar Ardi (humanoid anime + rig prosedural).
 	var factory := CharacterFactory.new()
-	_mesh_root.add_child(factory.build_character("ardi"))
+	_avatar = factory.build_character("ardi")
+	_mesh_root.add_child(_avatar)
+	_animator = CharacterAnimator.new(_avatar)
 	SignalBus.memory_flashback_started.connect(_on_memory_start)
 	SignalBus.memory_flashback_ended.connect(_on_memory_end)
 
@@ -76,7 +79,6 @@ func _build_nodes() -> void:
 	_anim = AnimationPlayer.new()
 	_anim.name = "AnimationPlayer"
 	add_child(_anim)
-	_make_idle_animation()
 	# Rig kamera: pivot -> spring arm -> kamera.
 	_cam_pivot = Node3D.new()
 	_cam_pivot.name = "CamPivot"
@@ -109,23 +111,6 @@ func _build_nodes() -> void:
 	area.body_entered.connect(_on_body_entered)
 	area.body_exited.connect(_on_body_exited)
 	floor_snap_length = 0.4
-
-
-func _make_idle_animation() -> void:
-	# Animasi napas: skala Y mesh berdenyut halus.
-	var anim := Animation.new()
-	anim.resource_name = "idle"
-	anim.length = 2.4
-	anim.loop_mode = Animation.LOOP_LINEAR
-	var track: int = anim.add_track(Animation.TYPE_VALUE)
-	anim.track_set_path(track, "MeshRoot:scale:y")
-	anim.track_insert_key(track, 0.0, 1.0)
-	anim.track_insert_key(track, 1.2, 1.035)
-	anim.track_insert_key(track, 2.4, 1.0)
-	var lib := AnimationLibrary.new()
-	lib.add_animation("idle", anim)
-	_anim.add_animation_library("", lib)  # pustaka global agar nama tetap "idle"
-	_anim.play("idle")
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -273,13 +258,17 @@ func place_at(pos: Vector3, yaw: float) -> void:
 
 
 func _update_body_bob(delta: float) -> void:
-	# Goyangan vertikal + oleng halus saat bergerak (imbangan napas idle).
-	if _moving and is_on_floor() and not GameManager.reduce_motion:
-		_walk_phase += delta * (11.0 if _running else 7.5)
-		var amp: float = 0.055 if _running else 0.035
-		_mesh_root.position.y = absf(sin(_walk_phase)) * amp
-		_mesh_root.rotation.z = sin(_walk_phase) * 0.025
+	# Animasi rig: siklus jalan/lari, napas idle, kedip; kepala menoleh ke objek interaksi.
+	if _animator == null or not _animator.is_valid():
+		return
+	var horiz: float = Vector2(velocity.x, velocity.z).length()
+	var spd: float = 0.0
+	if _moving and is_on_floor():
+		spd = clampf(horiz / walk_speed, 0.0, 2.0)
+	if GameManager.reduce_motion:
+		spd = minf(spd, 1.0)
+	if current_interactable and is_instance_valid(current_interactable) and current_interactable is Node3D:
+		_animator.look_at_point((current_interactable as Node3D).global_position + Vector3(0, 1.4, 0))
 	else:
-		_walk_phase = 0.0
-		_mesh_root.position.y = lerpf(_mesh_root.position.y, 0.0, delta * 10.0)
-		_mesh_root.rotation.z = lerpf(_mesh_root.rotation.z, 0.0, delta * 10.0)
+		_animator.clear_look()
+	_animator.update(delta, spd, is_on_floor())

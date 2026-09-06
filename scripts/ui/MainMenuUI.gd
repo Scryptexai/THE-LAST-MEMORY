@@ -7,6 +7,7 @@ var _subtitle: Label
 var _button_box: VBoxContainer
 var _slot_box: VBoxContainer
 var _bg: ColorRect
+var _keyart: TextureRect
 var _t: float = 0.0
 var _credits_dim: ColorRect
 var _credits_panel: PanelContainer
@@ -26,6 +27,21 @@ func _build() -> void:
 	_bg.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_bg.color = Color("#1A365D")
 	add_child(_bg)
+	# Key art anime (Kota Tua Pesisir saat senja) + gradasi gelap agar teks terbaca.
+	var keyart_tex: Texture2D = ThemeFactory.art_texture("res://assets/art/ui/keyart_menu.png")
+	if keyart_tex:
+		_keyart = TextureRect.new()
+		_keyart.texture = keyart_tex
+		_keyart.set_anchors_preset(Control.PRESET_FULL_RECT)
+		_keyart.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		_keyart.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		_keyart.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		add_child(_keyart)
+		var shade := ColorRect.new()
+		shade.set_anchors_preset(Control.PRESET_FULL_RECT)
+		shade.color = Color(0.03, 0.05, 0.1, 0.42)
+		shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		add_child(shade)
 	# Pita aksen sinematik.
 	var band_top := ColorRect.new()
 	band_top.set_anchors_preset(Control.PRESET_TOP_WIDE)
@@ -77,6 +93,11 @@ func _process(delta: float) -> void:
 	if visible:
 		var k: float = 0.5 + 0.5 * sin(_t * 0.4)
 		_bg.color = Color("#1A365D").lerp(Color("#3b2f52"), k * 0.55)
+		if _keyart and not GameManager.reduce_motion:
+			# Ken Burns pelan: zoom 100→106 % bolak-balik.
+			var z: float = 1.0 + 0.06 * (0.5 + 0.5 * sin(_t * 0.12))
+			_keyart.pivot_offset = _keyart.size * 0.5
+			_keyart.scale = Vector2(z, z)
 
 
 func refresh() -> void:

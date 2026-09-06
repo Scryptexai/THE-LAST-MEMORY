@@ -10,6 +10,7 @@ sepertinya *mengingat* sesuatu. Ungkap kebenaran, jaga hubunganmu, dan pilih end
 
 > **Statistik konten saat ini:** 6 lokasi · 142 simpul dialog (14 kilas balik 1983) · 19 petunjuk + 4 deduksi · 10 item · 6 momen foto · 4 tugas sampingan · 19 pencapaian · 4 ending + 8 entri epilog · 2 bahasa (ID/EN). Semua invarian dicek `tools/validate.sh`.
 
+- 🎌 **Gaya visual anime**: karakter 3D humanoid *cel-shaded* dengan rig prosedural (siklus jalan, napas, kedip, menoleh, lambaian), potret anime tiap tokoh di kotak dialog & jurnal, key art senja di menu utama
 - 🗺️ **6 lokasi 3D** bergaya diorama miniatur prosedural: Rumah Nenek, Kafe Rara, Pasar Lama, Stasiun, Pantai, Makam Bukit (terbuka bab 3) — dengan peta kota, suasana per bab, langkah kaki per permukaan, suara posisional
 - 💬 **142 simpul dialog bercabang** (Indonesia + Inggris) dengan efek mengetik, pratinjau hubungan, riwayat, auto-advance, dan penanda ◇ pilihan lama di Baru+
 - 🔍 **19 petunjuk + 4 deduksi** berantai di papan investigasi ala *Golden Idol*, plus papan benang merah
@@ -68,6 +69,8 @@ THE-LAST-MEMORY/
 ├── assets/data/                  # dialogues, characters, clues, items, scenes,
 │                                 # deductions, endings, objectives, ui_strings (JSON)
 ├── assets/audio/{music,sfx,ambient}/  # opsional: taruh .ogg/.wav <id>.ogg untuk override synth
+├── assets/art/portraits/         # potret anime tokoh (<id>.png 448×672) untuk dialog & jurnal
+├── assets/art/ui/keyart_menu.png # key art menu utama
 ├── scripts/
 │   ├── autoload/  SignalBus, DataManager, SaveManager, AudioManager,
 │   │              RelationshipManager, InvestigationManager, DialogueManager, GameManager
@@ -76,7 +79,8 @@ THE-LAST-MEMORY/
 │   ├── systems/   DialogueParser, ClueSystem, DeductionSystem, RelationshipSystem
 │   ├── ui/        UIManager, HUD, MainMenuUI, DialogueUI, InvestigationUI,
 │   │              InventoryUI, JournalUI, SettingUI, LoadingUI, EndingUI
-│   └── utils/     GameLog, MathUtils, SaveUtils, PropFactory, CharacterFactory, ThemeFactory
+│   └── utils/     GameLog, MathUtils, SaveUtils, PropFactory, CharacterFactory,
+│                  CharacterAnimator, ThemeFactory
 ├── scripts/Main.gd               # orkestrasi scene & perjalanan
 └── scenes/                       # Main, entities, locations, ui (.tscn)
 ```
@@ -96,6 +100,13 @@ THE-LAST-MEMORY/
 | 🕯 Pengorbanan | Pilihan SEBAGIAN (lindungi keluarga Rara) dengan bukti cukup |
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
+
+## 🎌 Gaya Visual Anime: Avatar, Potret, Key Art
+
+- **Avatar 3D humanoid** (`scripts/utils/CharacterFactory.gd`) — bukan kotak: rig berjenjang `Hips → Spine → Chest → Neck → Head`, `Shoulder → Elbow → Hand`, `UpLeg → Knee → Foot` dari kapsul/silinder/bola halus, proporsi ~6,5 kepala. Material *cel-shaded* (`DIFFUSE_TOON` + `SPECULAR_TOON` + rim) dengan **garis tepi hitam** lewat `next_pass` (`grow` + `CULL_FRONT`). Mata anime dari tekstur prosedural (iris bergradasi, pupil, dua sorot cahaya, garis kelopak & bulu mata), alis, rona pipi, poni berhelai. Ciri per tokoh: Ardi (tas selempang, jambul), Rara (kuncir kuda + pita merah, celemek, rok), Pak Harto (fedora, kumis, tongkat), Mira (bob, syal merah, kamera), Nenek Lastri (sanggul, kebaya + selendang, kain panjang), Kakek Darmo (topi masinis, kancing kuningan, peluit), Bu RT Sumi (kerudung, sapu lidi), warga (caping). Tulang diekspos lewat `get_meta("bones")`.
+- **Animator prosedural** (`scripts/utils/CharacterAnimator.gd`) — `update(delta, speed)`: siklus jalan/lari (ayun lengan-kaki berlawanan, tekuk lutut/siku, goyang pinggul & bahu, bob badan), idle bernapas + gestur kepala, **kedip acak**, `look_at_point()` kepala+leher menoleh (dibatasi ±63°), `wave()` lambaian, `sit_pose()`. Dipakai `Player` (kecepatan dari `velocity`, menoleh ke objek interaksi) dan `NPC` (menoleh ke pemain, lambai saat mendekat, jalan saat berkeliling). Kunyit ikut dibuat ulang bergaya toon (kepala bulat, telinga kerucut, mata hijau anime, kumis, kaki berayun).
+- **Potret dialog** — `ThemeFactory.portrait(nama_atau_id)` memetakan nama pembicara (`PORTRAIT_ALIAS`, mis. "Pak Harto" → `pak_harto`, "Pedagang/Penjaga/Juru Kunci" → `warga`) ke `assets/art/portraits/<id>.png`; `DialogueUI` menampilkannya di kiri kotak dialog (fade+geser saat ganti tokoh, sepia saat kilas balik, disembunyikan bila pembicara tak berpotret seperti "Suara Peron"). Tab **Tokoh** di jurnal memakai potret yang sama (siluet gelap bila belum dikenal).
+- **Key art menu** — `assets/art/ui/keyart_menu.png` dipasang `MainMenuUI` (cover + gradasi gelap, zoom Ken Burns pelan; mati saat *Kurangi gerakan*). `ThemeFactory.art_texture()` memuat lewat importer editor, atau langsung dari PNG bila berkas `.import` belum ada (build headless).
 
 ## 📤 Ekspor Jurnal ke Markdown
 
@@ -139,7 +150,7 @@ THE-LAST-MEMORY/
 ## 🧪 Validasi Otomatis
 
 - `tools/validate.sh` — parse semua GDScript (`gdparse` dari gdtoolkit, opsional), analisis statis Godot 4 (`tools/analyze_gd.mjs`, opsional), lalu `tools/validate_data.py`.
-- `tools/godot_check.sh` — verifikasi dengan **engine Godot sungguhan (headless)**: `tools/check_scripts.gd` memuat & mengompilasi semua 49 skrip + 20 scene, lalu `tools/smoke_test.gd` **memainkan game** tanpa layar: game baru → 6 lokasi (semua NPC/objek di-interact) → 142 dialog → semua layar UI → 19 clue/4 deduksi/10 item → simpan-muat → ekspor jurnal → 4 ending → lanjutkan dari save → Baru+/mode sulit. Gagal bila ada `SCRIPT ERROR` apa pun. Otomatis dilewati bila tidak ada binari Godot (`$GODOT` atau `godot` di PATH).
+- `tools/godot_check.sh` — verifikasi dengan **engine Godot sungguhan (headless)**: `tools/check_scripts.gd` memuat & mengompilasi semua 50 skrip + 20 scene, lalu `tools/smoke_test.gd` **memainkan game** tanpa layar: game baru → 6 lokasi (semua NPC/objek di-interact) → 142 dialog → semua layar UI → 19 clue/4 deduksi/10 item → simpan-muat → ekspor jurnal → rig avatar anime + potret + key art → 4 ending → lanjutkan dari save → Baru+/mode sulit. Gagal bila ada `SCRIPT ERROR` apa pun. Otomatis dilewati bila tidak ada binari Godot (`$GODOT` atau `godot` di PATH).
 - `tools/build_godot_headless.sh` — bangun Godot 4.3 headless minimal dari sumber (`codeload.github.com`, ±15 menit/2 core, hanya butuh gcc+scons) untuk lingkungan tanpa akses ke GitHub Releases. `tools/gen_class_cache.py` membuat `.godot/global_script_class_cache.cfg` agar build non-editor mengenali `class_name`.
 - `tools/analyze_gd.mjs` — analisis statis GDScript **setara compiler Godot 4** tanpa editor (`npm i` sekali; memakai `@gdscript-analyzer/core`): parse error, identifier/anggota yang tidak ada (`dialogue_variants`, `Environment.TONE_MAPPER_*`, `SystemFont.font_size`, …), ketidakcocokan tipe, tabrakan `class_name` dengan kelas engine (mis. `Logger` → kini `GameLog`). `--strict` juga menampilkan peringatan `UNSAFE_*`.
 - `tools/validate_data.py` — invarian data tanpa Godot: JSON valid, **semua dialog terjangkau** dari titik masuk, pencapaian dirujuk dua arah, paritas `ui_strings` id/en + semua `tr_key()` ada, referensi clue/item/momen/objective/scene/quest konsisten.

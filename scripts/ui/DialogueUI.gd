@@ -20,6 +20,9 @@ var _backlog: Array = []  # Array[String] "Speaker: teks" (maks 40)
 var _backlog_panel: PanelContainer
 var _backlog_text: RichTextLabel
 var _auto_badge: Label
+var _portrait: TextureRect
+var _portrait_frame: PanelContainer
+var _portrait_who: String = ""
 
 
 func _ready() -> void:
@@ -33,6 +36,23 @@ func _ready() -> void:
 
 
 func _build() -> void:
+	# Potret anime pembicara di kiri atas kotak dialog.
+	_portrait_frame = PanelContainer.new()
+	_portrait_frame.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
+	_portrait_frame.offset_left = 40
+	_portrait_frame.offset_right = 40 + 232
+	_portrait_frame.offset_top = -24 - 330 - 40
+	_portrait_frame.offset_bottom = -24 - 330 + 300
+	_portrait_frame.add_theme_stylebox_override("panel", ThemeFactory.panel_style(Color(0.05, 0.1, 0.19, 0.0), ThemeFactory.ACCENT, 2, 14))
+	_portrait_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_portrait_frame.clip_contents = true
+	_portrait_frame.visible = false
+	add_child(_portrait_frame)
+	_portrait = TextureRect.new()
+	_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	_portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_portrait_frame.add_child(_portrait)
 	_panel = PanelContainer.new()
 	_panel.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
 	_panel.offset_left = 60
@@ -160,6 +180,7 @@ func _on_node_shown(node_id: String) -> void:
 	_text_label.add_theme_color_override("default_color", Color.WHITE if hc else ThemeFactory.CREAM)
 	ThemeFactory.apply_font(_text_label, "normal_font", 21 if hc else 19)
 	_full_text = dm.localized(node)
+	_update_portrait(str(node.get("speaker_id", node.get("speaker", ""))), bool(node.get("memory", false)))
 	_backlog.append("[b]%s[/b]: %s" % [str(node.get("speaker", "???")), _full_text])
 	if _backlog.size() > 40:
 		_backlog.pop_front()
@@ -301,3 +322,25 @@ func _on_choice_pressed(index: int) -> void:
 		_advance_or_complete()
 		return
 	DialogueManager.choose(index)
+
+
+## Tampilkan potret pembicara (fade + geser kecil saat ganti tokoh). Sepia saat kilas balik.
+func _update_portrait(who: String, memory: bool) -> void:
+	var tex: Texture2D = ThemeFactory.portrait(who)
+	if tex == null:
+		_portrait_frame.visible = false
+		_portrait_who = ""
+		return
+	_portrait_frame.visible = true
+	_portrait.self_modulate = Color(1.0, 0.9, 0.75) if memory else Color.WHITE
+	if who == _portrait_who:
+		return
+	_portrait_who = who
+	_portrait.texture = tex
+	if GameManager.reduce_motion:
+		return
+	_portrait_frame.modulate.a = 0.0
+	_portrait_frame.position.x -= 18
+	var tw := create_tween().set_parallel(true).bind_node(_portrait_frame)
+	tw.tween_property(_portrait_frame, "modulate:a", 1.0, 0.25)
+	tw.tween_property(_portrait_frame, "position:x", _portrait_frame.position.x + 18, 0.25).set_trans(Tween.TRANS_SINE)

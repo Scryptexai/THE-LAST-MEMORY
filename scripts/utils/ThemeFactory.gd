@@ -38,6 +38,42 @@ static func apply_font(ctrl: Control, theme_name: String, size: int, title: bool
 	ctrl.add_theme_font_size_override(theme_name + "_size", size)
 
 
+## Alias nama tampilan pembicara → id potret di assets/art/portraits/.
+const PORTRAIT_ALIAS := {
+	"ardi": "ardi", "rara": "rara", "pak harto": "pak_harto", "harto": "pak_harto", "mira": "mira",
+	"nenek": "nenek", "nenek lastri": "nenek", "lastri": "nenek", "darmo": "darmo", "kakek darmo": "darmo",
+	"bu rt": "bu_rt", "bu rt sumi": "bu_rt", "bu_rt": "bu_rt", "pedagang": "warga", "penjaga": "warga",
+	"juru kunci": "warga", "warga": "warga",
+}
+
+
+static var _tex_cache: Dictionary = {}
+
+
+## Potret anime tokoh (null bila tidak ada). Menerima id karakter atau nama tampilan.
+static func portrait(who: String) -> Texture2D:
+	var key: String = who.strip_edges().to_lower()
+	var pid: String = str(PORTRAIT_ALIAS.get(key, key.replace(" ", "_")))
+	return art_texture("res://assets/art/portraits/%s.png" % pid)
+
+
+## Muat gambar aset: lewat importer editor bila sudah diimpor, kalau tidak
+## (mis. build template headless tanpa berkas .import) langsung dari PNG.
+static func art_texture(path: String) -> Texture2D:
+	if _tex_cache.has(path):
+		return _tex_cache[path]
+	var tex: Texture2D = null
+	if ResourceLoader.exists(path):
+		tex = load(path) as Texture2D
+	if tex == null and FileAccess.file_exists(path):
+		var img := Image.new()
+		if img.load(path) == OK:
+			img.generate_mipmaps()
+			tex = ImageTexture.create_from_image(img)
+	_tex_cache[path] = tex
+	return tex
+
+
 static func panel_style(bg: Color = Color(0.06, 0.12, 0.22, 0.92), border: Color = ACCENT, bw: int = 2, radius: int = 12) -> StyleBoxFlat:
 	var s := StyleBoxFlat.new()
 	s.bg_color = bg

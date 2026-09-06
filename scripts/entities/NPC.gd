@@ -15,10 +15,10 @@ var wander_radius: float = 0.0
 var _home: Vector3 = Vector3.ZERO
 var _wander_target: Vector3 = Vector3.ZERO
 var _wander_wait: float = 0.0
-var _walk_phase: float = 0.0
-var _wave_t: float = 0.0
+var _moving_now: bool = false
 var _waved: bool = false
-var _arm_r: Node3D = null
+var _animator: CharacterAnimator = null
+var _avatar: Node3D = null
 
 var _mesh_root: Node3D
 var _label: Label3D
@@ -53,7 +53,9 @@ func _build() -> void:
 	_mesh_root.name = "MeshRoot"
 	add_child(_mesh_root)
 	var factory := CharacterFactory.new()
-	_mesh_root.add_child(factory.build_character(character_id))
+	_avatar = factory.build_character(character_id)
+	_mesh_root.add_child(_avatar)
+	_animator = CharacterAnimator.new(_avatar)
 	_label = Label3D.new()
 	_label.text = display_name
 	_label.font_size = 64
@@ -75,10 +77,6 @@ func _init_wander() -> void:
 	_wander_wait = randf_range(1.0, 4.0)
 	if wander_radius <= 0.0 and character_id == "warga":
 		wander_radius = 2.5
-	# Ambil "lengan kanan" (kotak ketiga yang dibuat CharacterFactory) untuk lambaian.
-	var avatar := _mesh_root.get_child(0) as Node3D
-	if avatar and avatar.get_child_count() > 4:
-		_arm_r = avatar.get_child(4) as Node3D
 
 
 func _collect_meshes(n: Node) -> void:
@@ -90,35 +88,32 @@ func _collect_meshes(n: Node) -> void:
 
 func _process(delta: float) -> void:
 	_t += delta
-	# Idle: napas + menoleh ke pemain bila dekat.
-	_mesh_root.scale.y = 1.0 + sin(_t * 1.8 + float(get_instance_id() % 10)) * 0.015
+	# Idle: napas/kedip via animator; menoleh & memutar badan ke pemain bila dekat.
 	var player := get_tree().get_first_node_in_group("player") as Node3D
 	var near_player: bool = false
+	_moving_now = false
 	if player:
 		var to: Vector3 = player.global_position - global_position
 		to.y = 0
 		near_player = to.length() < 8.0
 		if near_player and to.length() > 0.05:
-			var target: float = atan2(-to.x, -to.z)
-			_mesh_root.rotation.y = MathUtils.lerp_angle_stable(_mesh_root.rotation.y, target, delta * 3.0)
+			if to.length() < 4.5:
+				var target: float = atan2(to.x, to.z)
+				_mesh_root.rotation.y = MathUtils.lerp_angle_stable(_mesh_root.rotation.y, target, delta * 3.0)
+			if _animator:
+				_animator.look_at_point(player.global_position + Vector3(0, 1.5, 0))
+		elif _animator:
+			_animator.clear_look()
 		# Lambaian sekali saat pemain mendekat (< 4 m), reset saat menjauh.
 		if to.length() < 4.0 and not _waved:
 			_waved = true
-			_wave_t = 1.4
+			if _animator:
+				_animator.wave(1.4)
 		elif to.length() > 6.0:
 			_waved = false
-	_update_wave(delta)
 	_update_wander(delta, near_player)
-
-
-func _update_wave(delta: float) -> void:
-	if _arm_r == null:
-		return
-	if _wave_t > 0.0:
-		_wave_t -= delta
-		_arm_r.rotation.z = -2.6 + sin(_t * 14.0) * 0.35
-	else:
-		_arm_r.rotation.z = lerpf(_arm_r.rotation.z, 0.0, delta * 6.0)
+	if _animator:
+		_animator.update(delta, 1.0 if _moving_now else 0.0)
 
 
 ## Berkeliling santai di sekitar pos; berhenti saat pemain dekat atau dialog aktif.
@@ -127,13 +122,11 @@ func _update_wander(delta: float, near_player: bool) -> void:
 		return
 	if near_player or not GameManager.is_gameplay_input_active():
 		velocity = Vector3.ZERO
-		_mesh_root.position.y = lerpf(_mesh_root.position.y, 0.0, delta * 8.0)
 		return
 	var flat: Vector3 = _wander_target - global_position
 	flat.y = 0.0
 	if flat.length() < 0.25:
 		_wander_wait -= delta
-		_mesh_root.position.y = lerpf(_mesh_root.position.y, 0.0, delta * 8.0)
 		if _wander_wait <= 0.0:
 			var ang: float = randf() * TAU
 			var r: float = randf_range(0.6, wander_radius)
@@ -143,9 +136,8 @@ func _update_wander(delta: float, near_player: bool) -> void:
 	var dir: Vector3 = flat.normalized()
 	velocity = Vector3(dir.x * 0.9, -1.0, dir.z * 0.9)
 	move_and_slide()
-	_mesh_root.rotation.y = MathUtils.lerp_angle_stable(_mesh_root.rotation.y, atan2(-dir.x, -dir.z), delta * 4.0)
-	_walk_phase += delta * 7.0
-	_mesh_root.position.y = absf(sin(_walk_phase)) * 0.03
+	_mesh_root.rotation.y = MathUtils.lerp_angle_stable(_mesh_root.rotation.y, atan2(dir.x, dir.z), delta * 4.0)
+	_moving_now = true
 
 
 func get_prompt() -> String:
@@ -159,7 +151,7 @@ func set_highlight(on: bool) -> void:
 	if _label:
 		_label.modulate = Color(1.0, 0.85, 0.4) if on else Color(1, 0.95, 0.8)
 	if _mesh_root:
-		_mesh_root.scale = Vector3.ONE * (1.04 if on else 1.0)
+		_mesh_root.scale = Vector3.ONE * (1.03 if on else 1.0)
 
 
 func interact(_from: Node = null) -> void:

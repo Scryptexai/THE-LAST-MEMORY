@@ -287,6 +287,15 @@ func _refresh_characters() -> void:
 		var hb := HBoxContainer.new()
 		hb.add_theme_constant_override("separation", 12)
 		p.add_child(hb)
+		var tex: Texture2D = ThemeFactory.portrait(str(char_id))
+		if tex:
+			var pr := TextureRect.new()
+			pr.texture = tex
+			pr.custom_minimum_size = Vector2(72, 108)
+			pr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			pr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+			pr.self_modulate = Color.WHITE if met else Color(0.15, 0.15, 0.2)  # siluet bila belum dikenal
+			hb.add_child(pr)
 		var vb := VBoxContainer.new()
 		vb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		hb.add_child(vb)
