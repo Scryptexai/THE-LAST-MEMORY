@@ -91,6 +91,11 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## 📜 Epilog & Riwayat Pilihan
+
+- `assets/data/epilogues.json`: nasib tiap tokoh (Rara, Pak Harto, Mira, Bu RT) berdasarkan nilai hubungan akhir (tier `min`), ditampilkan di bawah teks ending — hanya untuk tokoh yang pernah ditemui.
+- Jurnal tab **Pilihan**: riwayat semua pilihan dialog (waktu bermain + pembicara + teks), terbaru di atas.
+
 ## 🕵 Mode Detektif
 
 - Terbuka setelah satu ending (menu utama). Tanpa hint, tanpa penanda objek (kecuali portal), tanpa pratinjau efek relasi di pilihan dialog. Tersimpan di save (`hard_mode`). Pencapaian **Detektif Sejati** saat mencapai ending apa pun.

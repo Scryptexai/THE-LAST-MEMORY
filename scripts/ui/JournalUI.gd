@@ -8,6 +8,7 @@ var _timeline_list: VBoxContainer
 var _moments_list: VBoxContainer
 var _ach_list: VBoxContainer
 var _photos_box: VBoxContainer
+var _choices_list: VBoxContainer
 var _tabs: TabContainer
 var _stats_label: Label
 
@@ -55,6 +56,7 @@ func _build() -> void:
 	_moments_list = _make_tab("Momen")
 	_ach_list = _make_tab("Pencapaian")
 	_photos_box = _make_tab("Foto")
+	_choices_list = _make_tab("Pilihan")
 
 
 func _make_tab(tab_name: String) -> VBoxContainer:
@@ -78,6 +80,40 @@ func refresh() -> void:
 	_refresh_moments()
 	_refresh_achievements()
 	_refresh_photos()
+	_refresh_choices()
+
+
+## Riwayat pilihan dialog (terbaru di atas) + waktu bermain saat memilih.
+func _refresh_choices() -> void:
+	var dlgm := DialogueManager
+	var dm := DataManager
+	for c in _choices_list.get_children():
+		c.queue_free()
+	var hist: Array = (dlgm.history as Array)
+	if hist.is_empty():
+		_choices_list.add_child(_empty_label(dm.tr_key("journal_choices_empty")))
+		return
+	var head := Label.new()
+	head.text = dm.tr_key("journal_choices_head").format({"n": hist.size()})
+	ThemeFactory.style_label(head, 16, ThemeFactory.PASTEL_YELLOW, true)
+	_choices_list.add_child(head)
+	for i in range(hist.size() - 1, -1, -1):
+		var h: Dictionary = hist[i]
+		var node: Dictionary = dm.get_dialogue(str(h.get("node", "")))
+		var hb := HBoxContainer.new()
+		hb.add_theme_constant_override("separation", 10)
+		var tm := Label.new()
+		tm.text = MathUtils.format_playtime(float(h.get("time", 0.0)))
+		tm.custom_minimum_size = Vector2(70, 0)
+		ThemeFactory.style_label(tm, 14, ThemeFactory.ACCENT_LIGHT, true)
+		hb.add_child(tm)
+		var t := Label.new()
+		t.text = "%s: \"%s\"" % [str(node.get("speaker", "?")), str(h.get("text", ""))]
+		t.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		t.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		ThemeFactory.style_label(t, 15, ThemeFactory.CREAM)
+		hb.add_child(t)
+		_choices_list.add_child(hb)
 
 
 func _refresh_notes() -> void:

@@ -91,6 +91,12 @@ func _on_ending(ending_id: String) -> void:
 		_title.text = str(e.get("title", ending_id))
 	var body: String = str(e.get("description_en", "")) if dm.language == "en" and str(e.get("description_en", "")) != "" else str(e.get("description", ""))
 	_desc.text = body
+	var lines: Array = dm.epilogue_lines()
+	if not lines.is_empty():
+		_desc.text += "\n\n[color=#FBBF24][b]— %s —[/b][/color]" % dm.tr_key("ending_epilogue")
+		for ln in lines:
+			var l: Dictionary = ln
+			_desc.text += "\n%s [b]%s[/b] — %s" % [str(l["icon"]), str(l["name"]), str(l["text"])]
 	var prog: Dictionary = im.clue_progress()
 	_stats.text = "Petunjuk %d/%d   ·   Deduksi %d/4   ·   Rara 💛%d   Harto 💛%d   Mira 💛%d\nWaktu %s   ·   Pilihan %d   ·   Ending %d/4   \u00b7   \u2605 %d%%" % [
 		prog["found"], prog["total"], (im.deductions_solved as Array).size(),

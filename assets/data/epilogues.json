@@ -1,0 +1,87 @@
+{
+  "epilogues": [
+    {
+      "id": "rara",
+      "character": "rara",
+      "icon": "☕",
+      "tiers": [
+        {
+          "min": 14,
+          "text": "Rara membuka cabang kedua kafenya di dekat stasiun yang direnovasi. Di dinding, foto Ardi dan Rara kecil — dibingkai baru. 'Untuk yang pulang,' tulisnya di bawahnya.",
+          "text_en": "Rara opens a second cafe near the renovated station. On the wall, a photo of little Ardi and Rara — newly framed. 'For the one who came home,' she wrote beneath it."
+        },
+        {
+          "min": 8,
+          "text": "Rara tetap menjalankan kafenya. Kadang ia mengirim pesan singkat pada Ardi: foto kopi, foto hujan. Tak banyak kata. Tapi cukup.",
+          "text_en": "Rara keeps running her cafe. Sometimes she texts Ardi: a photo of coffee, a photo of rain. Few words. But enough."
+        },
+        {
+          "min": 0,
+          "text": "Rara mengganti nama kafenya. Ia tak pernah lagi membahas 1983 — dan tak pernah lagi menyebut nama Ardi.",
+          "text_en": "Rara renames her cafe. She never speaks of 1983 again — nor of Ardi."
+        }
+      ]
+    },
+    {
+      "id": "pak_harto",
+      "character": "pak_harto",
+      "icon": "🎩",
+      "tiers": [
+        {
+          "min": 9,
+          "text": "Pak Harto akhirnya menulis memoarnya. Bab pertama berjudul 'Berkas yang Tak Pernah Kututup'. Ia mengirim salinan pertamanya ke rumah nenek.",
+          "text_en": "Mr. Harto finally writes his memoir. Chapter one is titled 'The File I Never Closed'. He sends the first copy to grandma's house."
+        },
+        {
+          "min": 5,
+          "text": "Pak Harto masih duduk di sudut kafe tiap pagi. Tapi tongkatnya kini bersandar lebih ringan, dan ia menyapa lebih dulu.",
+          "text_en": "Mr. Harto still sits in the cafe corner each morning. But his cane leans lighter now, and he greets people first."
+        },
+        {
+          "min": 0,
+          "text": "Pak Harto pindah ke rumah anaknya di kota lain. Sudut kafe itu kosong — hanya cangkir yang tetap disiapkan Rara setiap pagi.",
+          "text_en": "Mr. Harto moves to his son's house in another city. The cafe corner sits empty — only the cup Rara still sets out each morning."
+        }
+      ]
+    },
+    {
+      "id": "mira",
+      "character": "mira",
+      "icon": "📰",
+      "tiers": [
+        {
+          "min": 7,
+          "text": "Artikel Mira memenangkan penghargaan jurnalistik daerah. Di halaman ucapan terima kasih: 'Untuk Lastri, yang menulis lebih dulu.'",
+          "text_en": "Mira's article wins a regional journalism award. On the acknowledgements page: 'For Lastri, who wrote it first.'"
+        },
+        {
+          "min": 3,
+          "text": "Mira terus menulis untuk Suara Pesisir. Kolomnya kini bernama 'Arsip yang Hidup'. Pembacanya bertambah, pelan tapi pasti.",
+          "text_en": "Mira keeps writing for Suara Pesisir. Her column is now called 'The Living Archive'. Her readers grow, slowly but surely."
+        },
+        {
+          "min": 0,
+          "text": "Mira menerima tawaran kerja di ibu kota. Arsip koran di Pasar Lama dikunci kembali — kali ini tanpa kunci cadangan.",
+          "text_en": "Mira accepts a job in the capital. The newspaper archive in Pasar Lama is locked again — this time without a spare key."
+        }
+      ]
+    },
+    {
+      "id": "bu_rt",
+      "character": "bu_rt",
+      "icon": "🧹",
+      "tiers": [
+        {
+          "min": 6,
+          "text": "Bu RT Sumi mengusulkan nama nenek untuk jalan kecil di depan rumah. Warga setuju dengan suara bulat: Gang Lastri.",
+          "text_en": "Bu RT Sumi proposes grandma's name for the little lane in front of the house. The neighbours agree unanimously: Lastri Lane."
+        },
+        {
+          "min": 0,
+          "text": "Bu RT Sumi tetap menyapu teras rumah nenek setiap pagi. Kebiasaan, katanya. Tapi semua tahu itu doa.",
+          "text_en": "Bu RT Sumi still sweeps grandma's porch every morning. Habit, she says. But everyone knows it's a prayer."
+        }
+      ]
+    }
+  ]
+}

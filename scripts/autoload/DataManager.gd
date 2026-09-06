@@ -13,6 +13,7 @@ const PATH_STRINGS := "res://assets/data/ui_strings.json"
 const PATH_OBJECTIVES := "res://assets/data/objectives.json"
 const PATH_MOMENTS := "res://assets/data/moments.json"
 const PATH_ACHIEVEMENTS := "res://assets/data/achievements.json"
+const PATH_EPILOGUES := "res://assets/data/epilogues.json"
 
 var dialogues: Dictionary = {}      # id -> node
 var characters: Dictionary = {}     # id -> data
@@ -25,6 +26,7 @@ var ui_strings: Dictionary = {}     # lang -> { key -> text }
 var objectives: Dictionary = {}     # objective_id -> {text, text_en}
 var moments: Dictionary = {}        # moment_id -> data
 var achievements: Dictionary = {}   # ach_id -> data
+var epilogues: Array = []           # Array[Dictionary] {id, character, icon, tiers[]}
 
 var language: String = "id"
 
@@ -47,6 +49,7 @@ func load_all() -> void:
 	objectives = _index(_load_array(PATH_OBJECTIVES, "objectives"))
 	moments = _index(_load_array(PATH_MOMENTS, "moments"))
 	achievements = _index(_load_array(PATH_ACHIEVEMENTS, "achievements"))
+	epilogues = _load_array(PATH_EPILOGUES, "epilogues")
 	Logger.info("DataManager: %d dialog, %d karakter, %d clue, %d deduksi dimuat." % [
 		dialogues.size(), characters.size(), clues.size(), deductions.size()])
 
@@ -135,6 +138,26 @@ func set_language(lang: String) -> void:
 	if lang != "id" and lang != "en":
 		return
 	language = lang
+
+
+## Epilog per tokoh berdasarkan nilai hubungan akhir: Array[{icon, name, text}].
+func epilogue_lines() -> Array:
+	var rm := RelationshipManager
+	var im := InvestigationManager
+	var out: Array = []
+	for ep in epilogues:
+		var e: Dictionary = ep
+		var cid: String = str(e.get("character", ""))
+		if cid == "" or not (cid in (im.characters_met as Array)):
+			continue
+		var val: int = rm.get_value(cid)
+		for tier in e.get("tiers", []):
+			var t: Dictionary = tier
+			if val >= int(t.get("min", 0)):
+				var txt: String = str(t.get("text_en", "")) if language == "en" and str(t.get("text_en", "")) != "" else str(t.get("text", ""))
+				out.append({"icon": str(e.get("icon", "•")), "name": str((get_character(cid) as Dictionary).get("name", cid)), "text": txt})
+				break
+	return out
 
 
 func get_objective(objective_id: String) -> String:

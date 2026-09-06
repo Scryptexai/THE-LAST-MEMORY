@@ -72,7 +72,10 @@
     "memory_stats": "Ending: {n}/4 · Pencapaian: {a}/{t}",
     "memory_hint": "Muat simpanan atau mulai permainan baru untuk menambah koleksi.",
     "menu_hard": "🕵 Mode Detektif (tanpa hint)",
-    "hint_hard": "Mode Detektif: tak ada hint. Bacalah rumah ini sendiri."
+    "hint_hard": "Mode Detektif: tak ada hint. Bacalah rumah ini sendiri.",
+    "ending_epilogue": "Epilog",
+    "journal_choices_empty": "Belum ada pilihan yang dibuat.",
+    "journal_choices_head": "🗣 {n} pilihan dibuat"
   },
   "en": {
     "menu_subtitle": "A Life is Strange mystery in Kota Tua Pesisir",
@@ -147,6 +150,9 @@
     "memory_stats": "Endings: {n}/4 · Achievements: {a}/{t}",
     "memory_hint": "Load a save or start a new game to grow the collection.",
     "menu_hard": "🕵 Detective Mode (no hints)",
-    "hint_hard": "Detective Mode: no hints. Read this house yourself."
+    "hint_hard": "Detective Mode: no hints. Read this house yourself.",
+    "ending_epilogue": "Epilogue",
+    "journal_choices_empty": "No choices made yet.",
+    "journal_choices_head": "🗣 {n} choices made"
   }
 }
