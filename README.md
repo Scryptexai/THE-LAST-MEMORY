@@ -91,6 +91,10 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## 📤 Ekspor Jurnal ke Markdown
+
+- Tombol **Ekspor .md** di header Jurnal → `scripts/utils/JournalExporter.gd` menulis `user://exports/jurnal_<waktu>.md` berisi ringkasan (bab, lokasi, waktu, %), petunjuk, deduksi, hubungan, linimasa, catatan, pilihan, momen, foto, pencapaian, dan ending — dalam bahasa aktif. Folder dibuka otomatis di file manager.
+
 ## 🐈 Kunyit, Kucing Nenek
 
 - `scripts/entities/Cat.gd` — companion kecil: menunggu di teras rumah nenek, mengikuti Ardi (sejak bab 1) dari jarak sopan, duduk & mengibas ekor saat diam, mengeong sesekali (`sfx_meow`), bisa **dielus [E]** (`sfx_purr` dengkuran prosedural). 5 elusan → `kunyit_jinak`: dialog, pencapaian **Teman Berbulu**, epilog Kunyit, dan Kunyit muncul di antara dua nisan di Makam Bukit pada bab final.

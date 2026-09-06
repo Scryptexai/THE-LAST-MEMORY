@@ -11,6 +11,7 @@ var _photos_box: VBoxContainer
 var _choices_list: VBoxContainer
 var _memories_list: VBoxContainer
 var _quests_list: VBoxContainer
+var _export_btn: Button
 var _tabs: TabContainer
 var _stats_label: Label
 
@@ -41,6 +42,10 @@ func _build() -> void:
 	ThemeFactory.style_label(title, 24, ThemeFactory.PASTEL_YELLOW, true)
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(title)
+	_export_btn = Button.new()
+	ThemeFactory.style_button(_export_btn, 14)
+	_export_btn.pressed.connect(_on_export)
+	header.add_child(_export_btn)
 	var close_btn := Button.new()
 	close_btn.text = "✕"
 	ThemeFactory.style_button(close_btn, 16)
@@ -76,7 +81,19 @@ func _make_tab(tab_name: String) -> VBoxContainer:
 	return box
 
 
+func _on_export() -> void:
+	var dm := DataManager
+	var path: String = JournalExporter.export_markdown()
+	if path == "":
+		SignalBus.toast_requested.emit(dm.tr_key("journal_export_fail"), "system")
+		return
+	SignalBus.sfx_requested.emit("sfx_clue_found")
+	SignalBus.toast_requested.emit(dm.tr_key("journal_export_ok").format({"file": path.get_file()}), "system")
+	OS.shell_show_in_file_manager(ProjectSettings.globalize_path(path), false)
+
+
 func refresh() -> void:
+	_export_btn.text = DataManager.tr_key("journal_export")
 	_update_stats()
 	_refresh_notes()
 	_refresh_characters()
