@@ -24,6 +24,8 @@ var _compass_target: Node3D = null
 const ARROWS := ["▲", "◥", "▶", "◢", "▼", "◣", "◀", "◤"]
 var _recap: PanelContainer
 var _recap_body: RichTextLabel
+var _recap_title: Label
+var _recap_close: Button
 var _recap_tween: Tween
 
 
@@ -186,10 +188,9 @@ func _build() -> void:
 	var rv := VBoxContainer.new()
 	rv.add_theme_constant_override("separation", 6)
 	_recap.add_child(rv)
-	var rt := Label.new()
-	rt.name = "RecapTitle"
-	ThemeFactory.style_label(rt, 18, ThemeFactory.PASTEL_YELLOW, true)
-	rv.add_child(rt)
+	_recap_title = Label.new()
+	ThemeFactory.style_label(_recap_title, 18, ThemeFactory.PASTEL_YELLOW, true)
+	rv.add_child(_recap_title)
 	_recap_body = RichTextLabel.new()
 	_recap_body.bbcode_enabled = true
 	_recap_body.fit_content = true
@@ -199,11 +200,10 @@ func _build() -> void:
 	_recap_body.add_theme_font_override("bold_font", ThemeFactory.body_font(14))
 	_recap_body.add_theme_color_override("default_color", ThemeFactory.CREAM)
 	rv.add_child(_recap_body)
-	var rb := Button.new()
-	rb.name = "RecapClose"
-	ThemeFactory.style_button(rb, 14)
-	rb.pressed.connect(_hide_recap)
-	rv.add_child(rb)
+	_recap_close = Button.new()
+	ThemeFactory.style_button(_recap_close, 14)
+	_recap_close.pressed.connect(_hide_recap)
+	rv.add_child(_recap_close)
 	# --- Overlay memori (sepia + label 1983) ---
 	_memory_overlay = ColorRect.new()
 	_memory_overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -498,8 +498,8 @@ func show_recap() -> void:
 	var gm := GameManager
 	var im := InvestigationManager
 	var rm := RelationshipManager
-	(_recap.get_node("VBoxContainer/RecapTitle") as Label).text = dm.tr_key("recap_title")
-	(_recap.get_node("VBoxContainer/RecapClose") as Button).text = dm.tr_key("recap_close")
+	_recap_title.text = dm.tr_key("recap_title")
+	_recap_close.text = dm.tr_key("recap_close")
 	var ch: String = dm.tr_key("chapter_" + gm.current_chapter)
 	var body: String = "[b]%s[/b]\n🎯 %s\n" % [ch, gm.objective_text()]
 	var notes: Array = (im.journal_notes as Array).duplicate()
