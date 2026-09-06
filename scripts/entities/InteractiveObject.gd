@@ -69,6 +69,8 @@ func _process(delta: float) -> void:
 func _is_active() -> bool:
 	if _used and one_shot:
 		return false
+	if GameManager.hard_mode and target_location == "":
+		return false  # Mode Detektif: hanya portal yang ditandai
 	return true
 
 

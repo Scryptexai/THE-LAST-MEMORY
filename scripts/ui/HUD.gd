@@ -204,7 +204,7 @@ func refresh_state() -> void:
 	var gm := GameManager
 	var in_game: bool = gm.state in ["gameplay", "dialogue", "investigation", "inventory", "journal", "pause", "photo"]
 	_hud_buttons.visible = in_game and gm.state != "photo"
-	_objective_label.text = "🎯 " + gm.objective_text()
+	_objective_label.text = ("🕵 " if gm.hard_mode else "🎯 ") + gm.objective_text()
 	if gm.state != "gameplay":
 		_travel_panel.visible = false
 		_on_prompt_cleared()

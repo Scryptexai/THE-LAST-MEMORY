@@ -70,7 +70,9 @@
     "menu_memory": "Ruang Memori",
     "memory_locked": "Terkunci — selesaikan cerita untuk membuka kenangan ini.",
     "memory_stats": "Ending: {n}/4 · Pencapaian: {a}/{t}",
-    "memory_hint": "Muat simpanan atau mulai permainan baru untuk menambah koleksi."
+    "memory_hint": "Muat simpanan atau mulai permainan baru untuk menambah koleksi.",
+    "menu_hard": "🕵 Mode Detektif (tanpa hint)",
+    "hint_hard": "Mode Detektif: tak ada hint. Bacalah rumah ini sendiri."
   },
   "en": {
     "menu_subtitle": "A Life is Strange mystery in Kota Tua Pesisir",
@@ -143,6 +145,8 @@
     "menu_memory": "Memory Room",
     "memory_locked": "Locked — finish the story to unlock this memory.",
     "memory_stats": "Endings: {n}/4 · Achievements: {a}/{t}",
-    "memory_hint": "Load a save or start a new game to grow the collection."
+    "memory_hint": "Load a save or start a new game to grow the collection.",
+    "menu_hard": "🕵 Detective Mode (no hints)",
+    "hint_hard": "Detective Mode: no hints. Read this house yourself."
   }
 }

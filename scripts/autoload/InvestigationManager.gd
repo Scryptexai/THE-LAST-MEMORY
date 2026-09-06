@@ -143,6 +143,8 @@ func use_hint() -> Dictionary:
 	# Kembalikan {ok, text} — hint cerdas berdasarkan progres.
 	var dm := DataManager
 	var bus := SignalBus
+	if GameManager.hard_mode:
+		return {"ok": false, "text": dm.tr_key("hint_hard")}
 	if hints_left <= 0:
 		return {"ok": false, "text": dm.tr_key("hint_empty")}
 	hints_left -= 1

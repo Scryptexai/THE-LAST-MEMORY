@@ -16,6 +16,7 @@ var final_choice: String = ""
 var endings_seen: Array = []
 var visited_locations: Array = []  # Array[String] lokasi pernah dikunjungi
 var new_game_plus: bool = false
+var hard_mode: bool = false  # Mode Detektif: tanpa hint, tanpa penanda objek, tanpa pratinjau relasi
 var pre_ending_snapshot: Dictionary = {}
 var text_speed: float = 1.0
 var cam_sensitivity: float = 1.0
@@ -202,8 +203,9 @@ func _deferred_move(location_id: String, spawn_tag: String) -> void:
 
 # ---------- Alur game baru / lanjut ----------
 
-func new_game(plus: bool = false) -> void:
+func new_game(plus: bool = false, hard: bool = false) -> void:
 	_ending_token += 1
+	hard_mode = hard
 	if DialogueManager.is_active():
 		DialogueManager.cancel()
 	var kept_moments: Array = []
@@ -228,6 +230,10 @@ func new_game(plus: bool = false) -> void:
 		im.hints_left = 5
 		set_flag("ng_plus", true)
 		im.add_journal_note("ngplus", "Perjalanan Baru+: foto kenangan dan pengalaman terbawa.", DataManager.tr_key("journal_src_story"))
+	if hard:
+		im.hints_left = 0
+		set_flag("hard_mode", true)
+		im.add_journal_note("hardmode", "Mode Detektif: tanpa hint, tanpa penanda objek. Hanya insting.", DataManager.tr_key("journal_src_story"))
 	set_flag("chseen_prolog", true)
 	im.add_timeline_event("ev_now", "2026", "Ardi kembali ke Kota Tua Pesisir.")
 	im.mark_character_met("ardi")

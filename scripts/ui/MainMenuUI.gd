@@ -91,6 +91,7 @@ func refresh() -> void:
 	_add_button(dm.tr_key("menu_new"), _on_new_game)
 	if not _seen_endings().is_empty():
 		_add_button(dm.tr_key("menu_ngplus"), _on_new_game_plus)
+		_add_button(dm.tr_key("menu_hard"), _on_new_game_hard)
 	if SaveManager.has_any_save():
 		_add_button(dm.tr_key("menu_continue"), _on_continue)
 	_add_button(dm.tr_key("menu_load"), _on_show_slots)
@@ -125,6 +126,13 @@ func _on_new_game_plus() -> void:
 	var main := get_tree().current_scene
 	if main and main.has_method("start_new_game"):
 		main.start_new_game(true)
+
+
+func _on_new_game_hard() -> void:
+	SignalBus.sfx_requested.emit("sfx_memory")
+	var main := get_tree().current_scene
+	if main and main.has_method("start_new_game"):
+		main.start_new_game(false, true)
 
 
 func _on_continue() -> void:

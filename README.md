@@ -91,6 +91,10 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## 🕵 Mode Detektif
+
+- Terbuka setelah satu ending (menu utama). Tanpa hint, tanpa penanda objek (kecuali portal), tanpa pratinjau efek relasi di pilihan dialog. Tersimpan di save (`hard_mode`). Pencapaian **Detektif Sejati** saat mencapai ending apa pun.
+
 ## 🏡 Prolog Diperluas — Bu RT Sumi
 
 - NPC baru di teras Rumah Nenek (`bu_rt`): perawat rumah selama 6 bulan; dialog berubah per bab (`burt_bicara` → salam, `chseen_bab3` → peringatan, `chseen_final` → restu). Menambah entri Tokoh & Linimasa di jurnal.

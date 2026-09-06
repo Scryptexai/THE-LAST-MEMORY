@@ -64,6 +64,7 @@ func collect() -> Dictionary:
 		"characters_met": SaveUtils.deep_copy(im.characters_met),
 		"hints_left": im.hints_left,
 		"final_choice": gm.final_choice,
+		"hard_mode": gm.hard_mode,
 		"endings_seen": SaveUtils.deep_copy(gm.endings_seen),
 		"settings": {
 			"music_volume": am.music_volume,
@@ -93,6 +94,7 @@ func apply(data: Dictionary) -> bool:
 	gm.current_objective = str(data.get("objective", "obj_datang"))
 	gm.flags = (data.get("flags", {}) as Dictionary).duplicate(true)
 	gm.final_choice = str(data.get("final_choice", ""))
+	gm.hard_mode = bool(data.get("hard_mode", false))
 	gm.endings_seen = (data.get("endings_seen", []) as Array).duplicate(true)
 	for e in gm.endings_seen:
 		record_global("endings", str(e))

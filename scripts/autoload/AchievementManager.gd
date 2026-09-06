@@ -62,6 +62,8 @@ func evaluate() -> void:
 		unlock("ach_explorer")
 	if bool(gm.get_flag("ng_plus", false)):
 		unlock("ach_ngplus")
+	if gm.hard_mode and ne >= 1:
+		unlock("ach_hardboiled")
 	var ng: int = 0
 	for k in (gm.flags as Dictionary).keys():
 		if str(k).begins_with("gift_") and bool((gm.flags as Dictionary)[k]):

@@ -137,6 +137,8 @@ func _rebuild_choices(node: Dictionary, dlgm: Node, dm: Node) -> void:
 func _relationship_preview(choice: Dictionary, dm: Node) -> String:
 	# Tampilkan pratinjau jujur efek hubungan (ala Life is Strange).
 	var parts: Array = []
+	if GameManager.hard_mode:
+		return ""
 	var rel: Dictionary = choice.get("relationship", {})
 	if rel.is_empty() and choice.has("flags"):
 		pass

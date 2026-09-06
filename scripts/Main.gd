@@ -20,8 +20,8 @@ func _ready() -> void:
 
 # ---------- Alur utama ----------
 
-func start_new_game(plus: bool = false) -> void:
-	GameManager.new_game(plus)
+func start_new_game(plus: bool = false, hard: bool = false) -> void:
+	GameManager.new_game(plus, hard)
 	in_game = true
 	await travel_to("rumah_nenek", "intro")
 	# Dialog pembuka setelah tiba.
