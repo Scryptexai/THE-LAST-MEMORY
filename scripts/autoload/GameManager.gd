@@ -19,6 +19,27 @@ var new_game_plus: bool = false
 var hard_mode: bool = false  # Mode Detektif: tanpa hint, tanpa penanda objek, tanpa pratinjau relasi
 var pre_ending_snapshot: Dictionary = {}
 var text_speed: float = 1.0
+var ui_scale: float = 1.0             # aksesibilitas: skala seluruh UI (0.85–1.4)
+var high_contrast: bool = false       # aksesibilitas: kotak dialog & teks kontras tinggi
+var reduce_motion: bool = false       # aksesibilitas: tanpa goyangan kamera/kilas sinematik
+
+
+func set_ui_scale(v: float) -> void:
+	ui_scale = clampf(v, 0.85, 1.4)
+	var win := get_window()
+	if win:
+		win.content_scale_factor = ui_scale
+	SignalBus.accessibility_changed.emit()
+
+
+func set_high_contrast(on: bool) -> void:
+	high_contrast = on
+	SignalBus.accessibility_changed.emit()
+
+
+func set_reduce_motion(on: bool) -> void:
+	reduce_motion = on
+	SignalBus.accessibility_changed.emit()
 var cam_sensitivity: float = 1.0
 var auto_advance: bool = false  # dialog linear lanjut otomatis setelah selesai diketik
 var _ending_token: int = 0

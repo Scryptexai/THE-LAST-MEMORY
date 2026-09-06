@@ -40,7 +40,7 @@ func _ready() -> void:
 
 
 func _on_memory_start(_node_id: String) -> void:
-	if _memory_cam:
+	if _memory_cam or GameManager.reduce_motion:
 		return
 	_memory_cam = true
 	_mem_t = 0.0
@@ -274,7 +274,7 @@ func place_at(pos: Vector3, yaw: float) -> void:
 
 func _update_body_bob(delta: float) -> void:
 	# Goyangan vertikal + oleng halus saat bergerak (imbangan napas idle).
-	if _moving and is_on_floor():
+	if _moving and is_on_floor() and not GameManager.reduce_motion:
 		_walk_phase += delta * (11.0 if _running else 7.5)
 		var amp: float = 0.055 if _running else 0.035
 		_mesh_root.position.y = absf(sin(_walk_phase)) * amp

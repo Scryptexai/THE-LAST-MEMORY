@@ -10,6 +10,7 @@ signal flag_changed(flag_name: String, value: Variant)
 
 # --- Dialog ---
 signal dialogue_started(dialogue_id: String)
+signal accessibility_changed()
 signal dialogue_node_shown(node_id: String)
 signal dialogue_finished(dialogue_id: String, last_node: String)
 signal dialogue_choice_made(node_id: String, choice_index: int, choice_text: String)

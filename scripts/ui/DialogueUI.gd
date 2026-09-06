@@ -148,12 +148,17 @@ func _on_node_shown(node_id: String) -> void:
 	var dlgm := DialogueManager
 	var node: Dictionary = dm.get_dialogue(node_id)
 	# Warna panel berbeda untuk kilas balik.
+	var hc: bool = GameManager.high_contrast
 	if bool(node.get("memory", false)):
-		_panel.add_theme_stylebox_override("panel", ThemeFactory.panel_style(Color(0.25, 0.16, 0.06, 0.95), ThemeFactory.PASTEL_YELLOW, 2, 12))
+		_panel.add_theme_stylebox_override("panel", ThemeFactory.panel_style(
+			Color(0.1, 0.06, 0.0, 1.0) if hc else Color(0.25, 0.16, 0.06, 0.95), ThemeFactory.PASTEL_YELLOW, 3 if hc else 2, 12))
 		_name_label.text = "◈ %s  ·  1983" % str(node.get("speaker", "???"))
 	else:
-		_panel.add_theme_stylebox_override("panel", ThemeFactory.panel_style(Color(0.05, 0.1, 0.19, 0.94)))
+		_panel.add_theme_stylebox_override("panel", ThemeFactory.panel_style(
+			Color(0.0, 0.0, 0.0, 1.0) if hc else Color(0.05, 0.1, 0.19, 0.94), Color.WHITE if hc else ThemeFactory.ACCENT, 3 if hc else 2, 12))
 		_name_label.text = str(node.get("speaker", "???"))
+	_text_label.add_theme_color_override("default_color", Color.WHITE if hc else ThemeFactory.CREAM)
+	_text_label.add_theme_font_override("normal_font", ThemeFactory.body_font(21 if hc else 19))
 	_full_text = dm.localized(node)
 	_backlog.append("[b]%s[/b]: %s" % [str(node.get("speaker", "???")), _full_text])
 	if _backlog.size() > 40:

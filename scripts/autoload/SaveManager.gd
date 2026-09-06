@@ -42,6 +42,9 @@ func settings_dict() -> Dictionary:
 		"text_speed": gm.text_speed,
 		"cam_sensitivity": gm.cam_sensitivity,
 		"auto_advance": gm.auto_advance,
+		"ui_scale": gm.ui_scale,
+		"high_contrast": gm.high_contrast,
+		"reduce_motion": gm.reduce_motion,
 	}
 
 
@@ -63,6 +66,9 @@ func load_settings() -> void:
 	gm.text_speed = float(s.get("text_speed", 1.0))
 	gm.cam_sensitivity = float(s.get("cam_sensitivity", 1.0))
 	gm.auto_advance = bool(s.get("auto_advance", false))
+	gm.set_ui_scale(float(s.get("ui_scale", 1.0)))
+	gm.set_high_contrast(bool(s.get("high_contrast", false)))
+	gm.set_reduce_motion(bool(s.get("reduce_motion", false)))
 	Logger.info("SaveManager: pengaturan dimuat.")
 
 

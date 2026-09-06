@@ -9,6 +9,10 @@ var _cam_slider: HSlider
 var _lang_btn: OptionButton
 var _mute_check: CheckBox
 var _auto_check: CheckBox
+var _scale_slider: HSlider
+var _contrast_check: CheckBox
+var _motion_check: CheckBox
+var _access_label: Label
 var _title: Label
 var _resume_btn: Button
 var _slot_row: HBoxContainer
@@ -75,6 +79,22 @@ func _build() -> void:
 	_auto_check.add_theme_color_override("font_color", ThemeFactory.CREAM)
 	_auto_check.toggled.connect(func(on: bool) -> void: GameManager.auto_advance = on)
 	root.add_child(_auto_check)
+	# Aksesibilitas.
+	_access_label = Label.new()
+	ThemeFactory.style_label(_access_label, 16, ThemeFactory.ACCENT_LIGHT, true)
+	root.add_child(_access_label)
+	_scale_slider = _add_slider(root, "🔍 Ukuran Antarmuka", 85.0, 140.0)
+	_scale_slider.value_changed.connect(func(v: float) -> void: GameManager.set_ui_scale(v / 100.0))
+	_contrast_check = CheckBox.new()
+	_contrast_check.add_theme_font_override("font", ThemeFactory.body_font(16))
+	_contrast_check.add_theme_color_override("font_color", ThemeFactory.CREAM)
+	_contrast_check.toggled.connect(func(on: bool) -> void: GameManager.set_high_contrast(on))
+	root.add_child(_contrast_check)
+	_motion_check = CheckBox.new()
+	_motion_check.add_theme_font_override("font", ThemeFactory.body_font(16))
+	_motion_check.add_theme_color_override("font_color", ThemeFactory.CREAM)
+	_motion_check.toggled.connect(func(on: bool) -> void: GameManager.set_reduce_motion(on))
+	root.add_child(_motion_check)
 	# Slot simpan.
 	var save_label := Label.new()
 	save_label.text = "💾 Simpan permainan"
@@ -132,6 +152,12 @@ func refresh() -> void:
 	_mute_check.set_pressed_no_signal(am.muted)
 	_auto_check.set_pressed_no_signal(gm.auto_advance)
 	_auto_check.text = dm.tr_key("settings_auto_advance")
+	_access_label.text = dm.tr_key("settings_access")
+	_scale_slider.set_value_no_signal(gm.ui_scale * 100.0)
+	_contrast_check.set_pressed_no_signal(gm.high_contrast)
+	_contrast_check.text = dm.tr_key("settings_contrast")
+	_motion_check.set_pressed_no_signal(gm.reduce_motion)
+	_motion_check.text = dm.tr_key("settings_motion")
 	_lang_btn.select(1 if dm.language == "en" else 0)
 	var in_game: bool = gm.state in ["pause", "settings"] and gm.state != "main_menu" and get_tree().current_scene and get_tree().current_scene.get("in_game") == true
 	_resume_btn.visible = in_game

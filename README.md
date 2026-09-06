@@ -91,6 +91,10 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## ♿ Aksesibilitas
+
+- Pengaturan baru (tersimpan di `settings.json`): **Ukuran Antarmuka** 85–140 % (`Window.content_scale_factor`), **Kontras tinggi** (kotak dialog hitam pekat, bingkai putih, teks putih 21 px), **Kurangi gerakan** (tanpa goyangan jalan dan tanpa kamera sinematik kilas balik). Sinyal `accessibility_changed` untuk UI lain.
+
 ## 🕰️ Jadwal NPC per Bab
 
 - `scenes.json` NPC mendukung `present_if` / `absent_if` (kondisi `flag`, `!flag`, `flag=nilai`, gabungan `a & !b`) dan `spots: {flag: layout_key}` untuk berpindah posisi. Dievaluasi saat memasuki lokasi.
