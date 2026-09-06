@@ -91,6 +91,10 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## 🧭 Kompas Tujuan
+
+- `objectives.json` → `location`: HUD menampilkan panah relatif kamera + nama + jarak ke portal keluar (bila tujuan di lokasi lain) atau ke objek petunjuk terdekat yang belum ditemukan (bila di lokasi yang sama). Nonaktif di Mode Detektif.
+
 ## 💬 Kenyamanan Dialog & Pengaturan Persisten
 
 - Tombol **1–4** memilih opsi dialog; **A** toggle auto-advance (badge ▶▶ AUTO, jeda proporsional panjang teks); **H** / ☰ membuka riwayat dialog (40 baris terakhir).

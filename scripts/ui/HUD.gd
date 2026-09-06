@@ -17,6 +17,11 @@ var _hud_buttons: HBoxContainer
 var _chapter_card: PanelContainer
 var _chapter_label: Label
 var _chapter_tween: Tween
+var _compass: PanelContainer
+var _compass_label: Label
+var _compass_cd: float = 0.0
+var _compass_target: Node3D = null
+const ARROWS := ["▲", "◥", "▶", "◢", "▼", "◣", "◀", "◤"]
 
 
 func _ready() -> void:
@@ -68,6 +73,21 @@ func _build() -> void:
 	_add_hud_button("📓", "open_journal", "Jurnal [J]")
 	_add_hud_button("⚙", "open_settings", "Opsi")
 	_add_hud_button("📷", "photo_mode", "Foto [P]")
+	# --- Kompas tujuan (di bawah bar atas) ---
+	_compass = PanelContainer.new()
+	_compass.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	_compass.offset_left = -170
+	_compass.offset_right = 170
+	_compass.offset_top = 64
+	_compass.offset_bottom = 96
+	_compass.add_theme_stylebox_override("panel", ThemeFactory.panel_style(Color(0.06, 0.12, 0.22, 0.7), ThemeFactory.PASTEL_BLUE, 1, 8))
+	_compass.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_compass.visible = false
+	add_child(_compass)
+	_compass_label = Label.new()
+	_compass_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	ThemeFactory.style_label(_compass_label, 15, ThemeFactory.PASTEL_BLUE)
+	_compass.add_child(_compass_label)
 	# --- Banner lokasi (tengah atas) ---
 	_banner = PanelContainer.new()
 	_banner.set_anchors_preset(Control.PRESET_CENTER_TOP)
@@ -196,6 +216,76 @@ func _on_hud_button(action: String) -> void:
 		"open_settings":
 			(get_parent() as CanvasLayer).get_parent()  # no-op aman
 			SignalBus.ui_screen_requested.emit("settings")
+
+
+# ---------- Kompas tujuan ----------
+
+func _process(delta: float) -> void:
+	var gm := GameManager
+	if gm.state != "gameplay" or gm.hard_mode or _memory_overlay.visible:
+		_compass.visible = false
+		return
+	_compass_cd -= delta
+	if _compass_cd <= 0.0:
+		_compass_cd = 0.5
+		_compass_target = _pick_compass_target()
+	if _compass_target == null or not is_instance_valid(_compass_target):
+		_compass.visible = false
+		return
+	var player := get_tree().get_first_node_in_group("player") as Node3D
+	if player == null:
+		_compass.visible = false
+		return
+	var to: Vector3 = _compass_target.global_position - player.global_position
+	to.y = 0.0
+	var dist: float = to.length()
+	if dist < 1.5:
+		_compass.visible = false
+		return
+	var yaw: float = float(player.get("cam_yaw"))
+	var fwd := Vector2(-sin(yaw), -cos(yaw))
+	var dir := Vector2(to.x, to.z).normalized()
+	var ang: float = atan2(fwd.x * dir.y - fwd.y * dir.x, fwd.dot(dir))  # + = kanan
+	var idx: int = int(roundf(ang / (PI / 4.0))) % 8
+	if idx < 0:
+		idx += 8
+	var nm: String = str(_compass_target.get("display_name"))
+	_compass_label.text = "%s  %s  %dm" % [ARROWS[idx], nm, int(dist)]
+	_compass.visible = true
+
+
+## Target kompas: portal keluar bila objektif ada di lokasi lain; bila di lokasi ini,
+## objek interaktif aktif terdekat yang masih menyimpan petunjuk belum ditemukan.
+func _pick_compass_target() -> Node3D:
+	var gm := GameManager
+	var dm := DataManager
+	var im := InvestigationManager
+	var target_loc: String = dm.get_objective_location(gm.current_objective)
+	if target_loc == "":
+		return null
+	var player := get_tree().get_first_node_in_group("player") as Node3D
+	if player == null:
+		return null
+	var best: Node3D = null
+	var best_d: float = INF
+	for n in get_tree().get_nodes_in_group("interactable"):
+		var obj := n as Node3D
+		if obj == null:
+			continue
+		var d: float = obj.global_position.distance_to(player.global_position)
+		if target_loc != gm.current_location:
+			if str(obj.get("target_location")) != "__travel__":
+				continue
+		else:
+			var cid: String = str(obj.get("clue_id"))
+			if cid == "" or cid == "<null>" or im.has_clue(cid):
+				continue
+			if obj.has_method("_is_active") and not bool(obj.call("_is_active")):
+				continue
+		if d < best_d:
+			best_d = d
+			best = obj
+	return best
 
 
 # ---------- Refresh ----------

@@ -17,6 +17,7 @@ const TIPS := [
 	"TIPS: Persahabatan membuka pintu yang terkunci bagi orang asing.",
 	"TIPS: Stasiun selalu gerimis. Dengarkan guntur di kejauhan.",
 	"TIPS: Tetangga tahu lebih banyak dari yang mereka katakan. Sapa Bu RT di teras.",
+	"TIPS: Kompas biru di atas layar menunjuk ke tujuan berikutnya (mati di Mode Detektif).",
 ]
 
 

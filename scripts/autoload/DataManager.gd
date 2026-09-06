@@ -160,6 +160,11 @@ func epilogue_lines() -> Array:
 	return out
 
 
+## Lokasi tujuan objektif ("" bila tidak terikat lokasi, mis. papan deduksi).
+func get_objective_location(objective_id: String) -> String:
+	return str((objectives.get(objective_id, {}) as Dictionary).get("location", ""))
+
+
 func get_objective(objective_id: String) -> String:
 	var o: Dictionary = objectives.get(objective_id, {})
 	if o.is_empty():
