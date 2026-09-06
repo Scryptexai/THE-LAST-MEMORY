@@ -8,6 +8,7 @@ var _text_slider: HSlider
 var _cam_slider: HSlider
 var _lang_btn: OptionButton
 var _mute_check: CheckBox
+var _auto_check: CheckBox
 var _title: Label
 var _resume_btn: Button
 var _slot_row: HBoxContainer
@@ -69,6 +70,11 @@ func _build() -> void:
 	_mute_check.add_theme_color_override("font_color", ThemeFactory.CREAM)
 	_mute_check.toggled.connect(func(on: bool) -> void: AudioManager.set_muted(on))
 	root.add_child(_mute_check)
+	_auto_check = CheckBox.new()
+	_auto_check.add_theme_font_override("font", ThemeFactory.body_font(16))
+	_auto_check.add_theme_color_override("font_color", ThemeFactory.CREAM)
+	_auto_check.toggled.connect(func(on: bool) -> void: GameManager.auto_advance = on)
+	root.add_child(_auto_check)
 	# Slot simpan.
 	var save_label := Label.new()
 	save_label.text = "💾 Simpan permainan"
@@ -124,6 +130,8 @@ func refresh() -> void:
 	_text_slider.set_value_no_signal(gm.text_speed * 100.0)
 	_cam_slider.set_value_no_signal(gm.cam_sensitivity * 100.0)
 	_mute_check.set_pressed_no_signal(am.muted)
+	_auto_check.set_pressed_no_signal(gm.auto_advance)
+	_auto_check.text = dm.tr_key("settings_auto_advance")
 	_lang_btn.select(1 if dm.language == "en" else 0)
 	var in_game: bool = gm.state in ["pause", "settings"] and gm.state != "main_menu" and get_tree().current_scene and get_tree().current_scene.get("in_game") == true
 	_resume_btn.visible = in_game
@@ -171,3 +179,5 @@ func _on_menu() -> void:
 func _on_visibility_refresh() -> void:
 	if visible:
 		refresh()
+	else:
+		SaveManager.save_settings()

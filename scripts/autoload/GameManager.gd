@@ -20,6 +20,7 @@ var hard_mode: bool = false  # Mode Detektif: tanpa hint, tanpa penanda objek, t
 var pre_ending_snapshot: Dictionary = {}
 var text_speed: float = 1.0
 var cam_sensitivity: float = 1.0
+var auto_advance: bool = false  # dialog linear lanjut otomatis setelah selesai diketik
 var _ending_token: int = 0
 
 

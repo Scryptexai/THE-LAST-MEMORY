@@ -91,6 +91,11 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## 💬 Kenyamanan Dialog & Pengaturan Persisten
+
+- Tombol **1–4** memilih opsi dialog; **A** toggle auto-advance (badge ▶▶ AUTO, jeda proporsional panjang teks); **H** / ☰ membuka riwayat dialog (40 baris terakhir).
+- `user://settings.json`: volume, mute, bahasa, kecepatan teks, sensitivitas kamera, auto-advance — dimuat saat boot, disimpan saat panel pengaturan ditutup.
+
 ## 📜 Epilog & Riwayat Pilihan
 
 - `assets/data/epilogues.json`: nasib tiap tokoh (Rara, Pak Harto, Mira, Bu RT) berdasarkan nilai hubungan akhir (tier `min`), ditampilkan di bawah teks ending — hanya untuk tokoh yang pernah ditemui.

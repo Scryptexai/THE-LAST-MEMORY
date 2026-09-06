@@ -15,6 +15,11 @@ var _shown: float = 0.0
 var _typing: bool = false
 var _current_node: String = ""
 var _tick_sfx_cd: float = 0.0
+var _auto_timer: float = 0.0
+var _backlog: Array = []  # Array[String] "Speaker: teks" (maks 40)
+var _backlog_panel: PanelContainer
+var _backlog_text: RichTextLabel
+var _auto_badge: Label
 
 
 func _ready() -> void:
@@ -67,7 +72,51 @@ func _build() -> void:
 	ThemeFactory.style_label(_next_hint, 14, Color(0.8, 0.8, 0.85))
 	margin.add_child(_next_hint)
 	_skip_btn.focus_mode = Control.FOCUS_NONE
+	_auto_badge = Label.new()
+	_auto_badge.text = "▶▶ AUTO"
+	ThemeFactory.style_label(_auto_badge, 12, ThemeFactory.ACCENT_LIGHT, true)
+	_auto_badge.visible = false
+	top.add_child(_auto_badge)
+	top.move_child(_auto_badge, 1)
+	var log_btn := Button.new()
+	log_btn.text = "☰"
+	log_btn.tooltip_text = "Riwayat dialog"
+	log_btn.focus_mode = Control.FOCUS_NONE
+	ThemeFactory.style_button(log_btn, 14)
+	log_btn.pressed.connect(_toggle_backlog)
+	top.add_child(log_btn)
+	# Panel riwayat (di atas panel dialog).
+	_backlog_panel = PanelContainer.new()
+	_backlog_panel.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	_backlog_panel.offset_left = 60
+	_backlog_panel.offset_right = -60
+	_backlog_panel.offset_top = 70
+	_backlog_panel.offset_bottom = 380
+	_backlog_panel.add_theme_stylebox_override("panel", ThemeFactory.panel_style(Color(0.04, 0.07, 0.14, 0.96), ThemeFactory.PASTEL_BLUE, 1, 10))
+	_backlog_panel.visible = false
+	add_child(_backlog_panel)
+	var scroll := ScrollContainer.new()
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_backlog_panel.add_child(scroll)
+	_backlog_text = RichTextLabel.new()
+	_backlog_text.bbcode_enabled = true
+	_backlog_text.fit_content = true
+	_backlog_text.scroll_active = false
+	_backlog_text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_backlog_text.add_theme_font_override("normal_font", ThemeFactory.body_font(15))
+	_backlog_text.add_theme_font_override("bold_font", ThemeFactory.body_font(15))
+	_backlog_text.add_theme_color_override("default_color", ThemeFactory.CREAM)
+	scroll.add_child(_backlog_text)
 	_make_click_through(_panel)
+
+
+func _toggle_backlog() -> void:
+	_backlog_panel.visible = not _backlog_panel.visible
+	if _backlog_panel.visible:
+		var out: String = ""
+		for line in _backlog:
+			out += str(line) + "\n"
+		_backlog_text.text = out if out != "" else "…"
 
 
 ## Klik di mana pun (kecuali tombol pilihan) memajukan dialog.
@@ -83,10 +132,14 @@ func _make_click_through(c: Control) -> void:
 func _on_visibility() -> void:
 	if not visible:
 		_typing = false
+		_backlog_panel.visible = false
+	else:
+		_auto_badge.visible = GameManager.auto_advance
 
 
 func _on_dialogue_finished(_dlg: String, _last: String) -> void:
 	_typing = false
+	_backlog.clear()
 
 
 func _on_node_shown(node_id: String) -> void:
@@ -102,6 +155,11 @@ func _on_node_shown(node_id: String) -> void:
 		_panel.add_theme_stylebox_override("panel", ThemeFactory.panel_style(Color(0.05, 0.1, 0.19, 0.94)))
 		_name_label.text = str(node.get("speaker", "???"))
 	_full_text = dm.localized(node)
+	_backlog.append("[b]%s[/b]: %s" % [str(node.get("speaker", "???")), _full_text])
+	if _backlog.size() > 40:
+		_backlog.pop_front()
+	_auto_timer = 0.0
+	_auto_badge.visible = GameManager.auto_advance
 	_text_label.text = _full_text
 	_text_label.visible_characters = 0
 	_shown = 0.0
@@ -127,7 +185,7 @@ func _rebuild_choices(node: Dictionary, dlgm: Node, dm: Node) -> void:
 				label_text = "🔒 " + label_text + "\n   ↳ " + str(avail.get("reason", ""))
 			elif rel_preview != "":
 				label_text += "\n   ↳ " + rel_preview
-			b.text = label_text
+			b.text = "%d. %s" % [i + 1, label_text]
 			b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 			ThemeFactory.style_button(b, 16)
 			b.pressed.connect(_on_choice_pressed.bind(i))
@@ -153,7 +211,17 @@ func _relationship_preview(choice: Dictionary, dm: Node) -> String:
 
 
 func _process(delta: float) -> void:
-	if not visible or not _typing:
+	if not visible:
+		return
+	if not _typing:
+		# Auto-advance: dialog linear lanjut setelah jeda proporsional panjang teks.
+		if GameManager.auto_advance and DialogueManager.is_active() and not _backlog_panel.visible:
+			var choices: Array = (DialogueManager.current_node as Dictionary).get("choices", [])
+			if choices.is_empty():
+				_auto_timer += delta
+				if _auto_timer >= clampf(1.2 + _full_text.length() * 0.03, 1.5, 6.0):
+					_auto_timer = 0.0
+					_advance_or_complete()
 		return
 	var total: int = _text_label.get_total_character_count()
 	if _shown < total:
@@ -174,7 +242,31 @@ func _unhandled_input(event: InputEvent) -> void:
 	var dlgm := DialogueManager
 	if not dlgm.is_active():
 		return
+	if event is InputEventKey and (event as InputEventKey).pressed and not (event as InputEventKey).echo:
+		var kc: int = (event as InputEventKey).physical_keycode
+		# Angka 1-4 memilih opsi dialog langsung.
+		if kc >= KEY_1 and kc <= KEY_4:
+			var idx: int = kc - KEY_1
+			var choices: Array = (dlgm.current_node as Dictionary).get("choices", [])
+			if idx < choices.size():
+				_on_choice_pressed(idx)
+				get_viewport().set_input_as_handled()
+				return
+		if kc == KEY_A and not (event as InputEventKey).ctrl_pressed:
+			GameManager.auto_advance = not GameManager.auto_advance
+			_auto_badge.visible = GameManager.auto_advance
+			SaveManager.save_settings()
+			get_viewport().set_input_as_handled()
+			return
+		if kc == KEY_H:
+			_toggle_backlog()
+			get_viewport().set_input_as_handled()
+			return
 	if event.is_action_pressed("ui_accept") or (event is InputEventMouseButton and (event as InputEventMouseButton).pressed and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT):
+		if _backlog_panel.visible:
+			_backlog_panel.visible = false
+			get_viewport().set_input_as_handled()
+			return
 		# Abaikan klik pada tombol pilihan (mereka menangani sendiri).
 		_advance_or_complete()
 		get_viewport().set_input_as_handled()

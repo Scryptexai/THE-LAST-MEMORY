@@ -12,14 +12,57 @@ const SLOT_COUNT := 3
 const SAVE_PATH := "user://save_slot_%d.json"
 const AUTOSAVE_PATH := "user://autosave.json"
 const GLOBAL_PATH := "user://memory.json"
+const SETTINGS_PATH := "user://settings.json"
 
 var playtime: float = 0.0
 var _tracking: bool = false
 
 
+func _ready() -> void:
+	# Autoload berikutnya (GameManager) belum siap; tunda 1 frame agar semua ada.
+	call_deferred("load_settings")
+
+
 func _process(delta: float) -> void:
 	if _tracking:
 		playtime += delta
+
+
+## Pengaturan global (independen dari slot save): audio, bahasa, teks, kamera, auto-advance.
+func settings_dict() -> Dictionary:
+	var am := AudioManager
+	var gm := GameManager
+	return {
+		"music_volume": am.music_volume,
+		"sfx_volume": am.sfx_volume,
+		"ambient_volume": am.ambient_volume,
+		"muted": am.muted,
+		"language": DataManager.language,
+		"text_speed": gm.text_speed,
+		"cam_sensitivity": gm.cam_sensitivity,
+		"auto_advance": gm.auto_advance,
+	}
+
+
+func save_settings() -> void:
+	SaveUtils.write_text_file(SETTINGS_PATH, SaveUtils.to_json(settings_dict()))
+
+
+func load_settings() -> void:
+	var s: Dictionary = SaveUtils.from_json(SaveUtils.read_text_file(SETTINGS_PATH))
+	if s.is_empty():
+		return
+	var am := AudioManager
+	var gm := GameManager
+	am.set_music_volume(float(s.get("music_volume", am.music_volume)))
+	am.set_sfx_volume(float(s.get("sfx_volume", am.sfx_volume)))
+	am.set_ambient_volume(float(s.get("ambient_volume", am.ambient_volume)))
+	am.set_muted(bool(s.get("muted", false)))
+	DataManager.set_language(str(s.get("language", DataManager.language)))
+	gm.text_speed = float(s.get("text_speed", 1.0))
+	gm.cam_sensitivity = float(s.get("cam_sensitivity", 1.0))
+	gm.auto_advance = bool(s.get("auto_advance", false))
+	Logger.info("SaveManager: pengaturan dimuat.")
 
 
 func start_tracking() -> void:
