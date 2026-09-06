@@ -34,7 +34,7 @@ func _node_pos(data: Dictionary) -> Vector2:
 
 func _locked(data: Dictionary) -> bool:
 	var f: String = str(data.get("unlock_flag", ""))
-	return f != "" and not bool(GameManager.get_flag(f, false))
+	return f != "" and not GameManager.flag_on(f)
 
 
 func _draw() -> void:

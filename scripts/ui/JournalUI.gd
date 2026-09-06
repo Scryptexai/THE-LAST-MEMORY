@@ -172,7 +172,7 @@ func _refresh_memories() -> void:
 	var roots: Array = dm.memory_roots()
 	var seen: int = 0
 	for nid in roots:
-		if bool(gm.get_flag("memseen_" + str(nid), false)):
+		if gm.flag_on("memseen_" + str(nid)):
 			seen += 1
 	var head := Label.new()
 	head.text = dm.tr_key("journal_memories_head").format({"n": seen, "t": roots.size()})
@@ -180,7 +180,7 @@ func _refresh_memories() -> void:
 	_memories_list.add_child(head)
 	for nid in roots:
 		var node: Dictionary = dm.get_dialogue(str(nid))
-		var known: bool = bool(gm.get_flag("memseen_" + str(nid), false))
+		var known: bool = gm.flag_on("memseen_" + str(nid))
 		var p := PanelContainer.new()
 		p.add_theme_stylebox_override("panel", ThemeFactory.panel_style(Color(0.22, 0.15, 0.07, 0.9) if known else Color(0.1, 0.12, 0.18, 0.8), Color(0.85, 0.65, 0.3, 0.6) if known else Color(0.4, 0.4, 0.45, 0.4), 1, 6))
 		var hb := HBoxContainer.new()

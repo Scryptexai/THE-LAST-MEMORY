@@ -368,7 +368,7 @@ func _pick_compass_target() -> Node3D:
 			var cid: String = str(obj.get("clue_id"))
 			if cid == "" or cid == "<null>" or im.has_clue(cid):
 				continue
-			if obj.has_method("_is_active") and not bool(obj.call("_is_active")):
+			if obj.has_method("_is_active") and not GameManager.truthy(obj.call("_is_active")):
 				continue
 		if d < best_d:
 			best_d = d
@@ -409,7 +409,7 @@ func _rebuild_travel() -> void:
 	for scene_id in dm.scenes.keys():
 		var data: Dictionary = dm.scenes[scene_id]
 		var unlock_flag: String = str(data.get("unlock_flag", ""))
-		var locked: bool = unlock_flag != "" and not bool(gm.get_flag(unlock_flag, false))
+		var locked: bool = unlock_flag != "" and not gm.flag_on(unlock_flag)
 		var here: bool = scene_id == gm.current_location
 		var row := PanelContainer.new()
 		row.add_theme_stylebox_override("panel", ThemeFactory.panel_style(
@@ -431,7 +431,7 @@ func _rebuild_travel() -> void:
 			badges += " 🎯"
 		if locked:
 			badges += " 🔒"
-		if bool(gm.get_flag("loket_terang", false)) and scene_id == "stasiun":
+		if gm.flag_on("loket_terang") and scene_id == "stasiun":
 			badges += " 🕯️"
 		name_l.text = ("???" if locked else str(data.get("name", scene_id))) + badges
 		info.add_child(name_l)
@@ -537,7 +537,7 @@ func show_toast(text: String, kind: String) -> void:
 	ThemeFactory.style_label(l, 15, ThemeFactory.CREAM)
 	panel.add_child(l)
 	_toast_box.add_child(panel)
-	var tw := create_tween()
+	var tw := create_tween().bind_node(panel)  # tween ikut mati bila toast dibuang lebih awal
 	tw.tween_interval(3.5)
 	tw.tween_property(panel, "modulate:a", 0.0, 0.6)
 	tw.tween_callback(panel.queue_free)

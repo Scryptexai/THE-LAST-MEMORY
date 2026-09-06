@@ -164,7 +164,7 @@ func epilogue_lines() -> Array:
 				if met_req != "" and not (met_req in (im.characters_met as Array)):
 					ok = false
 				for f in ft.get("flags", []):
-					if not bool(gm.get_flag(str(f), false)):
+					if not gm.flag_on(str(f)):
 						ok = false
 						break
 				if ok:

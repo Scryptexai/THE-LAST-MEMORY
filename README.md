@@ -139,6 +139,8 @@ THE-LAST-MEMORY/
 ## 🧪 Validasi Otomatis
 
 - `tools/validate.sh` — parse semua GDScript (`gdparse` dari gdtoolkit, opsional), analisis statis Godot 4 (`tools/analyze_gd.mjs`, opsional), lalu `tools/validate_data.py`.
+- `tools/godot_check.sh` — verifikasi dengan **engine Godot sungguhan (headless)**: `tools/check_scripts.gd` memuat & mengompilasi semua 49 skrip + 20 scene, lalu `tools/smoke_test.gd` **memainkan game** tanpa layar: game baru → 6 lokasi (semua NPC/objek di-interact) → 142 dialog → semua layar UI → 19 clue/4 deduksi/10 item → simpan-muat → ekspor jurnal → 4 ending → lanjutkan dari save → Baru+/mode sulit. Gagal bila ada `SCRIPT ERROR` apa pun. Otomatis dilewati bila tidak ada binari Godot (`$GODOT` atau `godot` di PATH).
+- `tools/build_godot_headless.sh` — bangun Godot 4.3 headless minimal dari sumber (`codeload.github.com`, ±15 menit/2 core, hanya butuh gcc+scons) untuk lingkungan tanpa akses ke GitHub Releases. `tools/gen_class_cache.py` membuat `.godot/global_script_class_cache.cfg` agar build non-editor mengenali `class_name`.
 - `tools/analyze_gd.mjs` — analisis statis GDScript **setara compiler Godot 4** tanpa editor (`npm i` sekali; memakai `@gdscript-analyzer/core`): parse error, identifier/anggota yang tidak ada (`dialogue_variants`, `Environment.TONE_MAPPER_*`, `SystemFont.font_size`, …), ketidakcocokan tipe, tabrakan `class_name` dengan kelas engine (mis. `Logger` → kini `GameLog`). `--strict` juga menampilkan peringatan `UNSAFE_*`.
 - `tools/validate_data.py` — invarian data tanpa Godot: JSON valid, **semua dialog terjangkau** dari titik masuk, pencapaian dirujuk dua arah, paritas `ui_strings` id/en + semua `tr_key()` ada, referensi clue/item/momen/objective/scene/quest konsisten.
 - Untuk CI, tambahkan workflow berikut sebagai `.github/workflows/validate.yml` (tidak disertakan otomatis karena butuh izin `workflows` saat push):
@@ -157,6 +159,8 @@ jobs:
         with: { node-version: "20" }
       - run: pip install gdtoolkit==4.*
       - run: npm i
+      - uses: chickensoft-games/setup-godot@v2
+        with: { version: 4.3.0, use-dotnet: false }
       - run: tools/validate.sh
 ```
 

@@ -20,7 +20,7 @@ func _build_layout() -> void:
 func _ready() -> void:
 	super()
 	# Di bab final, Kunyit ikut ke bukit dan duduk di antara dua nisan.
-	if bool(GameManager.get_flag("chseen_final", false)) and bool(GameManager.get_flag("kunyit_jinak", false)):
+	if GameManager.flag_on("chseen_final") and GameManager.flag_on("kunyit_jinak"):
 		add_cat(Vector3(0.0, 0.3, -1.2), false)
 
 

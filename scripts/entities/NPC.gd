@@ -190,7 +190,7 @@ func _check_gift() -> String:
 	for item_id in gift_options.keys():
 		var g: Dictionary = gift_options[item_id]
 		var flag: String = str(g.get("flag", ""))
-		if flag != "" and bool(gm.get_flag(flag, false)):
+		if flag != "" and gm.flag_on(flag):
 			continue
 		if im.has_item(str(item_id)):
 			if flag != "":
@@ -212,6 +212,6 @@ func _resolve_dialogue() -> String:
 		return str(dialogue_flag_variants[variant_key])
 	# Atau cocokkan flag boolean apa pun yang namanya ada di variants.
 	for k in dialogue_flag_variants.keys():
-		if bool(gm.get_flag(str(k), false)):
+		if gm.flag_on(str(k)):
 			return str(dialogue_flag_variants[k])
 	return dialogue_id

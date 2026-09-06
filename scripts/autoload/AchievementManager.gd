@@ -60,26 +60,26 @@ func evaluate() -> void:
 		unlock("ach_all_endings")
 	if (gm.visited_locations as Array).size() >= dm.scenes.size():
 		unlock("ach_explorer")
-	if bool(gm.get_flag("makam_pamit", false)):
+	if gm.flag_on("makam_pamit"):
 		unlock("ach_farewell")
-	if bool(gm.get_flag("kunyit_jinak", false)):
+	if gm.flag_on("kunyit_jinak"):
 		unlock("ach_cat")
-	if bool(gm.get_flag("ng_plus", false)):
+	if gm.flag_on("ng_plus"):
 		unlock("ach_ngplus")
 	if gm.hard_mode and ne >= 1:
 		unlock("ach_hardboiled")
 	var ng: int = 0
 	for k in (gm.flags as Dictionary).keys():
-		if str(k).begins_with("gift_") and bool((gm.flags as Dictionary)[k]):
+		if str(k).begins_with("gift_") and GameManager.truthy((gm.flags as Dictionary)[k]):
 			ng += 1
 	if ng >= 5:
 		unlock("ach_generous")
-	if bool(gm.get_flag("gift_burt_klepon", false)) and bool(gm.get_flag("quest_lampu_done", false)):
+	if gm.flag_on("gift_burt_klepon") and gm.flag_on("quest_lampu_done"):
 		unlock("ach_neighbour")
 	var roots: Array = dm.memory_roots()
 	var nmem: int = 0
 	for nid in roots:
-		if bool(gm.get_flag("memseen_" + str(nid), false)):
+		if gm.flag_on("memseen_" + str(nid)):
 			nmem += 1
 	if roots.size() > 0 and nmem >= roots.size():
 		unlock("ach_archivist")

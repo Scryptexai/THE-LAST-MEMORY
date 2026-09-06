@@ -21,7 +21,7 @@ static func from_json(text: String) -> Dictionary:
 ## Baca seluruh isi file teks; "" bila gagal.
 static func read_text_file(path: String) -> String:
 	if not FileAccess.file_exists(path):
-		GameLog.warn("SaveUtils: file tidak ditemukan: %s" % path)
+		GameLog.debug("SaveUtils: file tidak ada: %s" % path)
 		return ""
 	var f: FileAccess = FileAccess.open(path, FileAccess.READ)
 	if f == null:

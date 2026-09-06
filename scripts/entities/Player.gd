@@ -124,7 +124,7 @@ func _make_idle_animation() -> void:
 	anim.track_insert_key(track, 2.4, 1.0)
 	var lib := AnimationLibrary.new()
 	lib.add_animation("idle", anim)
-	_anim.add_animation_library("default", lib)
+	_anim.add_animation_library("", lib)  # pustaka global agar nama tetap "idle"
 	_anim.play("idle")
 
 

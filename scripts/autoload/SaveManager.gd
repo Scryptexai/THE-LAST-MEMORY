@@ -155,7 +155,7 @@ func apply(data: Dictionary) -> bool:
 	gm.flags = (data.get("flags", {}) as Dictionary).duplicate(true)
 	gm.final_choice = str(data.get("final_choice", ""))
 	gm.hard_mode = bool(data.get("hard_mode", false))
-	gm.new_game_plus = bool(gm.flags.get("ng_plus", false))
+	gm.new_game_plus = GameManager.truthy(gm.flags.get("ng_plus", false))
 	gm.endings_seen = (data.get("endings_seen", []) as Array).duplicate(true)
 	for e in gm.endings_seen:
 		record_global("endings", str(e))

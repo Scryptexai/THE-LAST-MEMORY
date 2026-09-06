@@ -90,7 +90,7 @@ func _apply_env() -> void:
 	# Override suasana per bab (scenes.json "chapter_env": {bab: {...}}); bab terbaru menang.
 	var overrides: Dictionary = data.get("chapter_env", {})
 	for ch in ["prolog", "bab1", "bab2", "bab3", "bab4", "final"]:
-		if overrides.has(ch) and bool(GameManager.get_flag("chseen_" + ch, false)):
+		if overrides.has(ch) and GameManager.flag_on("chseen_" + ch):
 			for k in (overrides[ch] as Dictionary).keys():
 				env_data[k] = (overrides[ch] as Dictionary)[k]
 	var world_env := get_tree().get_first_node_in_group("world_env") as WorldEnvironment
@@ -220,7 +220,7 @@ func _cond_ok(cond: String) -> bool:
 	if "=" in c:
 		var parts: PackedStringArray = c.split("=", true, 1)
 		return str(GameManager.get_flag(parts[0].strip_edges(), "")) == parts[1].strip_edges()
-	return bool(GameManager.get_flag(c, false))
+	return GameManager.flag_on(c)
 
 
 func add_npc(cfg: Dictionary, pos: Vector3, yaw: float) -> Node:

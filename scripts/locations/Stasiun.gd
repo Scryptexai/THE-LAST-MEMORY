@@ -36,7 +36,7 @@ func _on_flag(flag_name: String, _v: Variant) -> void:
 
 ## Lampu minyak loket menyala bila side-quest penjaga selesai.
 func _refresh_loket_lamp() -> void:
-	var on: bool = bool(GameManager.get_flag("loket_terang", false))
+	var on: bool = GameManager.flag_on("loket_terang")
 	if on and _loket_lamp == null:
 		pf.cyl(self, 0.09, 0.22, Vector3(-5.0, 1.9, -2.6), pf.mat(Color(0.3, 0.25, 0.2), 0.7), false, 8)
 		pf.sphere(self, 0.07, Vector3(-5.0, 1.95, -2.6), pf.mat(Color(1.0, 0.75, 0.3), 0.4, Color(1.0, 0.75, 0.3), 3.0))

@@ -18,4 +18,5 @@ if command -v node >/dev/null 2>&1; then
 	node tools/analyze_gd.mjs || FAIL=1
 fi
 python3 tools/validate_data.py || FAIL=1
+tools/godot_check.sh || FAIL=1
 exit $FAIL

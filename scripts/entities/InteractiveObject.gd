@@ -144,7 +144,7 @@ func _flag_satisfied(gm: Node, req: String) -> bool:
 	if "=" in req:
 		var parts: PackedStringArray = req.split("=", true, 1)
 		return str(gm.get_flag(parts[0].strip_edges(), "")) == parts[1].strip_edges()
-	return bool(gm.get_flag(req.strip_edges(), false))
+	return gm.flag_on(req.strip_edges())
 
 
 func _apply_gives_flag(gm: Node, spec: String) -> void:
@@ -166,7 +166,7 @@ func _apply_gives_flag(gm: Node, spec: String) -> void:
 ## Pilih varian dialog: flag pertama yang bernilai true menang.
 func _resolve_dialogue(gm: Node) -> String:
 	for k in dialogue_variants.keys():
-		if bool(gm.get_flag(str(k), false)):
+		if gm.flag_on(str(k)):
 			return str(dialogue_variants[k])
 	return dialogue_id
 

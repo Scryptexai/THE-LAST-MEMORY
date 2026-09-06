@@ -116,8 +116,32 @@ func set_flag(flag_name: String, value: Variant) -> void:
 	var was: Variant = flags.get(flag_name, null)
 	flags[flag_name] = value
 	SignalBus.flag_changed.emit(flag_name, value)
-	if bool(value) and not bool(was):
+	if truthy(value) and not truthy(was):
 		_announce_quest_flag(flag_name)
+
+
+## Nilai "benar" ala flag: null/false/0/""/koleksi kosong → false. Aman untuk Variant apa pun
+## (bool(null) dan bool(String) adalah error di Godot 4).
+static func truthy(v: Variant) -> bool:
+	match typeof(v):
+		TYPE_NIL:
+			return false
+		TYPE_BOOL:
+			return v
+		TYPE_INT, TYPE_FLOAT:
+			return v != 0
+		TYPE_STRING, TYPE_STRING_NAME:
+			var sv: String = str(v)
+			return sv != "" and sv != "0" and sv.to_lower() != "false"
+		TYPE_ARRAY, TYPE_DICTIONARY:
+			return not v.is_empty()
+		_:
+			return true
+
+
+## Apakah flag bernilai benar (lihat truthy).
+func flag_on(flag_name: String) -> bool:
+	return truthy(flags.get(flag_name, null))
 
 
 ## Toast saat flag memulai/menyelesaikan tugas sampingan (quests.json).
@@ -153,7 +177,7 @@ func quest_status(q: Dictionary) -> Dictionary:
 	var done_flag: String = str(q.get("done_flag", ""))
 	var steps: Array = q.get("steps", [])
 	var out: Dictionary = {"state": "hidden", "step_done": 0, "step_total": steps.size(), "count": -1, "count_total": -1}
-	if start_flag != "" and not bool(get_flag(start_flag, false)):
+	if start_flag != "" and not flag_on(start_flag):
 		return out
 	out["state"] = "active"
 	if str(q.get("count", "")) == "moments":
@@ -164,10 +188,10 @@ func quest_status(q: Dictionary) -> Dictionary:
 	var n: int = 0
 	for s in steps:
 		var f: String = str((s as Dictionary).get("flag", ""))
-		if f != "" and bool(get_flag(f, false)):
+		if f != "" and flag_on(f):
 			n += 1
 	out["step_done"] = n
-	if done_flag != "" and bool(get_flag(done_flag, false)):
+	if done_flag != "" and flag_on(done_flag):
 		out["state"] = "done"
 		out["step_done"] = steps.size()
 	return out

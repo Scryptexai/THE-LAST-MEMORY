@@ -11,7 +11,7 @@ func _ready() -> void:
 	SignalBus.flag_changed.connect(_on_flag)
 	_refresh_radio()
 	# Kunyit menunggu di teras; sejak bab 1 ia mengikuti Ardi di dalam rumah.
-	add_cat(Vector3(1.6, 0.3, 7.0), bool(GameManager.get_flag("chseen_bab1", false)))
+	add_cat(Vector3(1.6, 0.3, 7.0), GameManager.flag_on("chseen_bab1"))
 
 
 func _on_flag(flag_name: String, _v: Variant) -> void:
@@ -21,7 +21,7 @@ func _on_flag(flag_name: String, _v: Variant) -> void:
 
 ## Radio tua mengalunkan keroncong samar setelah dinyalakan (flag radio_nyala).
 func _refresh_radio() -> void:
-	if _radio_src == null and bool(GameManager.get_flag("radio_nyala", false)):
+	if _radio_src == null and GameManager.flag_on("radio_nyala"):
 		_radio_src = add_sound_source(Vector3(0.5, 1.0, -4.8), "snd_radio", 9.0, -8.0)
 
 
