@@ -55,7 +55,8 @@ func _layout_nodes() -> void:
 		var rh: float = (size.y - pad * 2.0) / float(maxi(items.size(), 1))
 		for ri in items.size():
 			var cid: String = items[ri]
-			var jitter := Vector2(float(hash(cid) % 17) - 8.0, float((hash(cid) / 17) % 11) - 5.0)
+			var h: int = absi(hash(cid))
+			var jitter := Vector2(float(h % 17) - 8.0, float((h / 17) % 11) - 5.0)
 			_positions[cid] = Vector2(pad + cw * (float(ci) + 0.5), pad + rh * (float(ri) + 0.5)) + jitter
 
 
@@ -92,7 +93,7 @@ func _draw() -> void:
 	# Benang deduksi terpecahkan (emas, berdenyut).
 	for did in im.deductions_solved:
 		var req: Array = (dm.deductions.get(str(did), {}) as Dictionary).get("required_clues", [])
-		var pulse: float = 0.75 + 0.25 * sin(_t * 3.0 + float(hash(did) % 7))
+		var pulse: float = 0.75 + 0.25 * sin(_t * 3.0 + float(absi(hash(did)) % 7))
 		for i in req.size():
 			for j in range(i + 1, req.size()):
 				if _positions.has(req[i]) and _positions.has(req[j]):
