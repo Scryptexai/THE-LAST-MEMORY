@@ -8,10 +8,12 @@ sepertinya *mengingat* sesuatu. Ungkap kebenaran, jaga hubunganmu, dan pilih end
 
 ## ✨ Fitur (Full Release)
 
-- 🗺️ **5 lokasi 3D** bergaya diorama miniatur prosedural: Rumah Nenek, Kafe Rara, Pasar Lama, Stasiun, Pantai
-- 💬 **~80 simpul dialog bercabang** (Indonesia + Inggris) dengan efek mengetik & pratinjau hubungan
-- 🔍 **18 petunjuk + 4 deduksi** berantai di papan investigasi ala *Golden Idol*
-- 💛 **Sistem hubungan** (Rara, Pak Harto, Mira) yang membuka dialog & kesaksian spesial
+> **Statistik konten saat ini:** 6 lokasi · 142 simpul dialog (14 kilas balik 1983) · 19 petunjuk + 4 deduksi · 10 item · 6 momen foto · 4 tugas sampingan · 19 pencapaian · 4 ending + 8 entri epilog · 2 bahasa (ID/EN). Semua invarian dicek `tools/validate.sh`.
+
+- 🗺️ **6 lokasi 3D** bergaya diorama miniatur prosedural: Rumah Nenek, Kafe Rara, Pasar Lama, Stasiun, Pantai, Makam Bukit (terbuka bab 3) — dengan peta kota, suasana per bab, langkah kaki per permukaan, suara posisional
+- 💬 **142 simpul dialog bercabang** (Indonesia + Inggris) dengan efek mengetik, pratinjau hubungan, riwayat, auto-advance, dan penanda ◇ pilihan lama di Baru+
+- 🔍 **19 petunjuk + 4 deduksi** berantai di papan investigasi ala *Golden Idol*, plus papan benang merah
+- 💛 **Sistem hubungan** (Rara, Pak Harto, Mira, Bu RT) yang membuka dialog & kesaksian spesial; NPC berjadwal per bab; Kunyit si kucing
 - 👻 **Psychometry**: objek memicu kilas balik 1983 (overlay sepia + musik memori)
 - 📓 **Jurnal otomatis**: catatan, profil tokoh, linimasa
 - 🎒 **Inventory fungsional**: kunci, senter, dan hadiah yang diserahkan otomatis
@@ -20,11 +22,11 @@ sepertinya *mengingat* sesuatu. Ungkap kebenaran, jaga hubunganmu, dan pilih end
 - 🧩 **Panduan teka-teki** di papan deduksi, dialog reaktif pasca-pengakuan, 10 kilas balik, slider teks/kamera
 - 📷 **5 Momen foto** ala Life is Strange: abadikan vista kota, tersimpan sebagai PNG + galeri jurnal
 - ✨ **New Game+** (foto & hint bonus terbawa), **% penyelesaian**, warga bereaksi per-bab
-- 🏆 **11 pencapaian** (toast + fanfare + tab jurnal), 2 memori rahasia NG+, SFX achievement
+- 🏆 **19 pencapaian** (toast + fanfare + tab jurnal), 2 memori rahasia NG+, SFX achievement; 4 tugas sampingan di tab Tugas
 - 📷 **Mode foto bebas** (tombol P): letterbox + grid sepertiga + zoom + galeri jurnal + pencapaian Fotografer
 - 🎁 **5 hadiah untuk 3 tokoh** (reaksi spesial + petunjuk kesukaan di jurnal + pencapaian Murah Hati); perbaiki `_check_gift` NPC yang hilang
 - 🕯 **Ruang Memori**: galeri 4 ending + statistik lintas-sesi (memori global), tombol dari menu & layar tamat, pencapaian Sempurna (100%)
-- 💾 **3 slot save + autosave**, pengaturan audio & bahasa (ID/EN)
+- 💾 **3 slot save + autosave**, pengaturan audio, bahasa (ID/EN), aksesibilitas (skala UI, kontras tinggi, kurangi gerakan); ekspor jurnal ke Markdown
 - 🎵 **Musik & SFX prosedural** (synth runtime — tanpa file audio eksternal, bisa di-override dengan `.ogg` di `assets/audio/`)
 
 ## 🕹️ Kontrol
@@ -38,9 +40,13 @@ sepertinya *mengingat* sesuatu. Ungkap kebenaran, jaga hubunganmu, dan pilih end
 | Tas | I | Y |
 | Investigasi | L | B |
 | Peta perjalanan | M | RB |
+| Mode foto | P (F: filter, roda: zoom, klik/Spasi: jepret) | — |
 | Lanjut dialog | Klik / Spasi / Enter | — |
+| Pilih opsi dialog | 1–4 (A auto, H riwayat) | — |
 | Jeda / kembali | Esc | — |
 | Kamera | Gerak mouse (terkunci saat main) | — |
+
+Di Rumah Nenek, **E** di dekat Kunyit = mengelus kucing.
 
 Alur: **E** untuk bicara/periksa → baca jurnal **[J]** → hubungkan clue di papan **[L]** →
 rangkai 4 deduksi → kembali ke loteng untuk pilihan akhir.
