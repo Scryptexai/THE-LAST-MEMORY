@@ -39,6 +39,13 @@
       "relationship_max": 10
     },
     {
+      "id": "bu_rt",
+      "name": "Bu RT Sumi",
+      "description": "Ketua RT sekaligus tetangga sebelah. Selama enam bulan diam-diam menyapu dan merawat rumah nenek. Tahu banyak, tapi hanya bicara pada yang ia percaya.",
+      "relationship_start": 3,
+      "relationship_max": 10
+    },
+    {
       "id": "darmo",
       "name": "Kakek Darmo",
       "description": "Suami Nenek Lastri, masinis kereta yang dinyatakan bersalah atas kecelakaan 1983. Ardi tak pernah mengenalnya — hanya lewat foto dan kenangan rumah.",

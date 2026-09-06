@@ -7,6 +7,7 @@ func _build_layout() -> void:
 	layout["spawn:default"] = {"pos": Vector3(0, 0, 9), "yaw": 0.0}
 	layout["spawn:intro"] = {"pos": Vector3(0, 0, 12), "yaw": 0.0}
 	layout["spawn:door"] = {"pos": Vector3(0, 0, 7.5), "yaw": 0.0}
+	layout["npc:bu_rt"] = {"pos": Vector3(4.6, 0, 9.2), "yaw": PI / 2}
 	layout["obj:pintu_depan"] = {"pos": Vector3(0, 0, 6.2)}
 	layout["obj:surat_loteng"] = {"pos": Vector3(-4.5, 0, -4.5)}
 	layout["obj:kotak_kayu"] = {"pos": Vector3(-5.5, 0, -3.5)}

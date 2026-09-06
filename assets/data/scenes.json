@@ -14,7 +14,10 @@
         "sun_color": "#ffdcb0", "sun_energy": 1.1,
         "sun_rotation": [-0.9, -0.6], "exposure": 1.0, "ambient_energy": 0.7
       },
-      "npcs": [],
+      "npcs": [
+        {"character_id": "bu_rt", "slot": "bu_rt", "display_name": "Bu RT", "dialogue_id": "dlg_burt_intro",
+         "variants": {"chseen_final": "dlg_burt_final", "chseen_bab3": "dlg_burt_bab3", "burt_bicara": "dlg_burt_after"}}
+      ],
       "interactables": [
         {"object_id": "pintu_depan", "display_name": "Pintu Depan", "prompt_key": "prompt_travel", "target_location": "__travel__", "target_spawn": "default"},
         {"object_id": "surat_loteng", "display_name": "Tumpukan Surat", "prompt_key": "prompt_read", "clue_id": "surat_01", "dialogue_id": "dlg_loteng_first", "variants": {"ded4": "dlg_final_01", "surat1_dibaca": "dlg_loteng_ulang"}},

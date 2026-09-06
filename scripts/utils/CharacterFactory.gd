@@ -10,6 +10,7 @@ const PALETTES := {
 	"mira": {"skin": Color(0.95, 0.76, 0.6), "top": Color(0.2, 0.5, 0.45), "bottom": Color(0.15, 0.2, 0.28), "hair": Color(0.08, 0.08, 0.1)},
 	"nenek": {"skin": Color(0.88, 0.68, 0.52), "top": Color(0.55, 0.3, 0.45), "bottom": Color(0.3, 0.25, 0.3), "hair": Color(0.8, 0.8, 0.82)},
 	"darmo": {"skin": Color(0.9, 0.7, 0.55), "top": Color(0.3, 0.3, 0.35), "bottom": Color(0.2, 0.2, 0.22), "hair": Color(0.15, 0.12, 0.1)},
+	"bu_rt": {"skin": Color(0.9, 0.72, 0.56), "top": Color(0.62, 0.42, 0.55), "bottom": Color(0.3, 0.22, 0.3), "hair": Color(0.25, 0.2, 0.2)},
 	"warga": {"skin": Color(0.93, 0.74, 0.58), "top": Color(0.5, 0.5, 0.55), "bottom": Color(0.3, 0.3, 0.32), "hair": Color(0.2, 0.18, 0.16)},
 }
 
@@ -73,6 +74,12 @@ func _apply_signature(pf: PropFactory, root: Node3D, key: String, pal: Dictionar
 			pf.sphere(root, 0.11, Vector3(0, 1.6, -0.08), pf.mat(pal["hair"], 0.85))
 			pf.box(root, Vector3(0.5, 0.5, 0.02), Vector3(-0.1, 0.95, 0.16), pf.mat(Color(0.7, 0.55, 0.3), 0.85))
 			pf.sphere(root, 0.04, Vector3(0.08, 1.02, 0.17), pf.mat(Color(0.85, 0.6, 0.1), 0.35, Color(0.85, 0.6, 0.1), 0.6))
+		"bu_rt":
+			# Kerudung + sapu lidi di tangan.
+			pf.sphere(root, 0.235, Vector3(0, 1.42, -0.03), pf.mat(Color(0.85, 0.7, 0.4), 0.9))
+			pf.box(root, Vector3(0.5, 0.35, 0.03), Vector3(0, 1.1, 0.14), pf.mat(Color(0.85, 0.7, 0.4), 0.9))
+			pf.cyl(root, 0.02, 1.3, Vector3(-0.42, 0.65, 0.08), pf.mat(Color(0.55, 0.42, 0.25), 0.9), false, 6)
+			pf.cyl(root, 0.06, 0.3, Vector3(-0.42, 0.15, 0.08), pf.mat(Color(0.7, 0.6, 0.35), 0.95), false, 8)
 		"darmo":
 			# Topi masinis + seragam bergaris.
 			pf.box(root, Vector3(0.34, 0.1, 0.34), Vector3(0, 1.62, 0), pf.mat(Color(0.2, 0.25, 0.4), 0.8))

@@ -16,6 +16,7 @@ const TIPS := [
 	"TIPS: Penanda emas berarti Momen - abadikan 5 kenangan kota.",
 	"TIPS: Persahabatan membuka pintu yang terkunci bagi orang asing.",
 	"TIPS: Stasiun selalu gerimis. Dengarkan guntur di kejauhan.",
+	"TIPS: Tetangga tahu lebih banyak dari yang mereka katakan. Sapa Bu RT di teras.",
 ]
 
 

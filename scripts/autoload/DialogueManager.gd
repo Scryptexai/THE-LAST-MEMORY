@@ -64,7 +64,7 @@ func _mark_speaker_met(speaker: String) -> void:
 		im.mark_character_met(key)
 	# Nama tampilan Indonesia -> id karakter.
 	var alias := {"ardi": "ardi", "rara": "rara", "pak harto": "pak_harto", "harto": "pak_harto",
-		"mira": "mira", "nenek": "nenek", "lastri": "nenek", "darmo": "darmo", "???": ""}
+		"mira": "mira", "nenek": "nenek", "lastri": "nenek", "darmo": "darmo", "bu_rt": "bu_rt", "bu_rt_sumi": "bu_rt", "???": ""}
 	if alias.has(key) and str(alias[key]) != "":
 		im.mark_character_met(str(alias[key]))
 

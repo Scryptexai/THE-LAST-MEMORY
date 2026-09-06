@@ -91,6 +91,10 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
+## 🏡 Prolog Diperluas — Bu RT Sumi
+
+- NPC baru di teras Rumah Nenek (`bu_rt`): perawat rumah selama 6 bulan; dialog berubah per bab (`burt_bicara` → salam, `chseen_bab3` → peringatan, `chseen_final` → restu). Menambah entri Tokoh & Linimasa di jurnal.
+
 ## 🌦 Cuaca & Langit Hidup
 
 - `scenes.json` → `env.weather`: `"drizzle"` (gerimis partikel + kilat & guntur acak, layer hujan di ambient) atau `"gulls"` (kawanan camar `GullFlock` berputar di langit).
