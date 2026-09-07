@@ -3,12 +3,10 @@ extends Control
 ## Masuk/keluar ditangani UIManager (aksi photo_mode & ui_cancel).
 
 const BAR_H := 90.0
-const FOV_MIN := 25.0
-const FOV_MAX := 70.0
 const FOV_STEP := 5.0
 
-var _cam: Camera3D = null
-var _orig_fov: float = 62.0
+var _stage: Node2D = null
+var _zoom: float = 1.0
 var _top_bar: ColorRect
 var _bottom_bar: ColorRect
 var _hint_label: Label
@@ -138,21 +136,16 @@ func _layout() -> void:
 
 func _on_visibility_changed() -> void:
 	if visible:
-		_cam = null
-		var player := get_tree().get_first_node_in_group("player") as Node3D
-		if player:
-			_cam = player.get_node_or_null("CamPivot/SpringArm3D/Camera3D") as Camera3D
-		if _cam:
-			_orig_fov = _cam.fov
+		_stage = get_tree().get_first_node_in_group("location") as Node2D
+		_zoom = 1.0
 		_hint_label.text = DataManager.tr_key("photo_hint")
 		_update_zoom_label()
 		_apply_filter()
 		_filter_layer.visible = true
 		_layout()
 	else:
-		if _cam and is_instance_valid(_cam):
-			_cam.fov = _orig_fov
-		_cam = null
+		_apply_zoom(1.0)
+		_stage = null
 		_filter_layer.visible = false
 		PhotoManager.current_filter = ""
 
@@ -171,15 +164,30 @@ func _cycle_filter(dir: int) -> void:
 
 
 func _update_zoom_label() -> void:
-	var f: float = _cam.fov if _cam and is_instance_valid(_cam) else _orig_fov
-	_zoom_label.text = "📷 fov %.0f" % f
+	_zoom_label.text = "📷 zoom %.1f×" % _zoom
 
 
+## Zoom panggung 2D: skala Stage2D di sekitar kursor (pusat layar bila di luar).
 func _adjust_zoom(delta: float) -> void:
-	if _cam == null or not is_instance_valid(_cam):
-		return
-	_cam.fov = clampf(_cam.fov + delta, FOV_MIN, FOV_MAX)
+	_apply_zoom(clampf(_zoom - delta / 25.0, 1.0, 2.6))
 	_update_zoom_label()
+
+
+func _apply_zoom(z: float) -> void:
+	_zoom = z
+	if _stage == null or not is_instance_valid(_stage):
+		return
+	var vp: Vector2 = get_viewport_rect().size
+	var focus: Vector2 = get_viewport().get_mouse_position()
+	if not Rect2(Vector2.ZERO, vp).has_point(focus):
+		focus = vp * 0.5
+	var design := Vector2(1280, 720)
+	var f: Vector2 = focus / vp * design
+	_stage.scale = Vector2(z, z)
+	_stage.position = f - f * z
+	# Jaga agar tepi latar tidak masuk layar.
+	_stage.position.x = clampf(_stage.position.x, design.x - design.x * z, 0.0)
+	_stage.position.y = clampf(_stage.position.y, design.y - design.y * z, 0.0)
 
 
 func _gui_input(event: InputEvent) -> void:

@@ -4,7 +4,7 @@
       "id": "rumah_nenek",
       "name": "Rumah Nenek",
       "description": "Rumah tua di pinggir kota. Masih terawat, tapi ada aroma waktu yang terperangkap.",
-      "scene_path": "res://scenes/locations/RumahNenek.tscn",
+      "scene_path": "res://scenes/stage/Stage2D.tscn",
       "music": "music_rumah_nenek",
       "ambient": "ambient_rumah",
       "env": {
@@ -38,7 +38,7 @@
       "id": "kafe_rara",
       "name": "Kafe Rara",
       "description": "Kafe kecil di sudut kota. Tempat berkumpulnya warga Kota Tua.",
-      "scene_path": "res://scenes/locations/KafeRara.tscn",
+      "scene_path": "res://scenes/stage/Stage2D.tscn",
       "music": "music_kafe",
       "ambient": "ambient_kafe",
       "env": {
@@ -77,7 +77,7 @@
       "id": "pasar_lama",
       "name": "Pasar Lama",
       "description": "Pasar pagi yang tak pernah benar-benar berubah. Semua orang tahu semua orang — dan semua rahasia.",
-      "scene_path": "res://scenes/locations/PasarLama.tscn",
+      "scene_path": "res://scenes/stage/Stage2D.tscn",
       "music": "music_pasar",
       "ambient": "ambient_pasar",
       "env": {
@@ -111,7 +111,7 @@
       "id": "stasiun",
       "name": "Stasiun Kota Tua",
       "description": "Stasiun mati sejak 1983. Angin berdesir di peron kosong, seolah masih menunggu kereta yang tak datang.",
-      "scene_path": "res://scenes/locations/Stasiun.tscn",
+      "scene_path": "res://scenes/stage/Stage2D.tscn",
       "music": "music_stasiun",
       "ambient": "ambient_stasiun",
       "env": {
@@ -142,7 +142,7 @@
       "id": "pantai",
       "name": "Pantai Senja",
       "description": "Pantai tempat anak-anak kota menghabiskan sore. Ombak menyimpan rahasia sebaik manusia.",
-      "scene_path": "res://scenes/locations/Pantai.tscn",
+      "scene_path": "res://scenes/stage/Stage2D.tscn",
       "music": "music_pantai",
       "ambient": "ambient_pantai",
       "env": {
@@ -173,7 +173,7 @@
       "id": "makam_bukit",
       "name": "Makam Bukit",
       "description": "Pemakaman kecil di lereng bukit di atas Kota Tua. Dari sini, stasiun dan laut terlihat sekaligus — seperti dua ujung cerita yang sama.",
-      "scene_path": "res://scenes/locations/MakamBukit.tscn",
+      "scene_path": "res://scenes/stage/Stage2D.tscn",
       "music": "music_makam",
       "ambient": "ambient_bukit",
       "unlock_flag": "chseen_bab3",

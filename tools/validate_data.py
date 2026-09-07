@@ -117,9 +117,29 @@ def main() -> int:
     items = {i["id"] for i in load("assets/data/items.json")["items"]}
     moments = {m["id"] for m in load("assets/data/moments.json")["moments"]}
     objs = {o["id"] for o in load("assets/data/objectives.json")["objectives"]}
+    stages = {st["id"]: st for st in load("assets/data/stages.json")["stages"]}
     for s in scenes:
         if not os.path.exists(s.get("scene_path", "").replace("res://", "")):
             errs.append(f"scene_path hilang: {s.get('scene_path')}")
+        st = stages.get(s["id"])
+        if st is None:
+            errs.append(f"stages.json: lokasi {s['id']} tidak punya panggung 2D")
+        else:
+            bg = st.get("bg", "").replace("res://", "")
+            if not os.path.exists(bg):
+                errs.append(f"stages.json: latar {bg} hilang ({s['id']})")
+            hs = st.get("hotspots", {})
+            for o in s.get("interactables", []):
+                if o["object_id"] not in hs:
+                    errs.append(f"stages.json: hotspot {o['object_id']} belum dipetakan ({s['id']})")
+            slots = st.get("npcs", {})
+            for npc in s.get("npcs", []):
+                sid = npc.get("slot", npc.get("character_id"))
+                if sid not in slots:
+                    errs.append(f"stages.json: posisi NPC {sid} belum ada ({s['id']})")
+                for spot in npc.get("spots", {}).values():
+                    if spot not in slots:
+                        errs.append(f"stages.json: posisi NPC {spot} (spots) belum ada ({s['id']})")
         for o in s.get("interactables", []):
             if o.get("clue_id") and o["clue_id"] not in clues:
                 errs.append(f"clue {o['clue_id']} hilang ({s['id']})")
@@ -142,6 +162,7 @@ def main() -> int:
     for q in load("assets/data/quests.json")["quests"]:
         if q.get("location") and q["location"] not in scene_ids:
             errs.append(f"quest {q['id']} lokasi {q['location']} tidak ada")
+    print(f"stages: {len(stages)} panggung 2D")
 
     for d in load("assets/data/decisions.json")["decisions"]:
         node = dlg.get(d.get("node", ""))

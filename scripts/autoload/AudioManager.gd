@@ -71,7 +71,7 @@ func _apply_volumes() -> void:
 	for p in _sfx_players:
 		(p as AudioStreamPlayer).volume_db = linear_to_db(maxf(s, 0.0001))
 	for sp in _spatial_players:
-		_apply_spatial_volume(sp as AudioStreamPlayer3D)
+		_apply_spatial_volume(sp as Node)
 
 
 func set_music_volume(v: float) -> void:
@@ -101,11 +101,19 @@ func register_spatial(p: AudioStreamPlayer3D, base_db: float = 0.0) -> void:
 	_apply_spatial_volume(p)
 
 
-func _apply_spatial_volume(p: AudioStreamPlayer3D) -> void:
+func _apply_spatial_volume(p: Node) -> void:
 	if not is_instance_valid(p):
 		return
 	var a: float = 0.0 if muted else ambient_volume
-	p.volume_db = linear_to_db(maxf(a, 0.0001)) + float(p.get_meta("base_db", 0.0))
+	p.set("volume_db", linear_to_db(maxf(a, 0.0001)) + float(p.get_meta("base_db", 0.0)))
+
+
+## Versi panggung 2D: AudioStreamPlayer2D di Stage2D ikut slider suasana & mute.
+func register_spatial2d(p: AudioStreamPlayer2D, base_db: float = 0.0) -> void:
+	p.set_meta("base_db", base_db)
+	_spatial_players.append(p)
+	p.tree_exited.connect(func() -> void: _spatial_players.erase(p))
+	_apply_spatial_volume(p)
 
 
 func _synth_spatial(sound_id: String) -> AudioStreamWAV:

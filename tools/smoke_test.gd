@@ -53,12 +53,21 @@ func _run() -> void:
 	for sid in DataManager.scenes.keys():
 		await main.travel_to(str(sid), "default")
 		await _frames(4)
-		var loc: Node = main.get_node("World/LocationContainer").get_child(0) if main.get_node("World/LocationContainer").get_child_count() > 0 else null
+		var loc: Node = main.get_node("World/StageContainer").get_child(0) if main.get_node("World/StageContainer").get_child_count() > 0 else null
 		_check(loc != null, "lokasi %s terbangun" % sid)
 		if loc == null:
 			continue
 		visited += 1
 		GameManager.notify_location_loaded(str(sid))
+		# Panggung 2D: Ardi berjalan ke setiap hotspot (klik) lalu berinteraksi lewat E.
+		var pl: Node = get_first_node_in_group("player")
+		_check(pl != null and loc.has_method("enter"), "  Ardi (Player2D) hadir di panggung %s" % sid)
+		if pl:
+			for hs in get_nodes_in_group("hotspot"):
+				pl.call("walk_to", hs.get("stand"))
+				await _frames(2)
+			pl.call("place_at", Vector2(640, 690), false)
+			_check(loc.call("_pick_at", Vector2(-999, -999)) == null, "  pick di luar panggung = null")
 		var n_int: int = 0
 		for node in get_nodes_in_group("interactable"):
 			if not is_instance_valid(node) or not node.has_method("interact"):
@@ -123,28 +132,22 @@ func _run() -> void:
 	InvestigationManager.use_hint()
 	_check(InvestigationManager.deductions_solved.size() == DataManager.deductions.size(), "%d clue, %d/%d deduksi, %d item" % [InvestigationManager.clues_found.size(), InvestigationManager.deductions_solved.size(), DataManager.deductions.size(), DataManager.items.size()])
 
-	# --- 5b) Avatar anime + potret ---
-	var cf = load("res://scripts/utils/CharacterFactory.gd").new()
-	var ca_script = load("res://scripts/utils/CharacterAnimator.gd")
+	# --- 5b) Aset anime: potret, sprite, latar ---
 	var tf = load("res://scripts/utils/ThemeFactory.gd")
-	var rig_ok: int = 0
 	var portrait_ok: int = 0
+	var sprite_ok: int = 0
 	for cid in ["ardi", "rara", "pak_harto", "mira", "nenek", "darmo", "bu_rt", "warga"]:
-		var av: Node3D = cf.build_character(str(cid))
-		root.add_child(av)  # look_at_point butuh transform dunia
-		var an = ca_script.new(av)
-		if av.has_meta("bones") and an.is_valid():
-			an.wave(1.0)
-			an.update(0.016, 1.0)
-			an.look_at_point(Vector3(1, 1.5, 1))
-			an.update(0.016, 0.0)
-			rig_ok += 1
-		root.remove_child(av)
-		av.free()
 		if tf.portrait(str(cid)) != null:
 			portrait_ok += 1
-	_check(rig_ok == 8, "rig avatar anime terbangun & teranimasi (%d/8)" % rig_ok)
+		if tf.art_texture("res://assets/art/sprites/%s.png" % cid) != null:
+			sprite_ok += 1
 	_check(portrait_ok == 8, "potret tokoh termuat (%d/8)" % portrait_ok)
+	_ok("sprite tokoh tersedia: %d/8 (sisanya siluet sementara)" % sprite_ok)
+	var bg_ok: int = 0
+	for sid in DataManager.stages.keys():
+		if tf.art_texture(str((DataManager.stages[sid] as Dictionary).get("bg", ""))) != null:
+			bg_ok += 1
+	_check(bg_ok == DataManager.stages.size(), "latar lukisan panggung termuat (%d/%d)" % [bg_ok, DataManager.stages.size()])
 	_check(tf.portrait("Pak Harto") != null and tf.portrait("Suara Peron") == null, "alias potret nama pembicara")
 	_check(tf.art_texture("res://assets/art/ui/keyart_menu.png") != null, "key art menu termuat")
 

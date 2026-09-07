@@ -32,6 +32,6 @@ scons -j"$(nproc)" platform=linuxbsd target=template_debug optimize=size debug_s
 	module_websocket_enabled=no module_mbedtls_enabled=no module_noise_enabled=no module_csg_enabled=no module_gridmap_enabled=no \
 	module_interactive_music_enabled=no module_dds_enabled=no module_hdr_enabled=no module_tga_enabled=no module_bmp_enabled=no \
 	module_zip_enabled=no module_jsonrpc_enabled=no module_minimp3_enabled=no module_ogg_enabled=no module_vorbis_enabled=no \
-	module_webp_enabled=no module_jpg_enabled=no module_meshoptimizer_enabled=no progress=no verbose=no
+	module_webp_enabled=no module_meshoptimizer_enabled=no progress=no verbose=no
 cp bin/godot.linuxbsd.template_debug.x86_64 "$OUT/godot"
 echo "OK: $OUT/godot ($("$OUT/godot" --version))"

@@ -23,7 +23,7 @@ var _chapter_tween: Tween
 var _compass: PanelContainer
 var _compass_label: Label
 var _compass_cd: float = 0.0
-var _compass_target: Node3D = null
+var _compass_target: Node2D = null
 const ARROWS := ["▲", "◥", "▶", "◢", "▼", "◣", "◀", "◤"]
 var _recap: PanelContainer
 var _recap_body: RichTextLabel
@@ -320,47 +320,44 @@ func _process(delta: float) -> void:
 	if _compass_target == null or not is_instance_valid(_compass_target):
 		_compass.visible = false
 		return
-	var player := get_tree().get_first_node_in_group("player") as Node3D
+	var player := get_tree().get_first_node_in_group("player") as Node2D
 	if player == null:
 		_compass.visible = false
 		return
-	var to: Vector3 = _compass_target.global_position - player.global_position
-	to.y = 0.0
-	var dist: float = to.length()
-	if dist < 1.5:
+	var to: Vector2 = _compass_target.position - player.position
+	var dist_m: float = to.length() / 90.0  # ~90 px desain per meter
+	if dist_m < 1.2:
 		_compass.visible = false
 		return
-	var yaw: float = float(player.get("cam_yaw"))
-	var fwd := Vector2(-sin(yaw), -cos(yaw))
-	var dir := Vector2(to.x, to.z).normalized()
-	var ang: float = atan2(fwd.x * dir.y - fwd.y * dir.x, fwd.dot(dir))  # + = kanan
+	# Panggung 2D: arah layar (kiri/kanan, atas = lebih jauh ke dalam).
+	var ang: float = atan2(to.x, -to.y)  # 0 = ke atas (jauh), + = kanan
 	var idx: int = int(roundf(ang / (PI / 4.0))) % 8
 	if idx < 0:
 		idx += 8
 	var nm: String = str(_compass_target.get("display_name"))
-	_compass_label.text = "%s  %s  %dm" % [ARROWS[idx], nm, int(dist)]
+	_compass_label.text = "%s  %s  %dm" % [ARROWS[idx], nm, int(dist_m)]
 	_compass.visible = true
 
 
 ## Target kompas: portal keluar bila objektif ada di lokasi lain; bila di lokasi ini,
 ## objek interaktif aktif terdekat yang masih menyimpan petunjuk belum ditemukan.
-func _pick_compass_target() -> Node3D:
+func _pick_compass_target() -> Node2D:
 	var gm := GameManager
 	var dm := DataManager
 	var im := InvestigationManager
 	var target_loc: String = dm.get_objective_location(gm.current_objective)
 	if target_loc == "":
 		return null
-	var player := get_tree().get_first_node_in_group("player") as Node3D
+	var player := get_tree().get_first_node_in_group("player") as Node2D
 	if player == null:
 		return null
-	var best: Node3D = null
+	var best: Node2D = null
 	var best_d: float = INF
 	for n in get_tree().get_nodes_in_group("interactable"):
-		var obj := n as Node3D
-		if obj == null:
+		var obj := n as Node2D
+		if obj == null or obj == player:
 			continue
-		var d: float = obj.global_position.distance_to(player.global_position)
+		var d: float = obj.position.distance_to(player.position)
 		if target_loc != gm.current_location:
 			if str(obj.get("target_location")) != "__travel__":
 				continue

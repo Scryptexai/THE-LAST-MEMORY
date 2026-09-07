@@ -91,11 +91,8 @@ func change_state(new_state: String) -> void:
 		previous_gameplay_state = state
 	state = new_state
 	GameLog.debug("GameManager: state -> %s" % state)
-	# Kontrol mouse per state.
-	if state == "gameplay":
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	else:
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	# Panggung 2D point-and-click: kursor selalu terlihat.
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	SignalBus.game_state_changed.emit(state)
 
 

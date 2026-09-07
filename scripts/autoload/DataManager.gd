@@ -16,6 +16,7 @@ const PATH_ACHIEVEMENTS := "res://assets/data/achievements.json"
 const PATH_EPILOGUES := "res://assets/data/epilogues.json"
 const PATH_QUESTS := "res://assets/data/quests.json"
 const PATH_DECISIONS := "res://assets/data/decisions.json"
+const PATH_STAGES := "res://assets/data/stages.json"
 
 var dialogues: Dictionary = {}      # id -> node
 var characters: Dictionary = {}     # id -> data
@@ -31,6 +32,7 @@ var achievements: Dictionary = {}   # ach_id -> data
 var epilogues: Array = []           # Array[Dictionary] {id, character, icon, tiers[]}
 var quests: Array = []              # Array[Dictionary] tugas sampingan (quests.json)
 var decisions: Array = []           # Array[Dictionary] keputusan kunci (decisions.json)
+var stages: Dictionary = {}         # id lokasi -> panggung 2D anime (stages.json)
 
 var language: String = "id"
 
@@ -56,6 +58,7 @@ func load_all() -> void:
 	epilogues = _load_array(PATH_EPILOGUES, "epilogues")
 	quests = _load_array(PATH_QUESTS, "quests")
 	decisions = _load_array(PATH_DECISIONS, "decisions")
+	stages = _index(_load_array(PATH_STAGES, "stages"))
 	GameLog.info("DataManager: %d dialog, %d karakter, %d clue, %d deduksi dimuat." % [
 		dialogues.size(), characters.size(), clues.size(), deductions.size()])
 
@@ -114,6 +117,11 @@ func get_achievement(ach_id: String) -> Dictionary:
 
 func get_scene_data(scene_id: String) -> Dictionary:
 	return scenes.get(scene_id, {})
+
+
+## Data panggung 2D (latar, hotspot, posisi tokoh) untuk lokasi.
+func get_stage(scene_id: String) -> Dictionary:
+	return stages.get(scene_id, {})
 
 
 func get_deduction(ded_id: String) -> Dictionary:

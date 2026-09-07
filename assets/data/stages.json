@@ -1,0 +1,199 @@
+{
+  "_comment": "Panggung 2D anime per lokasi. Koordinat dalam satuan desain 1280x720 (latar 1920x1080 diskalakan 2/3). floor = area lantai yang bisa dipijak (y_far = jauh/kecil, y_near = dekat/besar). Tiap hotspot: anchor (x,y) tempat penanda, stand = titik berdiri Ardi, w/h = area hover/klik.",
+  "stages": [
+    {
+      "id": "rumah_nenek",
+      "ambient": "#f2dcc0",
+      "bg": "res://assets/art/bg/rumah_nenek.png",
+      "surface": "wood",
+      "floor": {"y_far": 490, "y_near": 700, "x_min": 40, "x_max": 1250},
+      "sprite_scale": 0.34,
+      "far_scale": 0.68,
+      "particles": "dust",
+      "spawns": {
+        "default": {"x": 640, "y": 680, "flip": true},
+        "intro": {"x": 140, "y": 665, "flip": false}
+      },
+      "npcs": {
+        "bu_rt": {"x": 300, "y": 660, "flip": false}
+      },
+      "cat": {"x": 620, "y": 692},
+      "sounds": [
+        {"id": "snd_radio", "x": 565, "y": 355, "flag": "radio_nyala", "db": -8, "range": 520}
+      ],
+      "lights": [
+        {"x": 760, "y": 315, "color": "#ffc070", "energy": 0.55, "radius": 170, "flicker": 0.08, "flag": "radio_nyala"}
+      ],
+      "hotspots": {
+        "pintu_depan": {"x": 95, "y": 470, "stand": [150, 650], "w": 120, "h": 440},
+        "vista_teras": {"x": 110, "y": 430, "stand": [160, 665], "w": 90, "h": 90},
+        "rak_buku": {"x": 340, "y": 330, "stand": [340, 640], "w": 150, "h": 380},
+        "album_foto": {"x": 480, "y": 610, "stand": [470, 700], "w": 200, "h": 70},
+        "radio_tua": {"x": 565, "y": 355, "stand": [565, 640], "w": 130, "h": 90},
+        "foto_kamar": {"x": 760, "y": 225, "stand": [760, 620], "w": 110, "h": 90},
+        "laci_tulis": {"x": 760, "y": 400, "stand": [760, 640], "w": 160, "h": 80},
+        "tempat_tidur": {"x": 940, "y": 400, "stand": [940, 600], "w": 120, "h": 120},
+        "surat_loteng": {"x": 1080, "y": 250, "stand": [1075, 610], "w": 90, "h": 300},
+        "kotak_kayu": {"x": 1125, "y": 380, "stand": [1120, 630], "w": 70, "h": 60},
+        "laci_dapur": {"x": 1240, "y": 470, "stand": [1200, 650], "w": 90, "h": 120}
+      }
+    },
+    {
+      "id": "kafe_rara",
+      "ambient": "#ffd9b0",
+      "bg": "res://assets/art/bg/kafe_rara.png",
+      "surface": "stone",
+      "floor": {"y_far": 590, "y_near": 705, "x_min": 60, "x_max": 1250},
+      "sprite_scale": 0.35,
+      "far_scale": 0.8,
+      "particles": "dust",
+      "spawns": {
+        "default": {"x": 880, "y": 700, "flip": true},
+        "door": {"x": 880, "y": 700, "flip": true}
+      },
+      "npcs": {
+        "rara": {"x": 300, "y": 640, "flip": false},
+        "rara_jendela": {"x": 1010, "y": 630, "flip": false},
+        "pak_harto": {"x": 690, "y": 612, "flip": true},
+        "harto_teras": {"x": 1130, "y": 645, "flip": true}
+      },
+      "hotspots": {
+        "foto_dinding": {"x": 120, "y": 165, "stand": [150, 650], "w": 220, "h": 260},
+        "teh_counter": {"x": 90, "y": 473, "stand": [130, 660], "w": 90, "h": 70},
+        "menu_kafe": {"x": 473, "y": 220, "stand": [470, 645], "w": 130, "h": 160},
+        "meja_harto": {"x": 620, "y": 410, "stand": [640, 655], "w": 170, "h": 90},
+        "pintu_kafe": {"x": 790, "y": 330, "stand": [800, 655], "w": 90, "h": 400},
+        "teras_bunga": {"x": 880, "y": 500, "stand": [880, 690], "w": 120, "h": 200},
+        "vista_etalase": {"x": 1000, "y": 250, "stand": [1010, 645], "w": 150, "h": 200},
+        "papan_kafe": {"x": 1230, "y": 270, "stand": [1180, 655], "w": 90, "h": 200}
+      }
+    },
+    {
+      "id": "pasar_lama",
+      "ambient": "#f6e2c6",
+      "bg": "res://assets/art/bg/pasar_lama.png",
+      "surface": "stone",
+      "floor": {"y_far": 500, "y_near": 705, "x_min": 40, "x_max": 1250},
+      "sprite_scale": 0.35,
+      "far_scale": 0.66,
+      "particles": "dust",
+      "spawns": {
+        "default": {"x": 640, "y": 690, "flip": true}
+      },
+      "npcs": {
+        "mira": {"x": 900, "y": 620, "flip": true},
+        "mira_gapura": {"x": 450, "y": 585, "flip": false},
+        "mira_arsip": {"x": 250, "y": 645, "flip": true},
+        "pedagang": {"x": 770, "y": 585, "flip": true},
+        "warga_pasar": {"x": 1130, "y": 610, "flip": true},
+        "burt_pasar": {"x": 560, "y": 690, "flip": false}
+      },
+      "hotspots": {
+        "kios_arsip": {"x": 100, "y": 360, "stand": [200, 625], "w": 200, "h": 260},
+        "gapura": {"x": 290, "y": 260, "stand": [330, 560], "w": 220, "h": 300},
+        "karcis_jatuh": {"x": 370, "y": 655, "stand": [400, 700], "w": 90, "h": 40},
+        "peti_senter": {"x": 520, "y": 500, "stand": [540, 640], "w": 150, "h": 90},
+        "lapak_antik": {"x": 600, "y": 380, "stand": [640, 600], "w": 240, "h": 180},
+        "vista_gapura": {"x": 850, "y": 380, "stand": [850, 600], "w": 120, "h": 140},
+        "gerobak": {"x": 1080, "y": 480, "stand": [1000, 640], "w": 220, "h": 240},
+        "papan_pasar": {"x": 1200, "y": 300, "stand": [1180, 660], "w": 130, "h": 240}
+      }
+    },
+    {
+      "id": "stasiun",
+      "ambient": "#a9b4c8",
+      "bg": "res://assets/art/bg/stasiun.png",
+      "surface": "stone",
+      "floor": {"y_far": 560, "y_near": 705, "x_min": 40, "x_max": 1220},
+      "sprite_scale": 0.35,
+      "far_scale": 0.74,
+      "particles": "none",
+      "spawns": {
+        "default": {"x": 420, "y": 690, "flip": false}
+      },
+      "npcs": {
+        "penjaga": {"x": 280, "y": 640, "flip": false}
+      },
+      "sounds": [
+        {"id": "snd_lamp", "x": 680, "y": 175, "flag": "loket_terang", "db": -10, "range": 380}
+      ],
+      "lights": [
+        {"x": 680, "y": 178, "color": "#ffb85a", "energy": 1.1, "radius": 260, "flicker": 0.2, "flag": "loket_terang"},
+        {"x": 680, "y": 178, "color": "#ffb85a", "energy": 0.35, "radius": 140, "flicker": 0.12}
+      ],
+      "hotspots": {
+        "gerbang_stasiun": {"x": 80, "y": 350, "stand": [140, 645], "w": 150, "h": 500},
+        "loket": {"x": 390, "y": 330, "stand": [400, 625], "w": 120, "h": 200},
+        "plakat": {"x": 515, "y": 300, "stand": [515, 625], "w": 70, "h": 110},
+        "papan_jadwal": {"x": 620, "y": 300, "stand": [615, 600], "w": 130, "h": 140},
+        "kait_lampu": {"x": 680, "y": 175, "stand": [705, 605], "w": 60, "h": 100},
+        "bangku_peron": {"x": 600, "y": 490, "stand": [645, 645], "w": 190, "h": 90},
+        "gerbong_gelap": {"x": 1060, "y": 380, "stand": [1100, 605], "w": 200, "h": 260},
+        "peluit_rel": {"x": 1010, "y": 655, "stand": [980, 695], "w": 110, "h": 50},
+        "vista_peron": {"x": 1150, "y": 500, "stand": [1150, 685], "w": 120, "h": 120}
+      }
+    },
+    {
+      "id": "pantai",
+      "ambient": "#ffc9a0",
+      "bg": "res://assets/art/bg/pantai.png",
+      "surface": "sand",
+      "floor": {"y_far": 580, "y_near": 705, "x_min": 150, "x_max": 1250},
+      "sprite_scale": 0.35,
+      "far_scale": 0.72,
+      "particles": "none",
+      "spawns": {
+        "default": {"x": 300, "y": 690, "flip": false}
+      },
+      "npcs": {
+        "rara_pantai": {"x": 750, "y": 645, "flip": true},
+        "mira_pantai": {"x": 330, "y": 640, "flip": false}
+      },
+      "sounds": [
+        {"id": "snd_sea", "x": 640, "y": 480, "db": -6, "range": 1400},
+        {"id": "snd_fire", "x": 930, "y": 600, "db": -4, "range": 420}
+      ],
+      "lights": [
+        {"x": 930, "y": 598, "color": "#ff9a40", "energy": 0.9, "radius": 190, "flicker": 0.3},
+        {"x": 1190, "y": 240, "color": "#fff0b0", "energy": 0.7, "radius": 120, "flicker": 0.05}
+      ],
+      "hotspots": {
+        "jalan_pantai": {"x": 120, "y": 380, "stand": [200, 625], "w": 130, "h": 200},
+        "bunga_liar": {"x": 80, "y": 590, "stand": [175, 680], "w": 150, "h": 120},
+        "batu_foto": {"x": 520, "y": 320, "stand": [450, 600], "w": 200, "h": 160},
+        "perahu_tua": {"x": 560, "y": 520, "stand": [600, 665], "w": 360, "h": 130},
+        "vista_senja": {"x": 880, "y": 330, "stand": [800, 625], "w": 110, "h": 100},
+        "dermaga": {"x": 1000, "y": 420, "stand": [950, 610], "w": 300, "h": 90},
+        "mercusuar": {"x": 1190, "y": 270, "stand": [1150, 600], "w": 70, "h": 100}
+      }
+    },
+    {
+      "id": "makam_bukit",
+      "ambient": "#e6ecf0",
+      "bg": "res://assets/art/bg/makam_bukit.png",
+      "surface": "grass",
+      "floor": {"y_far": 600, "y_near": 705, "x_min": 60, "x_max": 1250},
+      "sprite_scale": 0.35,
+      "far_scale": 0.8,
+      "particles": "petals",
+      "spawns": {
+        "default": {"x": 200, "y": 690, "flip": false}
+      },
+      "npcs": {
+        "juru_kunci": {"x": 1150, "y": 645, "flip": true}
+      },
+      "cat": {"x": 560, "y": 700, "only_if": "chseen_final & kunyit_jinak", "follow": false},
+      "sounds": [
+        {"id": "snd_bell", "x": 1180, "y": 380, "db": -8, "range": 700}
+      ],
+      "hotspots": {
+        "gapura_makam": {"x": 190, "y": 300, "stand": [190, 645], "w": 240, "h": 340},
+        "nisan_nenek": {"x": 480, "y": 470, "stand": [430, 690], "w": 110, "h": 120},
+        "vista_bukit": {"x": 600, "y": 300, "stand": [560, 620], "w": 200, "h": 120},
+        "nisan_kakek": {"x": 650, "y": 470, "stand": [700, 690], "w": 110, "h": 120},
+        "pohon_kamboja": {"x": 770, "y": 350, "stand": [800, 640], "w": 90, "h": 260},
+        "nisan_korban": {"x": 1000, "y": 520, "stand": [980, 660], "w": 250, "h": 100}
+      }
+    }
+  ]
+}

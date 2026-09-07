@@ -1,11 +1,14 @@
 extends Node
 ## Main — orkestrasi scene: menu -> loading -> lokasi -> dialog -> ending.
-## Memuat lokasi secara dinamis agar Player & UI tetap persisten.
+## Setiap lokasi adalah panggung 2D anime (Stage2D) yang dibangun dari
+## scenes.json (isi/logika) + stages.json (latar lukisan & tata letak).
+
+const STAGE_SCENE := "res://scenes/stage/Stage2D.tscn"
 
 var in_game: bool = false
 
-var _location_container: Node3D
-var _current_location: Node3D = null
+var _location_container: Node2D
+var _current_location: Node2D = null
 
 
 func _notification(what: int) -> void:
@@ -15,8 +18,7 @@ func _notification(what: int) -> void:
 
 
 func _ready() -> void:
-	_location_container = $World/LocationContainer
-	($World/Player as Node3D).hide()
+	_location_container = $World/StageContainer
 	var bus := SignalBus
 	bus.ending_triggered.connect(_on_ending_triggered)
 	# Musik menu + pastikan mouse terlihat.
@@ -55,7 +57,6 @@ func continue_game(data: Dictionary) -> void:
 
 func quit_to_menu() -> void:
 	_clear_location()
-	($World/Player as Node3D).hide()
 	in_game = false
 	GameManager.quit_to_menu()
 	AudioManager.play_music("music_main_menu")
@@ -87,12 +88,13 @@ func travel_to(location_id: String, spawn_tag: String = "default") -> void:
 	_clear_location()
 	bus.loading_progress.emit(0.35, dm.tr_key("loading_build"))
 	await get_tree().process_frame
-	var packed: PackedScene = load(str(sdata.get("scene_path", "")))
+	var packed: PackedScene = load(STAGE_SCENE)
 	if packed == null:
-		GameLog.error("Main: gagal memuat scene lokasi: %s" % location_id)
+		GameLog.error("Main: gagal memuat panggung lokasi: %s" % location_id)
 		gm.change_state("gameplay")
 		return
-	_current_location = packed.instantiate() as Node3D
+	_current_location = packed.instantiate() as Node2D
+	_current_location.set("location_id", location_id)
 	_location_container.add_child(_current_location)
 	bus.loading_progress.emit(0.7, dm.tr_key("loading_ready"))
 	await get_tree().process_frame
@@ -105,13 +107,6 @@ func travel_to(location_id: String, spawn_tag: String = "default") -> void:
 	await get_tree().create_timer(0.25).timeout
 	if gm.state == "loading":
 		gm.change_state("gameplay")
-	# Pastikan Player terlihat & kamera aktif.
-	var player := get_tree().get_first_node_in_group("player") as Node3D
-	if player:
-		player.show()
-		var cam := player.get_node_or_null("CamPivot/SpringArm3D/Camera3D") as Camera3D
-		if cam:
-			cam.current = true
 
 
 func _clear_location() -> void:

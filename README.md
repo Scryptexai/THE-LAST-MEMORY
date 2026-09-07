@@ -1,6 +1,6 @@
 # 🎬 THE LAST MEMORY
 
-**Genre:** Life is Strange + Mystery — game naratif investigasi 3D (Godot 4, GDScript).
+**Genre:** Life is Strange + Mystery — game naratif investigasi bergaya **anime 2D** (Godot 4, GDScript): latar lukisan gaya Shinkai, tokoh sprite anime, point-and-click + WASD.
 
 Seorang arsitek muda bernama **Ardi** kembali ke **Kota Tua Pesisir** untuk merenovasi rumah neneknya.
 Di loteng, ia menemukan surat-surat lama tentang kecelakaan kereta 40 tahun lalu — dan rumah itu
@@ -10,8 +10,8 @@ sepertinya *mengingat* sesuatu. Ungkap kebenaran, jaga hubunganmu, dan pilih end
 
 > **Statistik konten saat ini:** 6 lokasi · 142 simpul dialog (14 kilas balik 1983) · 19 petunjuk + 4 deduksi · 10 item · 6 momen foto · 4 tugas sampingan · 19 pencapaian · 4 ending + 8 entri epilog · 2 bahasa (ID/EN). Semua invarian dicek `tools/validate.sh`.
 
-- 🎌 **Gaya visual anime**: karakter 3D humanoid *cel-shaded* dengan rig prosedural (siklus jalan, napas, kedip, menoleh, lambaian), potret anime tiap tokoh di kotak dialog & jurnal, key art senja di menu utama
-- 🗺️ **6 lokasi 3D** bergaya diorama miniatur prosedural: Rumah Nenek, Kafe Rara, Pasar Lama, Stasiun, Pantai, Makam Bukit (terbuka bab 3) — dengan peta kota, suasana per bab, langkah kaki per permukaan, suara posisional
+- 🎌 **Gaya visual anime 2D "dunia nyata"**: 6 latar lukisan detail gaya Makoto Shinkai (Rumah Nenek, Kafe Rara, Pasar Lama, Stasiun, Pantai, Makam Bukit), tokoh sprite anime seluruh badan dengan kedalaman (menjauh = mengecil), potret anime di kotak dialog & jurnal, key art senja di menu utama — tanpa kotak/balok prosedural
+- 🗺️ **6 lokasi** dengan hotspot penyelidikan di dalam lukisan (penanda berdenyut, sorot saat hover), peta kota, suasana per bab, langkah kaki per permukaan, suara posisional 2D, debu/kelopak/gerimis + kilat
 - 💬 **142 simpul dialog bercabang** (Indonesia + Inggris) dengan efek mengetik, pratinjau hubungan, riwayat, auto-advance, dan penanda ◇ pilihan lama di Baru+
 - 🔍 **19 petunjuk + 4 deduksi** berantai di papan investigasi ala *Golden Idol*, plus papan benang merah
 - 💛 **Sistem hubungan** (Rara, Pak Harto, Mira, Bu RT) yang membuka dialog & kesaksian spesial; NPC berjadwal per bab; Kunyit si kucing
@@ -34,7 +34,7 @@ sepertinya *mengingat* sesuatu. Ungkap kebenaran, jaga hubunganmu, dan pilih end
 
 | Aksi | Keyboard | Gamepad |
 |---|---|---|
-| Gerak | WASD / Panah | Stick kiri / D-pad |
+| Gerak | A/D kiri-kanan, W/S menjauh-mendekat, atau **klik lantai** | Stick kiri / D-pad |
 | Lari | Shift | LB (tombol 8) |
 | Interaksi | E | A |
 | Jurnal | J / Tab | X |
@@ -45,7 +45,7 @@ sepertinya *mengingat* sesuatu. Ungkap kebenaran, jaga hubunganmu, dan pilih end
 | Lanjut dialog | Klik / Spasi / Enter | — |
 | Pilih opsi dialog | 1–4 (A auto, H riwayat) | — |
 | Jeda / kembali | Esc | — |
-| Kamera | Gerak mouse (terkunci saat main) | — |
+| Hampiri & interaksi | **Klik objek / tokoh** | — |
 
 Di Rumah Nenek, **E** di dekat Kunyit = mengelus kucing.
 
@@ -58,7 +58,7 @@ rangkai 4 deduksi → kembali ke loteng untuk pilihan akhir.
 2. Clone repo ini, lalu buka folder proyek di Godot (*Import* → pilih `project.godot`).
 3. Tekan **F5** (Run). Main scene: `res://scenes/Main.tscn`.
 
-Tidak perlu mengunduh apa pun: model 3D, musik, dan SFX dibuat prosedural oleh kode.
+Tidak perlu mengunduh apa pun: latar & sprite sudah ada di `assets/art/`, musik dan SFX dibuat prosedural oleh kode.
 
 ## 📁 Struktur Proyek
 
@@ -69,27 +69,27 @@ THE-LAST-MEMORY/
 ├── assets/data/                  # dialogues, characters, clues, items, scenes,
 │                                 # deductions, endings, objectives, ui_strings (JSON)
 ├── assets/audio/{music,sfx,ambient}/  # opsional: taruh .ogg/.wav <id>.ogg untuk override synth
+├── assets/art/bg/                # latar lukisan anime per lokasi (1600×900)
+├── assets/art/sprites/           # sprite tokoh seluruh badan (PNG transparan, tinggi 1100)
 ├── assets/art/portraits/         # potret anime tokoh (<id>.png 448×672) untuk dialog & jurnal
 ├── assets/art/ui/keyart_menu.png # key art menu utama
 ├── scripts/
 │   ├── autoload/  SignalBus, DataManager, SaveManager, AudioManager,
 │   │              RelationshipManager, InvestigationManager, DialogueManager, GameManager
-│   ├── entities/  Player, NPC, InteractiveObject
-│   ├── locations/ LocationBase + RumahNenek, KafeRara, PasarLama, Stasiun, Pantai
+│   ├── stage/     Stage2D (panggung anime), Actor2D, Player2D, NPC2D, Hotspot2D, Cat2D
 │   ├── systems/   DialogueParser, ClueSystem, DeductionSystem, RelationshipSystem
 │   ├── ui/        UIManager, HUD, MainMenuUI, DialogueUI, InvestigationUI,
 │   │              InventoryUI, JournalUI, SettingUI, LoadingUI, EndingUI
-│   └── utils/     GameLog, MathUtils, SaveUtils, PropFactory, CharacterFactory,
-│                  CharacterAnimator, ThemeFactory
+│   └── utils/     GameLog, MathUtils, SaveUtils, ThemeFactory, JournalExporter
 ├── scripts/Main.gd               # orkestrasi scene & perjalanan
-└── scenes/                       # Main, entities, locations, ui (.tscn)
+└── scenes/                       # Main, stage/Stage2D, ui (.tscn)
 ```
 
 ## 🎨 Menambah Konten (Data-Driven)
 
 - **Dialog baru**: tambah node di `assets/data/dialogues.json`, rujuk dari `dialogue_id` / `next` / `choices[].next` / `variants`.
 - **Clue baru**: tambah di `clues.json`, pasang `clue_id` pada objek di `scenes.json`, opsional masukkan ke resep `deductions.json`.
-- **Lokasi baru**: tambah entri `scenes.json` + script `scripts/locations/X.gd` (extends `LocationBase`) + `scenes/locations/X.tscn`.
+- **Lokasi baru**: tambah entri `scenes.json` (isi: NPC, objek, musik, env) + entri `stages.json` (latar `assets/art/bg/X.jpg`, lantai, spawn, posisi NPC, koordinat hotspot). Tidak perlu script/scene baru — `Stage2D` membangun semuanya dari data.
 - **Musik/SFX sendiri**: taruh `assets/audio/music/<track_id>.ogg` (mis. `music_kafe.ogg`) — otomatis dipakai menggantikan synth.
 
 ## 🏁 Syarat Ending
@@ -101,12 +101,18 @@ THE-LAST-MEMORY/
 | 🌑 Rahasia Terkubur | Pilihan KUBUR |
 | 🌧 Luka Lama | Bukti/hubungan kurang saat memilih |
 
-## 🎌 Gaya Visual Anime: Avatar, Potret, Key Art
+## 🎌 Gaya Visual Anime 2D: Panggung, Sprite, Potret, Key Art
 
-- **Avatar 3D humanoid** (`scripts/utils/CharacterFactory.gd`) — bukan kotak: rig berjenjang `Hips → Spine → Chest → Neck → Head`, `Shoulder → Elbow → Hand`, `UpLeg → Knee → Foot` dari kapsul/silinder/bola halus, proporsi ~6,5 kepala. Material *cel-shaded* (`DIFFUSE_TOON` + `SPECULAR_TOON` + rim) dengan **garis tepi hitam** lewat `next_pass` (`grow` + `CULL_FRONT`). Mata anime dari tekstur prosedural (iris bergradasi, pupil, dua sorot cahaya, garis kelopak & bulu mata), alis, rona pipi, poni berhelai. Ciri per tokoh: Ardi (tas selempang, jambul), Rara (kuncir kuda + pita merah, celemek, rok), Pak Harto (fedora, kumis, tongkat), Mira (bob, syal merah, kamera), Nenek Lastri (sanggul, kebaya + selendang, kain panjang), Kakek Darmo (topi masinis, kancing kuningan, peluit), Bu RT Sumi (kerudung, sapu lidi), warga (caping). Tulang diekspos lewat `get_meta("bones")`.
-- **Animator prosedural** (`scripts/utils/CharacterAnimator.gd`) — `update(delta, speed)`: siklus jalan/lari (ayun lengan-kaki berlawanan, tekuk lutut/siku, goyang pinggul & bahu, bob badan), idle bernapas + gestur kepala, **kedip acak**, `look_at_point()` kepala+leher menoleh (dibatasi ±63°), `wave()` lambaian, `sit_pose()`. Dipakai `Player` (kecepatan dari `velocity`, menoleh ke objek interaksi) dan `NPC` (menoleh ke pemain, lambai saat mendekat, jalan saat berkeliling). Kunyit ikut dibuat ulang bergaya toon (kepala bulat, telinga kerucut, mata hijau anime, kumis, kaki berayun).
-- **Potret dialog** — `ThemeFactory.portrait(nama_atau_id)` memetakan nama pembicara (`PORTRAIT_ALIAS`, mis. "Pak Harto" → `pak_harto`, "Pedagang/Penjaga/Juru Kunci" → `warga`) ke `assets/art/portraits/<id>.png`; `DialogueUI` menampilkannya di kiri kotak dialog (fade+geser saat ganti tokoh, sepia saat kilas balik, disembunyikan bila pembicara tak berpotret seperti "Suara Peron"). Tab **Tokoh** di jurnal memakai potret yang sama (siluet gelap bila belum dikenal).
-- **Key art menu** — `assets/art/ui/keyart_menu.png` dipasang `MainMenuUI` (cover + gradasi gelap, zoom Ken Burns pelan; mati saat *Kurangi gerakan*). `ThemeFactory.art_texture()` memuat lewat importer editor, atau langsung dari PNG bila berkas `.import` belum ada (build headless).
+Dunia game bukan 3D balok lagi. Setiap lokasi adalah **panggung 2D** (`scripts/stage/Stage2D.gd`, ruang desain 1280×720, ikut ukuran jendela via `canvas_items`):
+
+- **Latar lukisan** `assets/art/bg/<lokasi>.jpg` (1600×900 PNG, gaya Shinkai: senja, god rays, hujan, kabut) dipasang *cover* + **parallax** halus mengikuti Ardi; lapisan **cahaya lokal** aditif berkedip (lampu loket saat `loket_terang`, api unggun, mercusuar, radio saat `radio_nyala`), **partikel** debu (interior), kelopak kamboja (makam), **gerimis + kilat/guntur** (stasiun), **tint suasana per bab** dari `chapter_env`, dan **sepia kilas balik 1983** yang memudar masuk/keluar.
+- **`assets/data/stages.json`** — satu entri per lokasi: `bg`, `floor` (area lantai `y_far..y_near`, `x_min..x_max`), `sprite_scale`/`far_scale` (kedalaman: makin jauh makin kecil), `ambient` (warna cahaya lingkungan yang mewarnai sprite agar menyatu dengan latar: senja hangat, hujan kebiruan), `spawns`, posisi `npcs` (termasuk slot jadwal `rara_jendela`, `harto_teras`, `mira_gapura`…), `cat`, `sounds`, `lights`, dan **`hotspots`** = koordinat setiap `object_id` dari `scenes.json` (+ `stand` titik berdiri Ardi, `w/h` area klik). `tools/validate_data.py` memastikan semua objek & NPC di `scenes.json` sudah dipetakan.
+- **Tokoh sprite** (`Actor2D`/`NPC2D`/`Player2D`): PNG seluruh badan `assets/art/sprites/<id>.png` (Ardi, Rara, Pak Harto, Mira, Nenek; tokoh lain memakai siluet sementara sampai sprite-nya dibuat), titik asal di kaki, skala dari kedalaman, **napas**, **goyang jalan**, **balik arah**, **lompatan sapaan** saat Ardi mendekat, **redup** saat bukan pembicara, bayangan lembut, cincin sorot saat hover. NPC dengan `wander` berjalan santai di sekitar posnya.
+- **Ardi** bergerak dengan **A/D** (kiri-kanan) + **W/S** (menjauh-mendekat) **atau klik lantai** (point-and-click); **klik objek/tokoh** = berjalan menghampiri lalu berinteraksi; **E** berinteraksi dengan yang terdekat (prompt di HUD). Langkah kaki memakai `surface` panggung.
+- **Hotspot** (`Hotspot2D`) memakai logika interaksi yang sama persis dengan versi 3D (clue/item/flag/portal/dialog varian/momen), hanya tampilannya: penanda berdenyut berwarna menurut jenis (jingga periksa, biru pintu, merah muda momen), bingkai area saat hover; Mode Detektif menyembunyikan semua kecuali pintu.
+- **Kunyit** (`Cat2D`) digambar vektor gaya chibi: badan bulat, mata hijau anime, ekor mengibas, kaki berayun saat mengikuti, mata ^ ^ + hati saat dielus.
+- **Potret dialog** `assets/art/portraits/<id>.png` via `ThemeFactory.portrait(nama)` (alias nama pembicara → id), sepia saat kilas balik; tab Tokoh jurnal memakai potret yang sama. **Key art** `assets/art/ui/keyart_menu.png` di menu utama (Ken Burns pelan). `ThemeFactory.art_texture()` memuat PNG/JPG langsung bila `.import` belum ada (build headless).
+- **Mode foto** men-zoom panggung 1×–2,6× di sekitar kursor; kompas HUD menunjuk arah layar (◀ ▶ = kiri/kanan, ▲ = lebih dalam).
 
 ## 📤 Ekspor Jurnal ke Markdown
 
@@ -120,9 +126,9 @@ THE-LAST-MEMORY/
 
 - `scripts/ui/EvidenceBoard.gd` (`_draw`) di layar Investigasi: petunjuk yang ditemukan menjadi kartu di papan gabus (kolom per lokasi penemuan), **benang merah** menghubungkan petunjuk yang berbagi tema `related_to` (makin tebal makin banyak kesamaan), **benang emas berdenyut** untuk deduksi yang sudah terpecahkan. Klik kartu = memilih petunjuk (sinkron dengan daftar & papan deduksi).
 
-## 🔊 Suara Posisional 3D
+## 🔊 Suara Posisional
 
-- `AudioManager.spatial_stream(id)` mensintesis loop prosedural untuk `AudioStreamPlayer3D` (`register_spatial` → ikut slider Suasana & mute); `LocationBase.add_sound_source(pos, id, jarak, dB)`.
+- `AudioManager.spatial_stream(id)` mensintesis loop prosedural untuk `AudioStreamPlayer2D` (`register_spatial2d` → ikut slider Suasana & mute); sumber didaftarkan di `stages.json` → `sounds` (`id`, `x`, `y`, `range`, `db`, `flag` opsional) dan pendengar `AudioListener2D` menempel pada Ardi.
 - Sumber: api unggun & debur laut di Pantai, lonceng angin gubuk juru kunci (Makam Bukit), desis lampu loket setelah menyala, dan **radio tua** di rumah nenek yang mengalunkan keroncong samar setelah diperiksa (flag `radio_nyala`, dialog lanjutan).
 
 ## ⚖️ Jejak Keputusan di Layar Ending
@@ -150,7 +156,7 @@ THE-LAST-MEMORY/
 ## 🧪 Validasi Otomatis
 
 - `tools/validate.sh` — parse semua GDScript (`gdparse` dari gdtoolkit, opsional), analisis statis Godot 4 (`tools/analyze_gd.mjs`, opsional), lalu `tools/validate_data.py`.
-- `tools/godot_check.sh` — verifikasi dengan **engine Godot sungguhan (headless)**: `tools/check_scripts.gd` memuat & mengompilasi semua 50 skrip + 20 scene, lalu `tools/smoke_test.gd` **memainkan game** tanpa layar: game baru → 6 lokasi (semua NPC/objek di-interact) → 142 dialog → semua layar UI → 19 clue/4 deduksi/10 item → simpan-muat → ekspor jurnal → rig avatar anime + potret + key art → 4 ending → lanjutkan dari save → Baru+/mode sulit. Gagal bila ada `SCRIPT ERROR` apa pun. Otomatis dilewati bila tidak ada binari Godot (`$GODOT` atau `godot` di PATH).
+- `tools/godot_check.sh` — verifikasi dengan **engine Godot sungguhan (headless)**: `tools/check_scripts.gd` memuat & mengompilasi semua 40 skrip + 12 scene, lalu `tools/smoke_test.gd` **memainkan game** tanpa layar: game baru → 6 lokasi (semua NPC/objek di-interact) → 142 dialog → semua layar UI → 19 clue/4 deduksi/10 item → simpan-muat → ekspor jurnal → Ardi berjalan ke tiap hotspot panggung 2D + potret/sprite/latar → 4 ending → lanjutkan dari save → Baru+/mode sulit. Gagal bila ada `SCRIPT ERROR` apa pun. Otomatis dilewati bila tidak ada binari Godot (`$GODOT` atau `godot` di PATH).
 - `tools/build_godot_headless.sh` — bangun Godot 4.3 headless minimal dari sumber (`codeload.github.com`, ±15 menit/2 core, hanya butuh gcc+scons) untuk lingkungan tanpa akses ke GitHub Releases. `tools/gen_class_cache.py` membuat `.godot/global_script_class_cache.cfg` agar build non-editor mengenali `class_name`.
 - `tools/analyze_gd.mjs` — analisis statis GDScript **setara compiler Godot 4** tanpa editor (`npm i` sekali; memakai `@gdscript-analyzer/core`): parse error, identifier/anggota yang tidak ada (`dialogue_variants`, `Environment.TONE_MAPPER_*`, `SystemFont.font_size`, …), ketidakcocokan tipe, tabrakan `class_name` dengan kelas engine (mis. `Logger` → kini `GameLog`). `--strict` juga menampilkan peringatan `UNSAFE_*`.
 - `tools/validate_data.py` — invarian data tanpa Godot: JSON valid, **semua dialog terjangkau** dari titik masuk, pencapaian dirujuk dua arah, paritas `ui_strings` id/en + semua `tr_key()` ada, referensi clue/item/momen/objective/scene/quest konsisten.
@@ -186,7 +192,7 @@ jobs:
 
 ## 👣 Langkah Kaki per Permukaan
 
-- `LocationBase.surface_zones` + `default_surface`; `Player` menanyakan `surface_at(pos)` tiap langkah. Enam permukaan prosedural: kayu, rumput, **pasir** & **kerikil** (`_crunch` derau ber-envelope), **batu**, **papan dermaga** (`_plank`: thump + derit). Langkah kiri/kanan berselang nada (`_b`).
+- `stages.json` → `surface` per panggung; `Player2D` memakainya tiap langkah. Enam permukaan prosedural: kayu, rumput, **pasir** & **kerikil** (`_crunch` derau ber-envelope), **batu**, **papan dermaga** (`_plank`: thump + derit). Langkah kiri/kanan berselang nada (`_b`).
 - Zona: lantai rumah/kafe (kayu), teras & pasar (batu), pantai (pasir, dermaga papan), stasiun (kerikil rel, peron batu), Makam Bukit (rumput, setapak kerikil).
 
 ## 📜 Epilog Kota (berbasis flag)
@@ -260,8 +266,8 @@ jobs:
 
 ## 🌦 Cuaca & Langit Hidup
 
-- `scenes.json` → `env.weather`: `"drizzle"` (gerimis partikel + kilat & guntur acak, layer hujan di ambient) atau `"gulls"` (kawanan camar `GullFlock` berputar di langit).
-- Semua lokasi: matahari "bernapas" (awan berlalu) lewat `LocationBase._update_sky()`.
+- `scenes.json` → `env.weather`: `"drizzle"` (gerimis partikel 2D + kilat layar & guntur acak, layer hujan di ambient); `"gulls"` kini bagian dari lukisan latar pantai.
+- Semua lokasi: lampu lokal berkedip & partikel hidup lewat `Stage2D._process()`.
 
 ## 📝 Catatan Teknis
 
