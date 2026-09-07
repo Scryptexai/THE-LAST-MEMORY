@@ -142,7 +142,22 @@ func _run() -> void:
 		if tf.art_texture("res://assets/art/sprites/%s.png" % cid) != null:
 			sprite_ok += 1
 	_check(portrait_ok == 8, "potret tokoh termuat (%d/8)" % portrait_ok)
-	_ok("sprite tokoh tersedia: %d/8 (sisanya siluet sementara)" % sprite_ok)
+	_check(sprite_ok == 8, "sprite tokoh termuat (%d/8)" % sprite_ok)
+	# Ekspresi: setiap dialog ber-`emotion` harus punya varian potret pembicaranya,
+	# dan varian itu harus berbeda dari potret netral.
+	var expr_missing: Array = []
+	var expr_used: int = 0
+	for did in DataManager.dialogues.keys():
+		var nd: Dictionary = DataManager.dialogues[did]
+		if not nd.has("emotion"):
+			continue
+		expr_used += 1
+		var emo: String = str(nd["emotion"])
+		var spk: String = str(nd.get("speaker_id", nd.get("speaker", "")))
+		if not (emo in tf.EXPRESSIONS) or not tf.has_expression(spk, emo):
+			expr_missing.append("%s(%s:%s)" % [did, spk, emo])
+	_check(expr_missing.is_empty(), "%d dialog beremosi, semua punya potret ekspresi %s" % [expr_used, str(expr_missing)])
+	_check(tf.portrait("Rara", "angry") != tf.portrait("Rara") and tf.portrait("Penjaga", "angry") == tf.portrait("Penjaga"), "potret ekspresi: varian vs fallback netral")
 	var bg_ok: int = 0
 	for sid in DataManager.stages.keys():
 		if tf.art_texture(str((DataManager.stages[sid] as Dictionary).get("bg", ""))) != null:

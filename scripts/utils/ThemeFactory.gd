@@ -50,11 +50,32 @@ const PORTRAIT_ALIAS := {
 static var _tex_cache: Dictionary = {}
 
 
-## Potret anime tokoh (null bila tidak ada). Menerima id karakter atau nama tampilan.
-static func portrait(who: String) -> Texture2D:
+## Ekspresi potret yang dikenal (berkas `<id>_<ekspresi>.png`).
+const EXPRESSIONS: PackedStringArray = ["happy", "sad", "surprised", "angry"]
+
+
+## Id potret dari nama tampilan/id karakter.
+static func portrait_id(who: String) -> String:
 	var key: String = who.strip_edges().to_lower()
-	var pid: String = str(PORTRAIT_ALIAS.get(key, key.replace(" ", "_")))
+	return str(PORTRAIT_ALIAS.get(key, key.replace(" ", "_")))
+
+
+## Potret anime tokoh (null bila tidak ada). Menerima id karakter atau nama tampilan.
+## `emotion` opsional: memakai varian ekspresi bila berkasnya ada, kalau tidak
+## kembali ke potret netral.
+static func portrait(who: String, emotion: String = "") -> Texture2D:
+	var pid: String = portrait_id(who)
+	if emotion != "":
+		var tex: Texture2D = art_texture("res://assets/art/portraits/%s_%s.png" % [pid, emotion])
+		if tex != null:
+			return tex
 	return art_texture("res://assets/art/portraits/%s.png" % pid)
+
+
+## Apakah tokoh punya varian ekspresi tertentu.
+static func has_expression(who: String, emotion: String) -> bool:
+	var path := "res://assets/art/portraits/%s_%s.png" % [portrait_id(who), emotion]
+	return ResourceLoader.exists(path) or FileAccess.file_exists(path)
 
 
 ## Muat gambar aset: lewat importer editor bila sudah diimpor, kalau tidak

@@ -180,7 +180,7 @@ func _on_node_shown(node_id: String) -> void:
 	_text_label.add_theme_color_override("default_color", Color.WHITE if hc else ThemeFactory.CREAM)
 	ThemeFactory.apply_font(_text_label, "normal_font", 21 if hc else 19)
 	_full_text = dm.localized(node)
-	_update_portrait(str(node.get("speaker_id", node.get("speaker", ""))), bool(node.get("memory", false)))
+	_update_portrait(str(node.get("speaker_id", node.get("speaker", ""))), bool(node.get("memory", false)), str(node.get("emotion", "")))
 	_backlog.append("[b]%s[/b]: %s" % [str(node.get("speaker", "???")), _full_text])
 	if _backlog.size() > 40:
 		_backlog.pop_front()
@@ -325,19 +325,28 @@ func _on_choice_pressed(index: int) -> void:
 
 
 ## Tampilkan potret pembicara (fade + geser kecil saat ganti tokoh). Sepia saat kilas balik.
-func _update_portrait(who: String, memory: bool) -> void:
-	var tex: Texture2D = ThemeFactory.portrait(who)
+## `emotion` memilih varian ekspresi (happy/sad/surprised/angry); ganti ekspresi
+## pada tokoh yang sama hanya memakai kedip singkat, bukan geser penuh.
+func _update_portrait(who: String, memory: bool, emotion: String = "") -> void:
+	var tex: Texture2D = ThemeFactory.portrait(who, emotion)
 	if tex == null:
 		_portrait_frame.visible = false
 		_portrait_who = ""
 		return
 	_portrait_frame.visible = true
 	_portrait.self_modulate = Color(1.0, 0.9, 0.75) if memory else Color.WHITE
-	if who == _portrait_who:
+	var same_who: bool = who == _portrait_who
+	if same_who and tex == _portrait.texture:
 		return
 	_portrait_who = who
 	_portrait.texture = tex
 	if GameManager.reduce_motion:
+		return
+	if same_who:
+		# Hanya ekspresi yang berubah: kedip lembut.
+		_portrait.modulate.a = 0.55
+		var tw2 := create_tween().bind_node(_portrait)
+		tw2.tween_property(_portrait, "modulate:a", 1.0, 0.18)
 		return
 	_portrait_frame.modulate.a = 0.0
 	_portrait_frame.position.x -= 18
